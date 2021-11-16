@@ -44,6 +44,7 @@ void Bullets::_register_methods() {
 
 	// New stuff
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
+	register_method("create_shot_a2", &Bullets::create_shot_a2);
 
 }
 
@@ -402,12 +403,43 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, float x_pos, float y_pos, fl
 			to_return.set(2, bullet_id.set);
 
 			
-			// int32_t pool_index = _get_pool_index(to_return[2], to_return[0]);
-
 			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f / kit->texture_size.x, 1.0f / kit->texture_size.y)).rotated(angle + 1.57079632679f);
 			xform.set_origin(Vector2(x_pos, y_pos));
 			set_bullet_property(to_return, "transform", xform);
-			set_bullet_property(to_return, "velocity", Vector2(speed, 0.0f).rotated(angle));
+			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
+			set_bullet_property(to_return, "speed", speed);
+			set_bullet_property(to_return, "texture_region", texture_region);
+
+			return to_return;
+		}
+	}
+	return invalid_id;
+}
+
+
+Variant Bullets::create_shot_a2(Ref<BulletKit> kit, float x_pos, float y_pos, float speed, float angle, float accel, float max_speed, Color texture_region, float size) {
+	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+		if(pool->get_available_bullets() > 0) {
+			available_bullets -= 1;
+			active_bullets += 1;
+
+			BulletID bullet_id = pool->obtain_bullet();
+			PoolIntArray to_return = invalid_id;
+			to_return.set(0, bullet_id.index);
+			to_return.set(1, bullet_id.cycle);
+			to_return.set(2, bullet_id.set);
+
+			
+			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f / kit->texture_size.x, 1.0f / kit->texture_size.y)).rotated(angle + 1.57079632679f);
+			xform.set_origin(Vector2(x_pos, y_pos));
+			set_bullet_property(to_return, "transform", xform);
+			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
+			set_bullet_property(to_return, "speed", speed);
+			set_bullet_property(to_return, "accel", accel);
+			set_bullet_property(to_return, "max_speed", max_speed);
 			set_bullet_property(to_return, "texture_region", texture_region);
 
 			return to_return;

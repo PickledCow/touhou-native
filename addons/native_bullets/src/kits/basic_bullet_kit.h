@@ -45,15 +45,19 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 	// void _disable_bullet(Bullet* bullet); Use default implementation.
 
 	bool _process_bullet(Bullet* bullet, float delta) {
-		bullet->transform.set_origin(bullet->transform.get_origin() + bullet->velocity * delta);
+		bullet->transform.set_origin(bullet->transform.get_origin() + bullet->direction * bullet->speed * delta);
+		if (bullet->accel) {
+			bullet->speed += bullet->accel * delta;
+			if (((bullet->speed - bullet->max_speed) * bullet->accel) > 0.0f) bullet->speed = bullet->max_speed;
+		}
 
 		if(!active_rect.has_point(bullet->transform.get_origin())) {
 			// Return true if the bullet should be deleted.
 			return true;
 		}
-		// Rotate the bullet based on its velocity "rotate" is enabled.
-		if(kit->rotate) {
-			bullet->transform.set_rotation(bullet->velocity.angle());
+		// Rotate the bullet based on its velocity "rotate" is enabled. Currently disabled
+		if(kit->rotate && false) {
+			bullet->transform.set_rotation(bullet->direction.angle());
 		}
 		// Bullet is still alive, increase its lifetime.
 		bullet->lifetime += delta;

@@ -23,8 +23,13 @@ public:
 	RID item_rid;
 	int32_t cycle = 0;
 	int32_t shape_index = -1;
+	
 	Transform2D transform;
-	Vector2 velocity;
+	Vector2 direction;
+	float speed;
+	float max_speed;
+	float accel;
+
 	float lifetime;
 	Variant data;
 	Color texture_region;
@@ -46,7 +51,11 @@ public:
 		register_property<Bullet, int32_t>("shape_index", &Bullet::set_shape_index, &Bullet::get_shape_index, 0);
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
-		register_property<Bullet, Vector2>("velocity", &Bullet::velocity, Vector2());
+		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());
+		register_property<Bullet, float>("speed", &Bullet::speed, 0.0f);
+		register_property<Bullet, float>("max_speed", &Bullet::max_speed, 0.0f);
+		register_property<Bullet, float>("accel", &Bullet::accel, 0.0f);
+
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
 		register_property<Bullet, Variant>("data", &Bullet::data, Variant());
 		register_property<Bullet, Color>("texture_region", &Bullet::texture_region, Color());

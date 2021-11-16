@@ -33,7 +33,11 @@ void AbstractBulletsPool<Kit, BulletType>::_disable_bullet(BulletType* bullet) {
 
 template <class Kit, class BulletType>
 bool AbstractBulletsPool<Kit, BulletType>::_process_bullet(BulletType* bullet, float delta) {
-	bullet->transform.set_origin(bullet->transform.get_origin() + bullet->velocity * delta);
+	bullet->transform.set_origin(bullet->transform.get_origin() + bullet->direction * bullet->speed * delta);
+	if (bullet->accel) {
+		bullet->speed += bullet->accel * delta;
+		if (((bullet->speed - bullet->max_speed) * bullet->accel) > 0.0f) bullet->speed = bullet->max_speed;
+	}
 
 	if(!active_rect.has_point(bullet->transform.get_origin())) {
 		return true;
