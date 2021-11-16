@@ -21,6 +21,9 @@ Not compatible with Godot 4.x.
 Pre-built binaries are provided for:
 
 - Windows x86-64
+
+Planned binaries:
+
 - Linux x86-64
 - macOS Universal (x86-64 + arm64)
 
