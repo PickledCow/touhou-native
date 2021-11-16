@@ -2,6 +2,10 @@
 
 Fork of godot-native-bullets-plugin to better suit touhou style bullet hells. 
 
+Sometimes the project will fail to load from the project selection menu; opening from your file browser still works.
+
+Currently only Windows support, multi-platform support should come soon.
+
 ## Old docs
 
 Efficiently spawn and move high amounts of objects like bullets for bullet hells, particles and more.
