@@ -27,6 +27,7 @@ public:
 	Vector2 velocity;
 	float lifetime;
 	Variant data;
+	Color texture_region;
 
 	void _init() {}
 
@@ -48,6 +49,7 @@ public:
 		register_property<Bullet, Vector2>("velocity", &Bullet::velocity, Vector2());
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
 		register_property<Bullet, Variant>("data", &Bullet::data, Variant());
+		register_property<Bullet, Color>("texture_region", &Bullet::texture_region, Color());
 	}
 };
 

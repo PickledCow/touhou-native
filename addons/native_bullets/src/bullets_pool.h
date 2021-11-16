@@ -36,6 +36,8 @@ protected:
 		b = t;
 	}
 
+	int32_t draw_index = 0;
+
 public:
 	int32_t pool_size = 0;
 	int32_t set_index = -1;

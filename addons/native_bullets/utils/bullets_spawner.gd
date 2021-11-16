@@ -9,25 +9,18 @@ export(Resource) var bullet_kit
 export(float, 0.0, 65535.0) var bullets_speed = 100.0
 export(float, -512.0, 512.0) var bullets_spawn_distance = 0.0
 
+var c = 0
 
-# Called by TimedEvents nodes when they wish to automatically connect to other nodes.
-func on_timed_events_request(timed_events : TimedEvents):
-	timed_events.connect("event_with_leftover", self, "shoot")
-
-
-func shoot(recover_seconds = 0.0):
-	if not enabled:
-		return
-	
+func _physics_process(delta):
 	for spawner in get_children():
 		var bullet_rotation = spawner.global_rotation
 		var bullet_velocity = Vector2(cos(bullet_rotation), sin(bullet_rotation)) * bullets_speed
 		
-		var properties = {
-			"transform": Transform2D(bullet_rotation, spawner.global_position \
-				+ bullet_velocity * recover_seconds \
-				+ bullet_velocity.normalized() * bullets_spawn_distance),
-			"velocity": bullet_velocity
-		}
-		# Use this assigned BulletKit to spawn a bullet.
-		Bullets.spawn_bullet(bullet_kit, properties)
+		
+		var bullet = Bullets.obtain_bullet(bullet_kit)
+		var xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(Vector2(1.0, 0.5) / 64.0).rotated(bullet_rotation+PI*0.5)
+		xform.origin = spawner.global_position
+		Bullets.set_bullet_property(bullet, "transform", xform)
+		Bullets.set_bullet_property(bullet, "velocity", bullet_velocity)
+		Bullets.set_bullet_property(bullet, "texture_region", Color(64 * (randi()%16), 64 * (1 + randi()%11), 64, 1))
+	

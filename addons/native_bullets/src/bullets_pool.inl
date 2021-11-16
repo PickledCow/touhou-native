@@ -99,22 +99,7 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 		}
 
 		Color color = Color(1.0f, 1.0f, 1.0f, 1.0f);
-		switch(kit->unique_modulate_component) {
-			case 1: // Red
-				color.r = fmod((starting_shape_index + i) * 0.7213f, 1.0f);
-				break;
-			case 2: // Green
-				color.g = fmod((starting_shape_index + i) * 0.7213f, 1.0f);
-				break;
-			case 3: // Blue
-				color.b = fmod((starting_shape_index + i) * 0.7213f, 1.0f);
-				break;
-			case 4: // Alpha
-				color.a = fmod((starting_shape_index + i) * 0.7213f, 1.0f);
-				break;
-			default: // None or other values
-				break;
-		}
+		color.a = fmod((starting_shape_index + i) * 0.7213f, 1.0f);
 		VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 
 		_init_bullet(bullet);
@@ -196,6 +181,9 @@ BulletID AbstractBulletsPool<Kit, BulletType>::obtain_bullet() {
 		if(collisions_enabled)
 			Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, false);
 
+		VisualServer::get_singleton()->canvas_item_set_draw_index(bullet->item_rid, draw_index++);
+		if (draw_index > 65535) draw_index = 0;
+		
 		_enable_bullet(bullet);
 
 		return BulletID(bullet->shape_index, bullet->cycle, set_index);
@@ -265,7 +253,6 @@ BulletID AbstractBulletsPool<Kit, BulletType>::get_bullet_from_shape(int32_t sha
 	return BulletID(-1, -1, -1);
 }
 
-
 template <class Kit, class BulletType>
 void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, String property, Variant value) {
 	if(is_bullet_valid(id)) {
@@ -277,6 +264,11 @@ void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, Stri
 			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
 			if(collisions_enabled)
 				Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, bullet->transform);
+		}
+		else if (property == "texture_region") {
+			BulletType* bullet = bullets[bullet_index];
+			Color color = bullet->texture_region;
+			VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 		}
 	}
 }

@@ -4,7 +4,7 @@ extends Area2D
 export(float, 0, 1000) var speed = 300.0
 
 
-func _process(delta):
+func _physics_process(delta):
 	var velocity = Vector2()
 	
 	if(Input.is_action_pressed("ui_up")):
