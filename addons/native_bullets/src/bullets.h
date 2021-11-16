@@ -6,6 +6,7 @@
 #include <AtlasTexture.hpp>
 #include <Material.hpp>
 #include <Color.hpp>
+#include <Rect2.hpp>
 #include <Array.hpp>
 #include <RegEx.hpp>
 
@@ -87,6 +88,10 @@ public:
 
 	void set_bullet_property(Variant id, String property, Variant value);
 	Variant get_bullet_property(Variant id, String property);
+
+	// New stuff
+	void set_bullet_property_int(Variant id, int property, Variant value);
+	Variant create_shot_a1(Ref<BulletKit> kit, float x_pos, float y_pos, float speed, float angle, Color texture_region, float size);
 };
 
 #endif

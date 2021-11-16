@@ -8,6 +8,7 @@
 #include <Texture.hpp>
 #include <PackedScene.hpp>
 #include <Script.hpp>
+#include <Vector2.hpp>
 
 #include <memory>
 
@@ -37,6 +38,7 @@ class BulletKit : public Resource {
 public:
 	// The material used to render each bullet.
 	Ref<Material> material;
+	Vector2 texture_size;
 	// Controls whether collisions with other objects are enabled. Turning it off increases performance.
 	bool collisions_enabled = true;
 	// Collisions related properties.
@@ -64,6 +66,7 @@ public:
 		register_property<BulletKit, Ref<Material>>("material", &BulletKit::material,
 			Ref<Material>(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT,
 			GODOT_PROPERTY_HINT_RESOURCE_TYPE, "Material");
+		register_property<BulletKit, Vector2>("texture_size", &BulletKit::texture_size, Vector2(0.0f, 0.0f));
 		register_property<BulletKit, bool>("collisions_enabled", &BulletKit::collisions_enabled, true,
 			GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_DEFAULT | GODOT_PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED),
 			GODOT_PROPERTY_HINT_NONE);

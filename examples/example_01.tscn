@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://examples/images/player_ship_2_blue.png" type="Texture" id=1]
-[ext_resource path="res://examples/kits/blue_basic_bullet_kit.tres" type="Resource" id=2]
+[ext_resource path="res://examples/kits/basic_touhou.tres" type="Resource" id=2]
 [ext_resource path="res://addons/native_bullets/bullets_environment.gd" type="Script" id=3]
 [ext_resource path="res://examples/images/enemy_black_1.png" type="Texture" id=4]
 [ext_resource path="res://examples/Enemy.gd" type="Script" id=5]

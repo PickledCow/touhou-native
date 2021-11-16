@@ -259,7 +259,7 @@ void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, Stri
 		int32_t bullet_index = shapes_to_indices[id.index - starting_shape_index];
 		bullets[bullet_index]->set(property, value);
 
-		if(property == "transform") {
+		if (property == "transform") {
 			BulletType* bullet = bullets[bullet_index];
 			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
 			if(collisions_enabled)
@@ -272,6 +272,7 @@ void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, Stri
 		}
 	}
 }
+
 
 template <class Kit, class BulletType>
 Variant AbstractBulletsPool<Kit, BulletType>::get_bullet_property(BulletID id, String property) {

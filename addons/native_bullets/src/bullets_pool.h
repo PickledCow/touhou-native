@@ -98,6 +98,7 @@ public:
 
 	virtual void set_bullet_property(BulletID id, String property, Variant value) override;
 	virtual Variant get_bullet_property(BulletID id, String property) override;
+	
 };
 
 #include "bullets_pool.inl"
