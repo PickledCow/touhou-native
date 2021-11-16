@@ -1,4 +1,8 @@
-# Godot Native Bullets
+# Touhou-native
+
+Fork of godot-native-bullets-plugin to better suit touhou style bullet hells. 
+
+## Old docs
 
 Efficiently spawn and move high amounts of objects like bullets for bullet hells, particles and more.
 
