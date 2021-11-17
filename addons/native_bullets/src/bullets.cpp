@@ -402,8 +402,8 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, float x_pos, float y_pos, fl
 			to_return.set(1, bullet_id.cycle);
 			to_return.set(2, bullet_id.set);
 
-			
-			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f / kit->texture_size.x, 1.0f / kit->texture_size.y)).rotated(angle + 1.57079632679f);
+			// Vector2(1.0f / kit->texture_size.x, 1.0f / kit->texture_size.y)
+			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(Vector2(x_pos, y_pos));
 			set_bullet_property(to_return, "transform", xform);
 			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
@@ -433,7 +433,7 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, float x_pos, float y_pos, fl
 			to_return.set(2, bullet_id.set);
 
 			
-			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f / kit->texture_size.x, 1.0f / kit->texture_size.y)).rotated(angle + 1.57079632679f);
+			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(Vector2(x_pos, y_pos));
 			set_bullet_property(to_return, "transform", xform);
 			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));

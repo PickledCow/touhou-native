@@ -33,7 +33,8 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 	void _enable_bullet(Bullet* bullet) {
 		// Reset the bullet lifetime.
 		bullet->lifetime = 0.0f;
-		Rect2 texture_rect = Rect2(-kit->texture->get_size() / 2.0f, kit->texture->get_size());
+		//Rect2 texture_rect = Rect2(-kit->texture->get_size() / 2.0f, kit->texture->get_size());
+		Rect2 texture_rect = Rect2(-0.5f, -0.5f, 1.0f, 1.0f);
 		RID texture_rid = kit->texture->get_rid();
 		
 		// Configure the bullet to draw the kit texture each frame.

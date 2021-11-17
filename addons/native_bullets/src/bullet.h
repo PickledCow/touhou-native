@@ -23,6 +23,7 @@ public:
 	RID item_rid;
 	int32_t cycle = 0;
 	int32_t shape_index = -1;
+	float hitbox_scale = 0.5f;
 	
 	Transform2D transform;
 	Vector2 direction;
@@ -49,6 +50,7 @@ public:
 		register_property<Bullet, RID>("item_rid", &Bullet::set_item_rid, &Bullet::get_item_rid, RID());
 		register_property<Bullet, int32_t>("cycle", &Bullet::set_cycle, &Bullet::get_cycle, 0);
 		register_property<Bullet, int32_t>("shape_index", &Bullet::set_shape_index, &Bullet::get_shape_index, 0);
+		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
 		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());

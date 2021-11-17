@@ -18,7 +18,8 @@ template <class Kit, class BulletType>
 void AbstractBulletsPool<Kit, BulletType>::_enable_bullet(BulletType* bullet) {
 	bullet->lifetime = 0.0f;
 
-	Rect2 texture_rect = Rect2(-kit->texture->get_size() / 2.0f, kit->texture->get_size());
+	// Rect2 texture_rect = Rect2(-kit->texture->get_size() / 2.0f, kit->texture->get_size());
+	Rect2 texture_rect = Rect2(-0.5f, -0.5f, 1.0f, 1.0f);
 	RID texture_rid = kit->texture->get_rid();
 	
 	VisualServer::get_singleton()->canvas_item_add_texture_rect(bullet->item_rid,
@@ -131,7 +132,12 @@ int32_t AbstractBulletsPool<Kit, BulletType>::_process(float delta) {
 			}
 			
 			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
-			Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, bullet->transform);
+			Transform2D xform = bullet->transform;
+			Vector2 origin = xform.get_origin();
+			xform.set_origin(Vector2(0.0f, 0.0f));
+			xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
+			xform.set_origin(origin);
+			Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
 		}
 	} else {
 		for(int32_t i = pool_size - 1; i >= available_bullets; i--) {
@@ -167,8 +173,14 @@ void AbstractBulletsPool<Kit, BulletType>::spawn_bullet(Dictionary properties) {
 		}
 
 		VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
-		if(collisions_enabled)
-			Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, bullet->transform);
+		if(collisions_enabled) {
+			Transform2D xform = bullet->transform;
+			Vector2 origin = xform.get_origin();
+			xform.set_origin(Vector2(0.0f, 0.0f));
+			xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
+			xform.set_origin(origin);
+			Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
+		}
 
 		_enable_bullet(bullet);
 	}
@@ -266,13 +278,30 @@ void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, Stri
 		if (property == "transform") {
 			BulletType* bullet = bullets[bullet_index];
 			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
-			if(collisions_enabled)
-				Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, bullet->transform);
+			if(collisions_enabled) {
+				Transform2D xform = bullet->transform;
+				Vector2 origin = xform.get_origin();
+				xform.set_origin(Vector2(0.0f, 0.0f));
+				xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
+				xform.set_origin(origin);
+				Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
+			}
 		}
 		else if (property == "texture_region") {
 			BulletType* bullet = bullets[bullet_index];
 			Color color = bullet->texture_region;
 			VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
+		}
+		else if (property == "hitbox_scale") {
+			BulletType* bullet = bullets[bullet_index];
+			if(collisions_enabled) {
+				Transform2D xform = bullet->transform;
+				Vector2 origin = xform.get_origin();
+				xform.set_origin(Vector2(0.0f, 0.0f));
+				xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
+				xform.set_origin(origin);
+				Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
+			}
 		}
 	}
 }

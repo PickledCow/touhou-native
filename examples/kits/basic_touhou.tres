@@ -6,6 +6,7 @@
 [ext_resource path="res://examples/misc/blue_hit.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
+radius = 0.5
 
 [resource]
 script = ExtResource( 1 )
