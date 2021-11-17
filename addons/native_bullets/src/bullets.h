@@ -91,8 +91,8 @@ public:
 
 	// New stuff
 	void set_bullet_property_int(Variant id, int property, Variant value);
-	Variant create_shot_a1(Ref<BulletKit> kit, float x_pos, float y_pos, float speed, float angle, Color texture_region, float size);
-	Variant create_shot_a2(Ref<BulletKit> kit, float x_pos, float y_pos, float speed, float angle, float accel, float max_speed, Color texture_region, float size);
+	Variant create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, Color texture_region, float size);
+	Variant create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, Color texture_region, float size);
 };
 
 #endif

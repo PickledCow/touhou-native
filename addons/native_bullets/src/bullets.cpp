@@ -387,7 +387,7 @@ Variant Bullets::get_bullet_property(Variant id, String property) {
 }
 
 
-Variant Bullets::create_shot_a1(Ref<BulletKit> kit, float x_pos, float y_pos, float speed, float angle, Color texture_region, float size) {
+Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, Color texture_region, float size) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -404,7 +404,7 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, float x_pos, float y_pos, fl
 
 			// Vector2(1.0f / kit->texture_size.x, 1.0f / kit->texture_size.y)
 			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
-			xform.set_origin(Vector2(x_pos, y_pos));
+			xform.set_origin(pos);
 			set_bullet_property(to_return, "transform", xform);
 			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
 			set_bullet_property(to_return, "speed", speed);
@@ -417,7 +417,7 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, float x_pos, float y_pos, fl
 }
 
 
-Variant Bullets::create_shot_a2(Ref<BulletKit> kit, float x_pos, float y_pos, float speed, float angle, float accel, float max_speed, Color texture_region, float size) {
+Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, Color texture_region, float size) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -434,7 +434,7 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, float x_pos, float y_pos, fl
 
 			
 			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
-			xform.set_origin(Vector2(x_pos, y_pos));
+			xform.set_origin(pos);
 			set_bullet_property(to_return, "transform", xform);
 			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
 			set_bullet_property(to_return, "speed", speed);
