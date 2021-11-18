@@ -38,6 +38,9 @@ class BulletKit : public Resource {
 public:
 	// The material used to render each bullet.
 	Ref<Material> material;
+	float texture_width;
+	// Time it takes for bullets to fully fade in
+	float fade_time;
 	// Controls whether collisions with other objects are enabled. Turning it off increases performance.
 	bool collisions_enabled = true;
 	// Collisions related properties.
@@ -65,6 +68,8 @@ public:
 		register_property<BulletKit, Ref<Material>>("material", &BulletKit::material,
 			Ref<Material>(), GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT,
 			GODOT_PROPERTY_HINT_RESOURCE_TYPE, "Material");
+		register_property<BulletKit, float>("texture_width", &BulletKit::texture_width, 0.0f);
+		register_property<BulletKit, float>("fade_time", &BulletKit::fade_time, 0.13f);
 		register_property<BulletKit, bool>("collisions_enabled", &BulletKit::collisions_enabled, true,
 			GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_DEFAULT | GODOT_PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED),
 			GODOT_PROPERTY_HINT_NONE);

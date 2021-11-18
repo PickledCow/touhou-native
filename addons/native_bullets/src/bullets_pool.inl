@@ -103,8 +103,8 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 			shapes_to_indices[i] = i;
 		}
 
-		Color color = Color(1.0f, 1.0f, 1.0f, 1.0f);
-		color.a = fmod((starting_shape_index + i) * 0.7213f, 1.0f);
+		Color color = Color(1.0f, 1.0f, 1.0f, 0.0f);
+		color.b = fmod((starting_shape_index + i) * 0.7213f, 1.0f);
 		VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 
 		_init_bullet(bullet);
@@ -194,8 +194,8 @@ BulletID AbstractBulletsPool<Kit, BulletType>::obtain_bullet() {
 
 		BulletType* bullet = bullets[available_bullets];
 
-		if(collisions_enabled)
-			Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, false);
+		// if(collisions_enabled)
+		// 	Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, false);
 
 		VisualServer::get_singleton()->canvas_item_set_draw_index(bullet->item_rid, draw_index++);
 		if (draw_index > 65535) draw_index = 0;
@@ -287,9 +287,9 @@ void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, Stri
 				Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
 			}
 		}
-		else if (property == "texture_region") {
+		else if (property == "bullet_data") {
 			BulletType* bullet = bullets[bullet_index];
-			Color color = bullet->texture_region;
+			Color color = bullet->bullet_data;
 			VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 		}
 		else if (property == "hitbox_scale") {

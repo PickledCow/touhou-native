@@ -1,4 +1,8 @@
-shader_type canvas_item;
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_add;
 // advert your eyes pls
 
 uniform float animation_speed = 8.0;
@@ -24,7 +28,7 @@ void fragment() {
 	vec2 uv = texPixel * position + texPixel * size * UV;
 	
 	float frame_count = floor(MODULATE.a);
-	float frame = mod(floor(animation_speed * TIME), frame_count);
+	float frame = mod(floor(animation_speed * TIME + modf(MODULATE.a, ONE)), frame_count);
 	uv.x += size.x * frame;
 	
 	vec4 tex = texture(TEXTURE, uv);
@@ -34,3 +38,4 @@ void fragment() {
 	
 	COLOR = tex;
 }
+"

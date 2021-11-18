@@ -6,6 +6,7 @@
 #include <AtlasTexture.hpp>
 #include <Material.hpp>
 #include <Color.hpp>
+// #include <PoolRealArray.hpp>
 #include <Rect2.hpp>
 #include <Array.hpp>
 #include <RegEx.hpp>
@@ -50,6 +51,9 @@ private:
 	Array shared_areas;
 	PoolIntArray invalid_id;
 
+	// Float that makes it so bullets fired on different frames aren't syncronised
+	float animation_random = 0.0;
+
 	void _clear_rids();
 	int32_t _get_pool_index(int32_t set_index, int32_t bullet_index);
 
@@ -91,8 +95,8 @@ public:
 
 	// New stuff
 	void set_bullet_property_int(Variant id, int property, Variant value);
-	Variant create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, Color texture_region, float size);
-	Variant create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, Color texture_region, float size);
+	Variant create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, PoolRealArray bullet_data);
+	Variant create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data);
 };
 
 #endif

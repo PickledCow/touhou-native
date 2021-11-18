@@ -24,6 +24,7 @@ public:
 	int32_t cycle = 0;
 	int32_t shape_index = -1;
 	float hitbox_scale = 0.5f;
+	float texture_offset = 0.0f;
 	
 	Transform2D transform;
 	Vector2 direction;
@@ -31,9 +32,12 @@ public:
 	float max_speed;
 	float accel;
 
+	float fade_timer;
+	float fade_time;
+
 	float lifetime;
 	Variant data;
-	Color texture_region;
+	Color bullet_data;
 
 	void _init() {}
 
@@ -51,16 +55,20 @@ public:
 		register_property<Bullet, int32_t>("cycle", &Bullet::set_cycle, &Bullet::get_cycle, 0);
 		register_property<Bullet, int32_t>("shape_index", &Bullet::set_shape_index, &Bullet::get_shape_index, 0);
 		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
+		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
 		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());
 		register_property<Bullet, float>("speed", &Bullet::speed, 0.0f);
 		register_property<Bullet, float>("max_speed", &Bullet::max_speed, 0.0f);
 		register_property<Bullet, float>("accel", &Bullet::accel, 0.0f);
+		
+		register_property<Bullet, float>("fade_timer", &Bullet::fade_timer, 0.0f);
+		register_property<Bullet, float>("fade_time", &Bullet::fade_time, 0.0f);
 
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
 		register_property<Bullet, Variant>("data", &Bullet::data, Variant());
-		register_property<Bullet, Color>("texture_region", &Bullet::texture_region, Color());
+		register_property<Bullet, Color>("bullet_data", &Bullet::bullet_data, Color(1.0f, 1.0f, 0.99999f, 1.0f));
 	}
 };
 

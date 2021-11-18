@@ -78,6 +78,9 @@ void Bullets::_physics_process(float delta) {
 			active_bullets += bullets_variation;
 		}
 	}
+
+	animation_random += 0.61803398875f;
+	if (animation_random >= 1.0f) animation_random -= 1.0f;
 }
 
 void Bullets::_clear_rids() {
@@ -387,7 +390,7 @@ Variant Bullets::get_bullet_property(Variant id, String property) {
 }
 
 
-Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, Color texture_region, float size) {
+Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, PoolRealArray bullet_data) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -403,12 +406,19 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			to_return.set(2, bullet_id.set);
 
 			// Vector2(1.0f / kit->texture_size.x, 1.0f / kit->texture_size.y)
-			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
+			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(bullet_data[4] * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(pos);
 			set_bullet_property(to_return, "transform", xform);
 			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
 			set_bullet_property(to_return, "speed", speed);
-			set_bullet_property(to_return, "texture_region", texture_region);
+			Color compressed_data = Color();
+			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
+			compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
+			compressed_data.b = bullet_data[6] + 0.99999f;
+			compressed_data.a = bullet_data[7] + animation_random;
+			set_bullet_property(to_return, "texture_offset", bullet_data[6]);
+			set_bullet_property(to_return, "bullet_data", compressed_data);
+			set_bullet_property(to_return, "hitbox_scale", bullet_data[5]);
 
 			return to_return;
 		}
@@ -417,7 +427,7 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 }
 
 
-Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, Color texture_region, float size) {
+Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -433,14 +443,21 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			to_return.set(2, bullet_id.set);
 
 			
-			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(size * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
+			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(bullet_data[4] * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(pos);
 			set_bullet_property(to_return, "transform", xform);
 			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
 			set_bullet_property(to_return, "speed", speed);
 			set_bullet_property(to_return, "accel", accel);
 			set_bullet_property(to_return, "max_speed", max_speed);
-			set_bullet_property(to_return, "texture_region", texture_region);
+			Color compressed_data = Color();
+			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width; // y.x
+			compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
+			compressed_data.b = bullet_data[6] + 0.99999f;
+			compressed_data.a = bullet_data[7] + animation_random;
+			set_bullet_property(to_return, "texture_offset", bullet_data[6]);
+			set_bullet_property(to_return, "bullet_data", compressed_data);
+			set_bullet_property(to_return, "hitbox_scale", bullet_data[5]);
 
 			return to_return;
 		}
