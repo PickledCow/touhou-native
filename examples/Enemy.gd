@@ -1,6 +1,7 @@
 extends Sprite
 
 export(Resource) var bullet_kit
+export(Resource) var bullet_kit_add
 
 var t = 0
 var c = 0

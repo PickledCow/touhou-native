@@ -12,27 +12,25 @@ float fade(float x) {
 }
 
 void vertex() {
-	float ONE = 1.0;
 	VERTEX.y += floor(MODULATE.b) / floor(MODULATE.g);
-	VERTEX *= fade(1.0 - modf(MODULATE.b, ONE));
+	VERTEX *= fade(1.0 - fract(MODULATE.b));
 }
 
 void fragment() {
-	float ONE = 1.0;
 	vec2 texSize = vec2(textureSize(TEXTURE, 0));
 	vec2 texPixel = vec2(1.0, 1.0 / texSize.y);
 	
-	vec2 position = vec2(modf(MODULATE.r, ONE), floor(MODULATE.r));
-	vec2 size = vec2(modf(MODULATE.g, ONE),floor(MODULATE.g));
+	vec2 position = vec2(fract(MODULATE.r), floor(MODULATE.r));
+	vec2 size = vec2(fract(MODULATE.g),floor(MODULATE.g));
 	vec2 uv = texPixel * position + texPixel * size * UV;
 	
 	float frame_count = floor(MODULATE.a);
-	float frame = mod(floor(animation_speed * TIME + modf(MODULATE.a, ONE)), frame_count);
+	float frame = mod(floor(animation_speed * TIME + fract(MODULATE.a)), frame_count);
 	uv.x += size.x * frame;
 	
 	vec4 tex = texture(TEXTURE, uv);
 	
-	float alpha = 1.0 - modf(MODULATE.b, ONE);
+	float alpha = 1.0 - fract(MODULATE.b);
 	tex.a *= alpha;
 	
 	COLOR = tex;
