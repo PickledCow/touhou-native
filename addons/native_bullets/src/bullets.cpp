@@ -410,7 +410,10 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			xform.set_origin(pos);
 			set_bullet_property(to_return, "transform", xform);
 			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
+			set_bullet_property(to_return, "angle", angle);
 			set_bullet_property(to_return, "speed", speed);
+			set_bullet_property(to_return, "accel", 0.0f);
+			set_bullet_property(to_return, "max_speed", 0.0f);
 			Color compressed_data = Color();
 			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
 			compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
@@ -419,7 +422,9 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			set_bullet_property(to_return, "texture_offset", bullet_data[6]);
 			set_bullet_property(to_return, "bullet_data", compressed_data);
 			set_bullet_property(to_return, "hitbox_scale", bullet_data[5]);
-
+			set_bullet_property(to_return, "wvel", 0.0f);
+			set_bullet_property(to_return, "spin", bullet_data[8]);
+			set_bullet_property(to_return, "sprite_angle_offset", 0.0f);
 			return to_return;
 		}
 	}
@@ -447,6 +452,7 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			xform.set_origin(pos);
 			set_bullet_property(to_return, "transform", xform);
 			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
+			set_bullet_property(to_return, "angle", angle);
 			set_bullet_property(to_return, "speed", speed);
 			set_bullet_property(to_return, "accel", accel);
 			set_bullet_property(to_return, "max_speed", max_speed);
@@ -458,6 +464,9 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			set_bullet_property(to_return, "texture_offset", bullet_data[6]);
 			set_bullet_property(to_return, "bullet_data", compressed_data);
 			set_bullet_property(to_return, "hitbox_scale", bullet_data[5]);
+			set_bullet_property(to_return, "wvel", 0.0f);
+			set_bullet_property(to_return, "spin", bullet_data[8]);
+			set_bullet_property(to_return, "sprite_angle_offset", 0.0f);
 
 			return to_return;
 		}

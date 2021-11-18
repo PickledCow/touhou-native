@@ -48,10 +48,21 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 	// void _disable_bullet(Bullet* bullet); Use default implementation.
 
 	bool _process_bullet(Bullet* bullet, float delta) {
-		bullet->transform.set_origin(bullet->transform.get_origin() + bullet->direction * bullet->speed * delta);
+		Vector2 origin = bullet->transform.get_origin();
+		if (bullet->wvel) {
+			bullet->direction = bullet->direction.rotated(bullet->wvel);
+			bullet->angle += bullet->wvel * delta;
+			bullet->transform = bullet->transform.rotated(bullet->wvel);
+		}
+		bullet->transform = bullet->transform.rotated(bullet->spin * delta);
+		bullet->transform.set_origin(origin + bullet->direction * bullet->speed * delta);
 		if (bullet->accel) {
 			bullet->speed += bullet->accel * delta;
 			if (((bullet->speed - bullet->max_speed) * bullet->accel) > 0.0f) bullet->speed = bullet->max_speed;
+		}
+
+		if (bullet->wvel) {
+			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
 		}
 
 		// Decrease fade timer

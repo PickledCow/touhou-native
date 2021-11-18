@@ -28,9 +28,12 @@ public:
 	
 	Transform2D transform;
 	Vector2 direction;
+	float angle;
 	float speed;
 	float max_speed;
 	float accel;
+	float wvel;
+	float spin;
 
 	float fade_timer;
 	float fade_time;
@@ -59,9 +62,12 @@ public:
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
 		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());
+		register_property<Bullet, float>("angle", &Bullet::angle, 0.0f);
 		register_property<Bullet, float>("speed", &Bullet::speed, 0.0f);
 		register_property<Bullet, float>("max_speed", &Bullet::max_speed, 0.0f);
 		register_property<Bullet, float>("accel", &Bullet::accel, 0.0f);
+		register_property<Bullet, float>("wvel", &Bullet::wvel, 0.0f);
+		register_property<Bullet, float>("spin", &Bullet::spin, 0.0f);
 		
 		register_property<Bullet, float>("fade_timer", &Bullet::fade_timer, 0.0f);
 		register_property<Bullet, float>("fade_time", &Bullet::fade_time, 0.0f);
