@@ -20,7 +20,7 @@ radius = 5.0
 script = ExtResource( 11 )
 
 [node name="Enemy" type="Sprite" parent="."]
-position = Vector2( 960, 400 )
+position = Vector2( 960, 300 )
 texture = ExtResource( 4 )
 script = ExtResource( 5 )
 bullet_kit = ExtResource( 2 )

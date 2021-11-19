@@ -390,7 +390,7 @@ Variant Bullets::get_bullet_property(Variant id, String property) {
 }
 
 
-Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, PoolRealArray bullet_data) {
+Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, PoolRealArray bullet_data, bool fade_in) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -405,26 +405,29 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			to_return.set(1, bullet_id.cycle);
 			to_return.set(2, bullet_id.set);
 
-			// Vector2(1.0f / kit->texture_size.x, 1.0f / kit->texture_size.y)
+			int32_t pool_index = _get_pool_index(bullet_id.set, bullet_id.index);
+
 			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(bullet_data[4] * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(pos);
-			set_bullet_property(to_return, "transform", xform);
-			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
-			set_bullet_property(to_return, "angle", angle);
-			set_bullet_property(to_return, "speed", speed);
-			set_bullet_property(to_return, "accel", 0.0f);
-			set_bullet_property(to_return, "max_speed", 0.0f);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "transform", xform);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "direction",  Vector2(1.0f, 0.0f).rotated(angle));
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "angle", angle);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "speed", speed);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "accel", 0.0f);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "max_speed", 0.0f);
 			Color compressed_data = Color();
 			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
 			compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
-			compressed_data.b = bullet_data[6] + 0.99999f;
-			compressed_data.a = bullet_data[7] + animation_random;
-			set_bullet_property(to_return, "texture_offset", bullet_data[6]);
-			set_bullet_property(to_return, "bullet_data", compressed_data);
-			set_bullet_property(to_return, "hitbox_scale", bullet_data[5]);
-			set_bullet_property(to_return, "wvel", 0.0f);
-			set_bullet_property(to_return, "spin", bullet_data[8]);
-			set_bullet_property(to_return, "sprite_angle_offset", 0.0f);
+			compressed_data.b = floor(bullet_data[6]) + 0.99999f;
+			compressed_data.a = floor(bullet_data[7]) + animation_random;
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "texture_offset", floor(bullet_data[6]));
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "wvel", 0.0f);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "sprite_angle_offset", 0.0f);
+			if (!fade_in) pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_timer", 0.0001f);
+
 			return to_return;
 		}
 	}
@@ -432,7 +435,7 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 }
 
 
-Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data) {
+Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data, bool fade_in) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -447,26 +450,28 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			to_return.set(1, bullet_id.cycle);
 			to_return.set(2, bullet_id.set);
 
-			
+			int32_t pool_index = _get_pool_index(bullet_id.set, bullet_id.index);
+
 			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(bullet_data[4] * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(pos);
-			set_bullet_property(to_return, "transform", xform);
-			set_bullet_property(to_return, "direction", Vector2(1.0f, 0.0f).rotated(angle));
-			set_bullet_property(to_return, "angle", angle);
-			set_bullet_property(to_return, "speed", speed);
-			set_bullet_property(to_return, "accel", accel);
-			set_bullet_property(to_return, "max_speed", max_speed);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "transform", xform);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "direction",  Vector2(1.0f, 0.0f).rotated(angle));
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "angle", angle);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "speed", speed);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "accel", accel);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "max_speed", max_speed);
 			Color compressed_data = Color();
-			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width; // y.x
+			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
 			compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
-			compressed_data.b = bullet_data[6] + 0.99999f;
-			compressed_data.a = bullet_data[7] + animation_random;
-			set_bullet_property(to_return, "texture_offset", bullet_data[6]);
-			set_bullet_property(to_return, "bullet_data", compressed_data);
-			set_bullet_property(to_return, "hitbox_scale", bullet_data[5]);
-			set_bullet_property(to_return, "wvel", 0.0f);
-			set_bullet_property(to_return, "spin", bullet_data[8]);
-			set_bullet_property(to_return, "sprite_angle_offset", 0.0f);
+			compressed_data.b = floor(bullet_data[6]) + 0.99999f;
+			compressed_data.a = floor(bullet_data[7]) + animation_random;
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "texture_offset", floor(bullet_data[6]));
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "wvel", 0.0f);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "sprite_angle_offset", 0.0f);
+			if (!fade_in) pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_timer", 0.0001f);
 
 			return to_return;
 		}

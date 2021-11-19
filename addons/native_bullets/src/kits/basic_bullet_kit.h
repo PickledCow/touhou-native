@@ -50,19 +50,15 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 	bool _process_bullet(Bullet* bullet, float delta) {
 		Vector2 origin = bullet->transform.get_origin();
 		if (bullet->wvel) {
-			bullet->direction = bullet->direction.rotated(bullet->wvel);
+			bullet->direction = bullet->direction.rotated(bullet->wvel * delta);
 			bullet->angle += bullet->wvel * delta;
-			bullet->transform = bullet->transform.rotated(bullet->wvel);
+			bullet->transform = bullet->transform.rotated(bullet->wvel * delta);
 		}
 		bullet->transform = bullet->transform.rotated(bullet->spin * delta);
 		bullet->transform.set_origin(origin + bullet->direction * bullet->speed * delta);
 		if (bullet->accel) {
 			bullet->speed += bullet->accel * delta;
 			if (((bullet->speed - bullet->max_speed) * bullet->accel) > 0.0f) bullet->speed = bullet->max_speed;
-		}
-
-		if (bullet->wvel) {
-			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
 		}
 
 		// Decrease fade timer
@@ -76,11 +72,12 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 					Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, false);
 				}
 				bullet->bullet_data.b = bullet->texture_offset;
+				VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, bullet->bullet_data);
+			} else {
+				Color color = bullet->bullet_data;
+				color.b = bullet->texture_offset + bullet->fade_timer / bullet->fade_time;
+				VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 			}
-			
-			Color color = bullet->bullet_data;
-			color.b = bullet->texture_offset + bullet->fade_timer / bullet->fade_time;
-			VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 		}
 
 		if(!active_rect.has_point(bullet->transform.get_origin())) {
