@@ -3,9 +3,17 @@
 
 #include <Godot.hpp>
 #include <Transform2D.hpp>
+#include <Array.hpp>
 
 using namespace godot;
 
+// struct BulletPattern {
+// 	int32_t trigger;
+// 	float time;
+// 	Dictionary properties;
+// 	BulletPattern(int32_t trigger, float time, Dictionary properties):
+// 		trigger(trigger), time(time), properties(properties) {}
+// };
 
 struct BulletID {
 	int32_t index;
@@ -37,6 +45,8 @@ public:
 
 	float fade_timer;
 	float fade_time;
+
+	Array patterns;
 
 	float lifetime;
 	Variant data;
@@ -71,6 +81,8 @@ public:
 		
 		register_property<Bullet, float>("fade_timer", &Bullet::fade_timer, 0.0f);
 		register_property<Bullet, float>("fade_time", &Bullet::fade_time, 0.0f);
+		
+		register_property<Bullet, Array>("patterns", &Bullet::patterns, Array());
 
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
 		register_property<Bullet, Variant>("data", &Bullet::data, Variant());

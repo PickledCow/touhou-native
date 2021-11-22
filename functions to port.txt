@@ -1,0 +1,85 @@
+functions to port
+-: not done, O: done, X: rejected
+R | Function                        | Notes
+-   DeleteShotAll  
+-   DeleteShotInCircle  
+O   CreateShotA1
+O   CreateShotA2 
+X   CreateShotOA1                       pointless
+-   CreateShotB1  
+-   CreateShotB2  
+X   CreateShotOB1                       pointless
+X   CreateLooseLaserA1                  identical to straight lasers basically
+-   CreateStraightLaserA1  
+-   CreateCurveLaserA1  
+X   SetShotIntersectionCircle           should be done by the user with engine features
+X   SetShotIntersectionLine             should be done by the user with engine features
+X   GetShotIdInCircleA1                 should be done by the user with engine features
+X   GetShotIdInCircleA2                 should be done by the user with engine features
+-   GetShotCount  
+X   SetShotAutoDeleteClip               not by function but implimented
+X   GetShotDataInfoA1                   accessible by accessing bullet data constructor
+X   StartShotScript  
+
+X   ObjShot_Create                      can be done with just create_shot_a1
+X   ObjShot_Regist                      can be done with just create_shot_a1
+-   ObjShot_SetAutoDelete  
+-   ObjShot_FadeDelete  
+-   ObjShot_SetDeleteFrame  
+-   ObjShot_SetDelay  
+-   ObjShot_SetSpellResist  
+-   ObjShot_SetGraphic  
+-   ObjShot_SetSourceBlendType  
+-   ObjShot_SetDamage  
+-   ObjShot_SetPenetration  
+-   ObjShot_SetEraseShot  
+-   ObjShot_SetSpellFactor  
+-   ObjShot_ToItem  
+X   ObjShot_AddShotA1                   can be done with just create_shot_a1
+X   ObjShot_AddShotA2                   can be done with just create_shot_a1
+-   ObjShot_SetIntersectionCircleA1  
+-   ObjShot_SetIntersectionCircleA2  
+-   ObjShot_SetIntersectionLine  
+-   ObjShot_SetIntersectionEnable  
+-   ObjShot_SetItemChange  
+-   ObjShot_GetDamage  
+-   ObjShot_GetPenetration  
+-   ObjShot_GetDelay  
+-   ObjShot_IsSpellResist  
+-   ObjShot_GetImageID  
+-   ObjLaser_SetLength  
+-   ObjLaser_SetRenderWidth  
+-   ObjLaser_SetIntersectionWidth  
+-   ObjLaser_SetGrazeInvalidFrame  
+-   ObjLaser_SetInvalidLength  
+-   ObjLaser_SetItemDistance  
+-   ObjLaser_GetLength  
+-   ObjLaser_GetRenderWidth  
+-   ObjLaser_GetIntersectionWidth  
+-   ObjStLaser_SetAngle  
+-   ObjStLaser_GetAngle  
+-   ObjStLaser_SetSource  
+-   ObjCrLaser_SetTipDecrement  
+
+-   ObjMove_SetX  
+-   ObjMove_SetY  
+-   ObjMove_SetPosition  
+-   ObjMove_SetSpeed  
+-   ObjMove_SetAngle  
+-   ObjMove_SetAcceleration  
+-   ObjMove_SetMaxSpeed  
+-   ObjMove_SetAngularVelocity  
+-   ObjMove_SetDestAtSpeed  
+-   ObjMove_SetDestAtFrame  
+-   ObjMove_SetDestAtWeight  
+-   ObjMove_AddPatternA1  
+-   ObjMove_AddPatternA2  
+-   ObjMove_AddPatternA3  
+-   ObjMove_AddPatternA4  
+-   ObjMove_AddPatternB1  
+-   ObjMove_AddPatternB2  
+-   ObjMove_AddPatternB3  
+-   ObjMove_GetX  
+-   ObjMove_GetY  
+-   ObjMove_GetSpeed  
+-   ObjMove_GetAngle  

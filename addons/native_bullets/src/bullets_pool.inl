@@ -132,9 +132,9 @@ int32_t AbstractBulletsPool<Kit, BulletType>::_process(float delta) {
 			}
 			
 			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
+			
 			Transform2D xform = bullet->transform;
 			Vector2 origin = xform.get_origin();
-			//xform.set_origin(Vector2(0.0f, 0.0f));
 			xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
 			xform.set_origin(origin);
 			Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);

@@ -66,7 +66,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			bullet->fade_timer -= delta;
 
 
-			if (bullet->fade_timer < 0.0f) {
+			if (bullet->fade_timer <= 0.0f) {
 				bullet->fade_timer = 0.0f;
 				if (collisions_enabled) {
 					Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, false);
@@ -84,10 +84,30 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			// Return true if the bullet should be deleted.
 			return true;
 		}
-		// Rotate the bullet based on its velocity "rotate" is enabled. Currently disabled
-		if(kit->rotate && false) {
-			bullet->transform.set_rotation(bullet->direction.angle());
+
+		// Iterate over existing transformations
+		int j = 0;
+		for (int i = 0; i < bullet->patterns.size(); i++) {
+			Array pattern = bullet->patterns[i];
+			if (pattern[1]) {
+				pattern[1] = (float)pattern[1] - delta;
+				if ((float)pattern[1] <= 0.0f) {
+					pattern[1] = 0.0f;
+
+					Dictionary properties = (Dictionary)pattern[2];
+					Array keys = properties.keys();
+					for(int32_t i = 0; i < keys.size(); i++) {
+						bullet->set(keys[i], properties[keys[i]]);
+					}
+				} else {
+					bullet->patterns[j] = pattern;
+					j++;
+				}
+			}
 		}
+		bullet->patterns.resize(j);
+
+
 		// Bullet is still alive, increase its lifetime.
 		bullet->lifetime += delta;
 		// Return false if the bullet should not be deleted yet.

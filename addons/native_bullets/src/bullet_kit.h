@@ -51,11 +51,8 @@ public:
 	bool use_viewport_as_active_rect = true;
 	// Controls where the bullets can live, if a bullet exits this rect, it will be removed.
 	Rect2 active_rect;
-	// If enabled, bullets will auto-rotate based on their direction of travel.
-	bool rotate = false;
-	// Allows the ability to have a unique-ish value in each instance of the bullet material.
-	// Can be used to offset the bullets animation by a unique amount to avoid having them animate in sync.
-	int32_t unique_modulate_component = 0;
+	// How "fast" bullets act
+	float time_scale = 1.0f;
 	// Additional data the user can set via the editor.
 	Variant data;
 
@@ -85,11 +82,7 @@ public:
 			GODOT_PROPERTY_HINT_NONE);
 		register_property<BulletKit, Rect2>("active_rect", &BulletKit::active_rect, Rect2(),
 			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_NONE);
-		register_property<BulletKit, bool>("rotate", &BulletKit::rotate, false,
-			GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_DEFAULT | GODOT_PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED),
-			GODOT_PROPERTY_HINT_NONE);
-		register_property<BulletKit, int32_t>("unique_modulate_component", &BulletKit::unique_modulate_component, 0,
-			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_ENUM, "None,Red,Green,Blue,Alpha");
+		register_property<BulletKit, float>("time_scale", &BulletKit::time_scale, 1.0f);
 		register_property<BulletKit, Variant>("data", &BulletKit::data, Dictionary(),
 			GODOT_METHOD_RPC_MODE_DISABLED, (godot_property_usage_flags)(GODOT_PROPERTY_USAGE_DEFAULT | GODOT_PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED),
 			GODOT_PROPERTY_HINT_NONE);

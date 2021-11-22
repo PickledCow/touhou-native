@@ -7,6 +7,7 @@
 #include <Font.hpp>
 #include <RegExMatch.hpp>
 #include <Transform2D.hpp>
+#include <Array.hpp>
 
 #include "bullets.h"
 
@@ -45,6 +46,7 @@ void Bullets::_register_methods() {
 	// New stuff
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
 	register_method("create_shot_a2", &Bullets::create_shot_a2);
+	register_method("add_pattern", &Bullets::add_pattern);
 
 }
 
@@ -73,12 +75,13 @@ void Bullets::_physics_process(float delta) {
 
 	for(int32_t i = 0; i < pool_sets.size(); i++) {
 		for(int32_t j = 0; j < pool_sets[i].pools.size(); j++) {
-			bullets_variation = pool_sets[i].pools[j].pool->_process(delta);
+			float time_scale = pool_sets[i].pools[j].bullet_kit->time_scale;
+			bullets_variation = pool_sets[i].pools[j].pool->_process(time_scale);
 			available_bullets -= bullets_variation;
 			active_bullets += bullets_variation;
 		}
 	}
-
+	// Increase by golden-ration - 1 to have "maximum" "randomness"
 	animation_random += 0.61803398875f;
 	if (animation_random >= 1.0f) animation_random -= 1.0f;
 }
@@ -427,6 +430,8 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "sprite_angle_offset", 0.0f);
 			if (!fade_in) pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_timer", 0.0001f);
+			Array patterns = (Array)pool_sets[bullet_id.set].pools[pool_index].pool->get_bullet_property(bullet_id, "patterns");
+			patterns.clear();
 
 			return to_return;
 		}
@@ -472,6 +477,8 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "sprite_angle_offset", 0.0f);
 			if (!fade_in) pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_timer", 0.0001f);
+			Array patterns = (Array)pool_sets[bullet_id.set].pools[pool_index].pool->get_bullet_property(bullet_id, "patterns");
+			patterns.clear();
 
 			return to_return;
 		}
@@ -479,4 +486,18 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 	return invalid_id;
 }
 
+// Temp// BulletPattern(trigger, time, properties)
+void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties) {
+	PoolIntArray bullet_id = id.operator PoolIntArray();
+
+	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+	if(pool_index >= 0) {
+		Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+		Array pattern = Array();
+		pattern.append(trigger);
+		pattern.append(time);
+		pattern.append(properties);
+		patterns.append(pattern);
+	}
+}
 

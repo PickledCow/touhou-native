@@ -94,9 +94,11 @@ public:
 	Variant get_bullet_property(Variant id, String property);
 
 	// New stuff
-	void set_bullet_property_int(Variant id, int property, Variant value);
 	Variant create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, PoolRealArray bullet_data, bool fade_in);
 	Variant create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data, bool fade_in);
+
+	void add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties);
+
 };
 
 #endif
