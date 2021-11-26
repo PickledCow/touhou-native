@@ -132,7 +132,7 @@ int32_t AbstractBulletsPool<Kit, BulletType>::_process(float delta) {
 			}
 			
 			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
-			
+
 			Transform2D xform = bullet->transform;
 			Vector2 origin = xform.get_origin();
 			xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
@@ -278,14 +278,20 @@ void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, Stri
 		if (property == "transform") {
 			BulletType* bullet = bullets[bullet_index];
 			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
+			Transform2D xform = bullet->transform;
+			Vector2 origin = xform.get_origin();
 			if(collisions_enabled) {
-				Transform2D xform = bullet->transform;
-				Vector2 origin = xform.get_origin();
-				//xform.set_origin(Vector2(0.0f, 0.0f));
 				xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
 				xform.set_origin(origin);
 				Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
 			}
+			bullets[bullet_index]->set("position", origin);
+		}
+		else if (property == "position") {
+			BulletType* bullet = bullets[bullet_index];
+			Transform2D xform = get_bullet_property(id, "transform");
+			xform.set_origin((Vector2)value);
+			set_bullet_property(id, "transform", xform);
 		}
 		else if (property == "bullet_data") {
 			BulletType* bullet = bullets[bullet_index];

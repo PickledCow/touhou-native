@@ -1,5 +1,8 @@
 extends Object
 
+
+const NC = -999999 # No Change constant for set position
+
 # These are suggestions on how to access and create shot data, if another way works for you then go ahead
 
 enum BULLET_TYPE {	STRAIGHT_LASER, ARROWHEAD, BALL_OUTLINE, BALL, RICE, KUNAI, ICE, AMULET, BULLET, BACTERIA, STAR, DROPLET, # 0 - 11

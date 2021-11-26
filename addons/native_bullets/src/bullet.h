@@ -35,6 +35,7 @@ public:
 	float texture_offset = 0.0f;
 	
 	Transform2D transform;
+	Vector2 position;
 	Vector2 direction;
 	float angle;
 	float speed;
@@ -71,6 +72,7 @@ public:
 		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
+		register_property<Bullet, Vector2>("position", &Bullet::position, Vector2());
 		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());
 		register_property<Bullet, float>("angle", &Bullet::angle, 0.0f);
 		register_property<Bullet, float>("speed", &Bullet::speed, 0.0f);

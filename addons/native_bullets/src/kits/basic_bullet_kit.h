@@ -55,7 +55,8 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			bullet->transform = bullet->transform.rotated(bullet->wvel * delta);
 		}
 		bullet->transform = bullet->transform.rotated(bullet->spin * delta);
-		bullet->transform.set_origin(origin + bullet->direction * bullet->speed * delta);
+		bullet->position += bullet->direction * bullet->speed * delta;
+		bullet->transform.set_origin(bullet->position);
 		if (bullet->accel) {
 			bullet->speed += bullet->accel * delta;
 			if (((bullet->speed - bullet->max_speed) * bullet->accel) > 0.0f) bullet->speed = bullet->max_speed;
@@ -86,12 +87,14 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 		}
 
 		// Iterate over existing transformations
+		bool pattern_applied = false;
 		int j = 0;
 		for (int i = 0; i < bullet->patterns.size(); i++) {
 			Array pattern = bullet->patterns[i];
 			if (pattern[1]) {
 				pattern[1] = (float)pattern[1] - delta;
 				if ((float)pattern[1] <= 0.0f) {
+					pattern_applied = true;
 					pattern[1] = 0.0f;
 
 					Dictionary properties = (Dictionary)pattern[2];
@@ -106,6 +109,14 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			}
 		}
 		bullet->patterns.resize(j);
+
+		// Update position and other data if a transformation has been made
+		if (pattern_applied) {
+			bullet->direction = Vector2(1.0f, 0.0f).rotated(bullet->angle);
+			//bullet->transform.set_rotation(bullet->angle);
+			bullet->transform = bullet->transform.rotated(bullet->angle - bullet->transform.get_rotation() + 1.57079632679);
+			bullet->transform.set_origin(bullet->position);
+		}
 
 
 		// Bullet is still alive, increase its lifetime.
