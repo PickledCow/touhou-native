@@ -20,6 +20,7 @@ collision_layer = 1
 collision_mask = 1
 collision_shape = SubResource( 1 )
 use_viewport_as_active_rect = false
+origin = Vector2( 0, 0 )
 active_rect = Rect2( 364, -56, 1192, 1192 )
 time_scale = 1.0
 data = {

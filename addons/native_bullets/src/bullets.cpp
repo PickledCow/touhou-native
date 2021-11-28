@@ -162,22 +162,42 @@ void Bullets::mount(Node* bullets_environment) {
 
 		pool_sets[i].pools.resize(kits.size());
 
-		RID shared_area = RID();
-		if(layer_mask_keys[i].operator int64_t() != 0) {
-			// This is a collisions-enabled set, create the shared area.
-			shared_area = Physics2DServer::get_singleton()->area_create();
-			Physics2DServer::get_singleton()->area_set_collision_layer(shared_area, first_kit->collision_layer);
-			Physics2DServer::get_singleton()->area_set_collision_mask(shared_area, first_kit->collision_mask);
-			Physics2DServer::get_singleton()->area_set_monitorable(shared_area, true);
-			Physics2DServer::get_singleton()->area_set_space(shared_area, get_world_2d()->get_space());
+		// // Transform2D xform = Transform2D(0.0f, kit->origin);
 
-			shared_areas.append(shared_area);
-			areas_to_pool_set_indices[shared_area] = i;
-		}
+		// RID shared_area = RID();
+		// if(layer_mask_keys[i].operator int64_t() != 0) {
+		// 	// This is a collisions-enabled set, create the shared area.
+		// 	shared_area = Physics2DServer::get_singleton()->area_create();
+		// 	Physics2DServer::get_singleton()->area_set_collision_layer(shared_area, first_kit->collision_layer);
+		// 	Physics2DServer::get_singleton()->area_set_collision_mask(shared_area, first_kit->collision_mask);
+		// 	Physics2DServer::get_singleton()->area_set_monitorable(shared_area, true);
+		// 	Physics2DServer::get_singleton()->area_set_space(shared_area, get_world_2d()->get_space());
+		// 	// Physics2DServer::get_singleton()->area_set_transform(shared_area, xform);
+
+		// 	shared_areas.append(shared_area);
+		// 	areas_to_pool_set_indices[shared_area] = i;
+		// }
 		int32_t pool_set_available_bullets = 0;
 
 		for(int32_t j = 0; j < kits.size(); j++) {
 			Ref<BulletKit> kit = kits[j];
+			
+			Transform2D xform = Transform2D(0.0f, (Vector2)kit->origin);
+
+			RID shared_area = RID();
+			if(layer_mask_keys[i].operator int64_t() != 0) {
+				// This is a collisions-enabled set, create the shared area.
+				shared_area = Physics2DServer::get_singleton()->area_create();
+				Physics2DServer::get_singleton()->area_set_collision_layer(shared_area, first_kit->collision_layer);
+				Physics2DServer::get_singleton()->area_set_collision_mask(shared_area, first_kit->collision_mask);
+				Physics2DServer::get_singleton()->area_set_monitorable(shared_area, true);
+				Physics2DServer::get_singleton()->area_set_space(shared_area, get_world_2d()->get_space());
+				Physics2DServer::get_singleton()->area_set_transform(shared_area, xform);
+
+				shared_areas.append(shared_area);
+				areas_to_pool_set_indices[shared_area] = i;
+			}
+
 
 			PoolIntArray set_pool_indices = PoolIntArray();
 			set_pool_indices.resize(2);

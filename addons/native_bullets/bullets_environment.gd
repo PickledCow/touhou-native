@@ -2,7 +2,6 @@ tool
 extends Node
 class_name BulletsEnvironment, "icons/icon_bullets_environment.svg"
 
-
 signal tree_entering(node)
 
 export(bool) var current = true setget _set_current
@@ -11,7 +10,6 @@ export(Array, int) var pools_sizes: Array
 export(Array, int) var z_indices: Array
 
 var properties_regex : RegEx
-
 
 func _init():
 	properties_regex = RegEx.new()

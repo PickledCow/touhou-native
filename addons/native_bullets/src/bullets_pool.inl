@@ -86,7 +86,9 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 	canvas_item = VisualServer::get_singleton()->canvas_item_create();
 	VisualServer::get_singleton()->canvas_item_set_parent(canvas_item, canvas_parent->get_canvas_item());
 	VisualServer::get_singleton()->canvas_item_set_z_index(canvas_item, z_index);
-
+	
+	Transform2D xform = Transform2D(0.0f, kit->origin);
+	VisualServer::get_singleton()->canvas_item_set_transform(canvas_item, xform);
 
 	for(int32_t i = 0; i < pool_size; i++) {
 		BulletType* bullet = BulletType::_new();
@@ -104,7 +106,6 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 		}
 
 		Color color = Color(1.0f, 1.0f, 1.0f, 0.0f);
-		color.b = fmod((starting_shape_index + i) * 0.7213f, 1.0f);
 		VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 
 		_init_bullet(bullet);
