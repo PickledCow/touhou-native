@@ -63,6 +63,8 @@ public:
 
 	virtual void set_bullet_property(BulletID id, String property, Variant value) = 0;
 	virtual Variant get_bullet_property(BulletID id, String property) = 0;
+
+	// virtual bool is_deleted(BulletID id) = 0;
 };
 
 template <class Kit, class BulletType>
@@ -98,6 +100,8 @@ public:
 
 	virtual void set_bullet_property(BulletID id, String property, Variant value) override;
 	virtual Variant get_bullet_property(BulletID id, String property) override;
+
+	// virtual bool is_deleted(BulletID id) override;
 };
 
 #include "bullets_pool.inl"

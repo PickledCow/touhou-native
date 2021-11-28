@@ -99,6 +99,8 @@ public:
 
 	void add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties);
 
+	bool is_deleted(Variant id);
+
 };
 
 #endif

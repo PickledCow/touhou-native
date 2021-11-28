@@ -323,3 +323,15 @@ Variant AbstractBulletsPool<Kit, BulletType>::get_bullet_property(BulletID id, S
 	}
 	return Variant();
 }
+
+
+// template <class Kit, class BulletType>
+// bool AbstractBulletsPool<Kit, BulletType>::is_deleted(BulletID id) {
+// 	if(id.index >= starting_shape_index && id.index < starting_shape_index + pool_size && id.set == set_index) {
+// 		int32_t bullet_index = shapes_to_indices[id.index - starting_shape_index];
+// 		return (bullets[bullet_index]->instance_id == id.id);
+// 	}
+// 	return false;
+// }
+
+

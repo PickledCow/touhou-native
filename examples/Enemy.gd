@@ -7,7 +7,9 @@ var t = 0
 var c = 0
 var lr = 1
 
-var density = 80
+var density = 8
+
+var first_bullet
 
 func _physics_process(delta):
 	if t % 2 == 0:
@@ -19,7 +21,7 @@ func _physics_process(delta):
 			var data = PoolRealArray()
 			data.resize(9)
 			data[0] = 64 * 18			# source x (integer) # (16+8*(c/4))
-			data[1] = 64 * 6			# source y (integer) # (24+2*(c%4))
+			data[1] = 64 * 8			# source y (integer) # (24+2*(c%4))
 			data[2] = 128				# source width (integer)
 			data[3] = 128				# source height (integer)
 			data[4] = 64.0				# bullet size [0, inf)
@@ -34,9 +36,11 @@ func _physics_process(delta):
 			#Bullets.add_pattern(bullet, 0, 60.0, {"angle": 0.0})
 			#var bullet = Bullets.create_shot_a2(bullet_kit_add, position, speed, angle, -speed * 0.1, 100.0, data, true)
 			#Bullets.set_bullet_property(bullet, "wvel", 0.5)
+			if !first_bullet:
+				first_bullet = bullet
 		c = (c + 1) % 8
 	t += 1
-	
+	print(Bullets.is_deleted(first_bullet))
 	
 	if Input.is_action_just_pressed("lessbullet"):
 		density = max(density-10, 10)

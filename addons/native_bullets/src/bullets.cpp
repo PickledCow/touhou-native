@@ -47,7 +47,10 @@ void Bullets::_register_methods() {
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
 	register_method("create_shot_a2", &Bullets::create_shot_a2);
 	register_method("add_pattern", &Bullets::add_pattern);
+	register_method("is_deleted", &Bullets::is_deleted);
 
+	// Aliases
+	register_method("delete", &Bullets::release_bullet);
 }
 
 Bullets::Bullets() { }
@@ -521,3 +524,6 @@ void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary 
 	}
 }
 
+bool Bullets::is_deleted(Variant id) {
+	return !is_bullet_valid(id);
+}
