@@ -76,7 +76,7 @@ public:
 		register_property<Bullet, float>("wvel", &Bullet::wvel, 0.0f);
 		register_property<Bullet, float>("rotation", &Bullet::rotation, 0.0f);
 		register_property<Bullet, float>("spin", &Bullet::spin, 0.0f);
-		register_property<Bullet, float>("lifespan", &Bullet::lifespan, 999999999.9f);
+		register_property<Bullet, float>("lifespan", &Bullet::lifespan, std::numeric_limits<float>::infinity());
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
 		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
 		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);

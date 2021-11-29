@@ -13,13 +13,12 @@ texture = ExtResource( 3 )
 bullet_class_name = "Bullet"
 material = ExtResource( 2 )
 texture_width = 2048.0
-fade_time = 0.1
+fade_time = 8.0
 collisions_enabled = true
 collision_layer = 2
 collision_mask = 0
 collision_shape = SubResource( 1 )
-origin = Vector2( 0, 0 )
-active_rect = Rect2( 364, -56, 1192, 1192 )
+active_rect = Rect2( -64, -64, 1128, 1128 )
 time_scale = 1.0
 data = {
 }

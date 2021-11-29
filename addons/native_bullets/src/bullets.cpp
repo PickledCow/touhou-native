@@ -126,6 +126,7 @@ void Bullets::mount(Node* bullets_environment) {
 	Array bullet_kits = bullets_environment->get("bullet_kits");
 	Array pools_sizes = bullets_environment->get("pools_sizes");
 	Array z_indices = bullets_environment->get("z_indices");
+	Vector2 origin = bullets_environment->get_parent()->get("position");
 
 	pool_sets.clear();
 	areas_to_pool_set_indices.clear();
@@ -165,41 +166,41 @@ void Bullets::mount(Node* bullets_environment) {
 
 		pool_sets[i].pools.resize(kits.size());
 
-		// // Transform2D xform = Transform2D(0.0f, kit->origin);
+		Transform2D xform = Transform2D(0.0f, origin);
 
-		// RID shared_area = RID();
-		// if(layer_mask_keys[i].operator int64_t() != 0) {
-		// 	// This is a collisions-enabled set, create the shared area.
-		// 	shared_area = Physics2DServer::get_singleton()->area_create();
-		// 	Physics2DServer::get_singleton()->area_set_collision_layer(shared_area, first_kit->collision_layer);
-		// 	Physics2DServer::get_singleton()->area_set_collision_mask(shared_area, first_kit->collision_mask);
-		// 	Physics2DServer::get_singleton()->area_set_monitorable(shared_area, true);
-		// 	Physics2DServer::get_singleton()->area_set_space(shared_area, get_world_2d()->get_space());
-		// 	// Physics2DServer::get_singleton()->area_set_transform(shared_area, xform);
+		RID shared_area = RID();
+		if(layer_mask_keys[i].operator int64_t() != 0) {
+			// This is a collisions-enabled set, create the shared area.
+			shared_area = Physics2DServer::get_singleton()->area_create();
+			Physics2DServer::get_singleton()->area_set_collision_layer(shared_area, first_kit->collision_layer);
+			Physics2DServer::get_singleton()->area_set_collision_mask(shared_area, first_kit->collision_mask);
+			Physics2DServer::get_singleton()->area_set_monitorable(shared_area, true);
+			Physics2DServer::get_singleton()->area_set_space(shared_area, get_world_2d()->get_space());
+			Physics2DServer::get_singleton()->area_set_transform(shared_area, xform);
 
-		// 	shared_areas.append(shared_area);
-		// 	areas_to_pool_set_indices[shared_area] = i;
-		// }
+			shared_areas.append(shared_area);
+			areas_to_pool_set_indices[shared_area] = i;
+		}
 		int32_t pool_set_available_bullets = 0;
 
 		for(int32_t j = 0; j < kits.size(); j++) {
 			Ref<BulletKit> kit = kits[j];
 			
-			Transform2D xform = Transform2D(0.0f, (Vector2)kit->origin);
+			// Transform2D xform = Transform2D(0.0f, (Vector2)kit->origin);
 
-			RID shared_area = RID();
-			if(layer_mask_keys[i].operator int64_t() != 0) {
-				// This is a collisions-enabled set, create the shared area.
-				shared_area = Physics2DServer::get_singleton()->area_create();
-				Physics2DServer::get_singleton()->area_set_collision_layer(shared_area, first_kit->collision_layer);
-				Physics2DServer::get_singleton()->area_set_collision_mask(shared_area, first_kit->collision_mask);
-				Physics2DServer::get_singleton()->area_set_monitorable(shared_area, true);
-				Physics2DServer::get_singleton()->area_set_space(shared_area, get_world_2d()->get_space());
-				Physics2DServer::get_singleton()->area_set_transform(shared_area, xform);
+			// RID shared_area = RID();
+			// if(layer_mask_keys[i].operator int64_t() != 0) {
+			// 	// This is a collisions-enabled set, create the shared area.
+			// 	shared_area = Physics2DServer::get_singleton()->area_create();
+			// 	Physics2DServer::get_singleton()->area_set_collision_layer(shared_area, first_kit->collision_layer);
+			// 	Physics2DServer::get_singleton()->area_set_collision_mask(shared_area, first_kit->collision_mask);
+			// 	Physics2DServer::get_singleton()->area_set_monitorable(shared_area, true);
+			// 	Physics2DServer::get_singleton()->area_set_space(shared_area, get_world_2d()->get_space());
+			// 	Physics2DServer::get_singleton()->area_set_transform(shared_area, xform);
 
-				shared_areas.append(shared_area);
-				areas_to_pool_set_indices[shared_area] = i;
-			}
+			// 	shared_areas.append(shared_area);
+			// 	areas_to_pool_set_indices[shared_area] = i;
+			// }
 
 
 			PoolIntArray set_pool_indices = PoolIntArray();
@@ -516,3 +517,7 @@ void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary 
 bool Bullets::is_deleted(Variant id) {
 	return !is_bullet_valid(id);
 }
+
+
+
+

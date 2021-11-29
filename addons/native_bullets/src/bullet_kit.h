@@ -47,7 +47,6 @@ public:
 	int32_t collision_layer = 0;
 	int32_t collision_mask = 0;
 	Ref<Shape2D> collision_shape;
-	Vector2 origin;
 	// Controls where the bullets can live, if a bullet exits this rect, it will be removed.
 	Rect2 active_rect;
 	// How "fast" bullets act
@@ -76,8 +75,6 @@ public:
 		register_property<BulletKit, Ref<Shape2D>>("collision_shape", &BulletKit::collision_shape,
 			Ref<Shape2D>(), GODOT_METHOD_RPC_MODE_DISABLED,GODOT_PROPERTY_USAGE_DEFAULT,
 			GODOT_PROPERTY_HINT_RESOURCE_TYPE, "Shape2D");
-		register_property<BulletKit, Vector2>("origin", &BulletKit::origin, Vector2(),
-			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_NONE);
 		register_property<BulletKit, Rect2>("active_rect", &BulletKit::active_rect, Rect2(),
 			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_NONE);
 		register_property<BulletKit, float>("time_scale", &BulletKit::time_scale, 1.0f);

@@ -35,9 +35,6 @@ func _ready():
 
 func _draw():
 	icon_collisions.visible = not (object.bullet_kits[index] == null or not object.bullet_kits[index].collisions_enabled)
-	icon_viewport.visible = not (object.bullet_kits[index] == null or not object.bullet_kits[index].use_viewport_as_active_rect)
-	icon_rotating.visible = not (object.bullet_kits[index] == null or not object.bullet_kits[index].rotate)
-	icon_data.visible = not (object.bullet_kits[index] == null or object.bullet_kits[index].data.empty())
 
 
 func _on_move_up_pressed():

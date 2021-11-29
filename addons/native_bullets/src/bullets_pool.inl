@@ -89,7 +89,8 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 	VisualServer::get_singleton()->canvas_item_set_parent(canvas_item, canvas_parent->get_canvas_item());
 	VisualServer::get_singleton()->canvas_item_set_z_index(canvas_item, z_index);
 	
-	Transform2D xform = Transform2D(0.0f, kit->origin);
+	Vector2 origin = Physics2DServer::get_singleton()->area_get_transform(shared_area).get_origin();
+	Transform2D xform = Transform2D(0.0f, origin);
 	VisualServer::get_singleton()->canvas_item_set_transform(canvas_item, xform);
 
 	for(int32_t i = 0; i < pool_size; i++) {

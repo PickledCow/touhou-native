@@ -22,6 +22,19 @@ script = ExtResource( 11 )
 [node name="root" type="Node2D" parent="."]
 position = Vector2( 460, 40 )
 
+[node name="BulletsEnvironment" type="Node" parent="root"]
+script = ExtResource( 3 )
+bullet_kits = [ ExtResource( 2 ), ExtResource( 12 ) ]
+pools_sizes = [ 10000, 10000 ]
+z_indices = [ 0, null ]
+bullet_types_amount = 2
+bullet_type_0/bullet_kit = ExtResource( 2 )
+bullet_type_0/pool_size = 10000
+bullet_type_0/z_index = 0
+bullet_type_1/bullet_kit = ExtResource( 12 )
+bullet_type_1/pool_size = 10000
+bullet_type_1/z_index = null
+
 [node name="Enemy" type="Sprite" parent="root"]
 position = Vector2( 500, 260 )
 texture = ExtResource( 4 )
@@ -55,19 +68,6 @@ shape = SubResource( 1 )
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="BulletsEnvironment" type="Node" parent="."]
-script = ExtResource( 3 )
-bullet_kits = [ ExtResource( 2 ), ExtResource( 12 ) ]
-pools_sizes = [ 10000, 10000 ]
-z_indices = [ 1, null ]
-bullet_types_amount = 2
-bullet_type_0/bullet_kit = ExtResource( 2 )
-bullet_type_0/pool_size = 10000
-bullet_type_0/z_index = 1
-bullet_type_1/bullet_kit = ExtResource( 12 )
-bullet_type_1/pool_size = 10000
-bullet_type_1/z_index = null
 
 [node name="UI" type="CanvasLayer" parent="."]
 
