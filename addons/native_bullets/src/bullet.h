@@ -1,6 +1,8 @@
 #ifndef BULLET_H
 #define BULLET_H
 
+#include <limits>
+
 #include <Godot.hpp>
 #include <Transform2D.hpp>
 #include <Array.hpp>
@@ -51,6 +53,7 @@ public:
 	Array patterns;
 
 	float lifetime;
+	float lifespan;
 	Color bullet_data;
 
 	void _init() {}
@@ -73,6 +76,7 @@ public:
 		register_property<Bullet, float>("wvel", &Bullet::wvel, 0.0f);
 		register_property<Bullet, float>("rotation", &Bullet::rotation, 0.0f);
 		register_property<Bullet, float>("spin", &Bullet::spin, 0.0f);
+		register_property<Bullet, float>("lifespan", &Bullet::lifespan, 999999999.9f);
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
 		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
 		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
@@ -89,6 +93,7 @@ public:
 		register_property<Bullet, Color>("bullet_data", &Bullet::bullet_data, Color(1.0f, 1.0f, 0.99999f, 1.0f));
 		register_property<Bullet, Array>("patterns", &Bullet::patterns, Array());
 	}
+
 };
 
 #endif

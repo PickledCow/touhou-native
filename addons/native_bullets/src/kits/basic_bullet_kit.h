@@ -31,8 +31,13 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 	// void _init_bullet(Bullet* bullet); Use default implementation.
 
 	void _enable_bullet(Bullet* bullet) {
-		// Reset the bullet lifetime.
+		// Reset some bullet variables that are not set by the create_bullet functions
 		bullet->lifetime = 0.0f;
+		bullet->lifespan = std::numeric_limits<float>::infinity();
+		bullet->wvel = 0.0f;
+		bullet->rotation = 0.0f;
+		bullet->fade_timer = 0.0001f;
+		bullet->patterns.clear();
 		Rect2 texture_rect = Rect2(-0.5f, -0.5f, 1.0f, 1.0f);
 		RID texture_rid = kit->texture->get_rid();
 		
@@ -82,7 +87,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			}
 		}
 
-		if(!active_rect.has_point(bullet->transform.get_origin())) {
+		if(!active_rect.has_point(bullet->transform.get_origin()) || bullet->lifetime >= bullet->lifespan) {
 			// Return true if the bullet should be deleted.
 			return true;
 		}

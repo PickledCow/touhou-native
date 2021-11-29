@@ -1,3 +1,5 @@
+#include <limits>
+
 #include <Godot.hpp>
 #include <VisualServer.hpp>
 #include <Physics2DServer.hpp>
