@@ -50,7 +50,6 @@ public:
 	Array patterns;
 
 	float lifetime;
-	Variant data;
 	Color bullet_data;
 
 	void _init() {}
@@ -65,30 +64,28 @@ public:
 	void set_shape_index(int32_t value) { Godot::print_error("Can't edit the shape index of bullets!", "set_shape_index", "bullet.h", 37); }
 
 	static void _register_methods() {
-		register_property<Bullet, RID>("item_rid", &Bullet::set_item_rid, &Bullet::get_item_rid, RID());
-		register_property<Bullet, int32_t>("cycle", &Bullet::set_cycle, &Bullet::get_cycle, 0);
-		register_property<Bullet, int32_t>("shape_index", &Bullet::set_shape_index, &Bullet::get_shape_index, 0);
-		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
-		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
-
-		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
 		register_property<Bullet, Vector2>("position", &Bullet::position, Vector2());
-		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());
 		register_property<Bullet, float>("angle", &Bullet::angle, 0.0f);
 		register_property<Bullet, float>("speed", &Bullet::speed, 0.0f);
-		register_property<Bullet, float>("max_speed", &Bullet::max_speed, 0.0f);
 		register_property<Bullet, float>("accel", &Bullet::accel, 0.0f);
+		register_property<Bullet, float>("max_speed", &Bullet::max_speed, 0.0f);
 		register_property<Bullet, float>("wvel", &Bullet::wvel, 0.0f);
 		register_property<Bullet, float>("spin", &Bullet::spin, 0.0f);
-		
+		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
+		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
+		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
 		register_property<Bullet, float>("fade_timer", &Bullet::fade_timer, 0.0f);
 		register_property<Bullet, float>("fade_time", &Bullet::fade_time, 0.0f);
-		
-		register_property<Bullet, Array>("patterns", &Bullet::patterns, Array());
 
-		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
-		register_property<Bullet, Variant>("data", &Bullet::data, Variant());
+		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
+		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());
+		
+		register_property<Bullet, RID>("item_rid", &Bullet::set_item_rid, &Bullet::get_item_rid, RID());
+		register_property<Bullet, int32_t>("shape_index", &Bullet::set_shape_index, &Bullet::get_shape_index, 0);
+		register_property<Bullet, int32_t>("cycle", &Bullet::set_cycle, &Bullet::get_cycle, 0);
+
 		register_property<Bullet, Color>("bullet_data", &Bullet::bullet_data, Color(1.0f, 1.0f, 0.99999f, 1.0f));
+		register_property<Bullet, Array>("patterns", &Bullet::patterns, Array());
 	}
 };
 

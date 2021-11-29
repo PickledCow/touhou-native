@@ -34,21 +34,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/native_bullets/utils/bullets_spawner.gd"
 }, {
-"base": "Resource",
-"class": "DynamicBulletKit",
-"language": "NativeScript",
-"path": "res://addons/native_bullets/kits/dynamic_bullet_kit.gdns"
-}, {
-"base": "Resource",
-"class": "FollowingBulletKit",
-"language": "NativeScript",
-"path": "res://addons/native_bullets/kits/following_bullet_kit.gdns"
-}, {
-"base": "Resource",
-"class": "FollowingDynamicBulletKit",
-"language": "NativeScript",
-"path": "res://addons/native_bullets/kits/following_dynamic_bullet_kit.gdns"
-}, {
 "base": "Node",
 "class": "TimedEvents",
 "language": "GDScript",
@@ -65,9 +50,6 @@ _global_script_class_icons={
 "Bullets": "res://addons/native_bullets/icons/icon_bullets.svg",
 "BulletsEnvironment": "res://addons/native_bullets/icons/icon_bullets_environment.svg",
 "BulletsSpawner": "res://addons/native_bullets/icons/icon_bullet_properties.svg",
-"DynamicBulletKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
-"FollowingBulletKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
-"FollowingDynamicBulletKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
 "TimedEvents": "res://addons/native_bullets/icons/icon_timed_events.svg",
 "TimedRotator": "res://addons/native_bullets/icons/icon_timed_rotator.svg"
 }
@@ -81,6 +63,7 @@ boot_splash/fullsize=false
 [autoload]
 
 Bullets="*res://addons/native_bullets/bullets.gdns"
+Constants="*res://core/Constants.tscn"
 
 [debug]
 
@@ -129,7 +112,9 @@ morebullet={
 [layer_names]
 
 2d_physics/layer_1="Player"
-2d_physics/layer_5="Hitbox"
+2d_physics/layer_2="Bullet"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="Player Bullet"
 
 [physics]
 

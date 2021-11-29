@@ -23,18 +23,15 @@ func _physics_process(delta):
 	position += velocity * delta
 	global_position.x = clamp(global_position.x, 12, get_viewport_rect().size.x - 12)
 	global_position.y = clamp(global_position.y, 12, get_viewport_rect().size.y - 12)
+	
 
 
 func _on_area_shape_entered(area_id, _area, area_shape, _local_shape):
 	var bullet_id = Bullets.get_bullet_from_shape(area_id, area_shape)
-	
 	#var kit = Bullets.get_kit_from_bullet(bullet_id)
 	#var bullet_hit = kit.data.hit_scene.instance()
 	#add_child(bullet_hit)
 	#bullet_hit.global_position = Bullets.get_bullet_property(bullet_id, "transform").get_origin()
 	
-	call_deferred("_handle_bullet", bullet_id)
-
-
-func _handle_bullet(bullet_id):
 	Bullets.release_bullet(bullet_id)
+

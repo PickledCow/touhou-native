@@ -114,11 +114,7 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 
 template <class Kit, class BulletType>
 int32_t AbstractBulletsPool<Kit, BulletType>::_process(float delta) {
-	if(kit->use_viewport_as_active_rect) {
-		active_rect = canvas_parent->get_viewport()->get_visible_rect();
-	} else {
-		active_rect = kit->active_rect;
-	}
+	active_rect = kit->active_rect;
 	int32_t amount_variation = 0;
 
 	if(collisions_enabled) {

@@ -21,13 +21,13 @@ func _physics_process(delta):
 			var data = PoolRealArray()
 			data.resize(9)
 			data[0] = 64 * 18			# source x (integer) # (16+8*(c/4))
-			data[1] = 64 * 8			# source y (integer) # (24+2*(c%4))
+			data[1] = 64 * 24			# source y (integer) # (24+2*(c%4))
 			data[2] = 128				# source width (integer)
 			data[3] = 128				# source height (integer)
 			data[4] = 64.0				# bullet size [0, inf)
 			data[5] = 0.5				# hitbox ratio [0, 1]
-			data[6] = 0					# hitbox offset y (integer)
-			data[7] = 1					# anim frame, 1 for no animation (integer)
+			data[6] = 0					# Sprite offset y (integer)
+			data[7] = 3					# anim frame, 1 for no animation (integer)
 			data[8] = 0					# spin
 			var bullet = Bullets.create_shot_a1(bullet_kit, position, speed, angle, data, true)
 			#Bullets.add_pattern(bullet, 0, 45.0, {"wvel": 0.1 * lr})
@@ -40,7 +40,7 @@ func _physics_process(delta):
 				first_bullet = bullet
 		c = (c + 1) % 8
 	t += 1
-	print(Bullets.is_deleted(first_bullet))
+	#print(Bullets.is_deleted(first_bullet))
 	
 	if Input.is_action_just_pressed("lessbullet"):
 		density = max(density-10, 10)
