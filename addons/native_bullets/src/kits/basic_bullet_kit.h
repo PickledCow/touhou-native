@@ -55,6 +55,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			bullet->transform = bullet->transform.rotated(bullet->wvel * delta);
 		}
 		bullet->transform = bullet->transform.rotated(bullet->spin * delta);
+		bullet->rotation += bullet->spin * delta;
 		bullet->position += bullet->direction * bullet->speed * delta;
 		bullet->transform.set_origin(bullet->position);
 		if (bullet->accel) {
@@ -114,7 +115,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 		if (pattern_applied) {
 			bullet->direction = Vector2(1.0f, 0.0f).rotated(bullet->angle);
 			//bullet->transform.set_rotation(bullet->angle);
-			bullet->transform = bullet->transform.rotated(bullet->angle - bullet->transform.get_rotation() + 1.57079632679f);
+			bullet->transform = bullet->transform.rotated(bullet->angle - bullet->transform.get_rotation() + 1.57079632679f + bullet->rotation);
 			bullet->transform.set_origin(bullet->position);
 		}
 

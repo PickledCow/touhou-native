@@ -33,9 +33,9 @@ func _physics_process(delta):
 			#Bullets.add_pattern(bullet, 0, 45.0, {"wvel": 0.1 * lr})
 			#Bullets.add_pattern(bullet, 0, 60.0, {"wvel": 0.0})
 			#Bullets.add_pattern(bullet, 0, 90.0, {"accel": -0.3, "max_speed": 2.0})
-			#Bullets.add_pattern(bullet, 0, 60.0, {"angle": 0.0})
+			Bullets.add_pattern(bullet, 0, 60.0, {"angle": 0.0})
 			#var bullet = Bullets.create_shot_a2(bullet_kit_add, position, speed, angle, -speed * 0.1, 100.0, data, true)
-			#Bullets.set_bullet_property(bullet, "wvel", 0.5)
+			Bullets.set_bullet_property(bullet, "rotation", PI/2)
 			if !first_bullet:
 				first_bullet = bullet
 		c = (c + 1) % 8

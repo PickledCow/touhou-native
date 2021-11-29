@@ -42,6 +42,7 @@ public:
 	float max_speed;
 	float accel;
 	float wvel;
+	float rotation;
 	float spin;
 
 	float fade_timer;
@@ -70,6 +71,7 @@ public:
 		register_property<Bullet, float>("accel", &Bullet::accel, 0.0f);
 		register_property<Bullet, float>("max_speed", &Bullet::max_speed, 0.0f);
 		register_property<Bullet, float>("wvel", &Bullet::wvel, 0.0f);
+		register_property<Bullet, float>("rotation", &Bullet::rotation, 0.0f);
 		register_property<Bullet, float>("spin", &Bullet::spin, 0.0f);
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
 		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
