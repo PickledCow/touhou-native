@@ -1,8 +1,11 @@
 #ifndef BASIC_BULLET_KIT_H
 #define BASIC_BULLET_KIT_H
 
+#include <Godot.hpp>
+
 #include <Texture.hpp>
 #include <PackedScene.hpp>
+#include <Node2D.hpp>
 
 #include "../bullet_kit.h"
 
@@ -97,23 +100,36 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 		int j = 0;
 		for (int i = 0; i < bullet->patterns.size(); i++) {
 			Array pattern = bullet->patterns[i]; // trigger, type, time, properties
+			bool should_apply = false;
 			int trigger = pattern[0];
 			// Time triggered
 			if (trigger == 0) {
 				pattern[2] = (float)pattern[2] - delta;
 				if ((float)pattern[2] <= 0.0f) {
+					should_apply = true;
 					pattern_applied = true;
 					pattern[2] = 0.0f;
-					// what type of pattern is this?
-					int type = (int)pattern[1];
-					if (type == 0) { // Set
+				} else {
+					bullet->patterns[j] = pattern;
+					j++;
+				}
+			}
+
+
+			if (should_apply) {
+				// what type of pattern is this?
+				int type = (int)pattern[1];
+				switch (type) {
+					case 0: {
 						Dictionary properties = (Dictionary)pattern[3];
 						Array keys = properties.keys();
 						for(int32_t i = 0; i < keys.size(); i++) {
 							bullet->set(keys[i], properties[keys[i]]);
 						}
+						break;
 					}
-					else if (type == 1) { // Add
+						
+					case 1: {
 						Dictionary properties = (Dictionary)pattern[3];
 						Array keys = properties.keys();
 						for(int32_t i = 0; i < keys.size(); i++) {
@@ -128,11 +144,59 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 									break;
 							}
 						}
+						break;
 					}
-				} else {
-					bullet->patterns[j] = pattern;
-					j++;
+					
+					case 2: {
+						Vector2 point = (Vector2)pattern[3];
+						bullet->angle = (point).angle_to_point(bullet->position);
+						break;
+					}
+
+					case 3: {
+						Node2D *node = (Node2D*)pattern[3];
+						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id( node->get_instance_id() ))) {
+							bullet->angle = ((Vector2)node->get_position()).angle_to_point(bullet->position);
+						}
+						break;
+					}
+
+					default:
+						break;
 				}
+
+				// if (type == 0) { // Set
+				// 	Dictionary properties = (Dictionary)pattern[3];
+				// 	Array keys = properties.keys();
+				// 	for(int32_t i = 0; i < keys.size(); i++) {
+				// 		bullet->set(keys[i], properties[keys[i]]);
+				// 	}
+				// }
+				// else if (type == 1) { // Add
+				// 	Dictionary properties = (Dictionary)pattern[3];
+				// 	Array keys = properties.keys();
+				// 	for(int32_t i = 0; i < keys.size(); i++) {
+				// 		switch (properties[keys[i]].get_type()) {
+				// 			case (Variant::Type::REAL):
+				// 				bullet->set(keys[i], (float)bullet->get(keys[i]) + (float)properties[keys[i]]);
+				// 				break;
+				// 			case (Variant::Type::VECTOR2):
+				// 				bullet->set(keys[i], (Vector2)bullet->get(keys[i]) + (Vector2)properties[keys[i]]);
+				// 				break;
+				// 			default:
+				// 				break;
+				// 		}
+				// 	}
+				// } else if (type == 2) { // Aim at point
+				// 	Vector2 point = (Vector2)pattern[3];
+				// 	bullet->angle = (point).angle_to_point(bullet->position);
+				// } 
+				// else if (type == 3) { // Aim at object
+				// 	Node2D *node = (Node2D*)pattern[3];
+				// 	if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id( node->get_instance_id() ))) {
+				// 		bullet->angle = ((Vector2)node->get_position()).angle_to_point(bullet->position);
+				// 	}
+				// }
 			}
 		}
 		bullet->patterns.resize(j);

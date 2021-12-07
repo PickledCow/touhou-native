@@ -1,8 +1,8 @@
 functions to port
 -: not done, O: done, X: rejected
 R | Function                        | Notes
--   DeleteShotAll  
--   DeleteShotInCircle  
+-   DeleteShotAll 
+X   DeleteShotInCircle                  can be done by the user with any shape
 O   CreateShotA1
 O   CreateShotA2 
 X   CreateShotOA1                       pointless
@@ -16,7 +16,7 @@ X   SetShotIntersectionCircle           should be done by the user with engine f
 X   SetShotIntersectionLine             should be done by the user with engine features
 X   GetShotIdInCircleA1                 should be done by the user with engine features
 X   GetShotIdInCircleA2                 should be done by the user with engine features
--   GetShotCount  
+*   GetShotCount                        implimented partially for all bullets
 X   SetShotAutoDeleteClip               not by function but implimented
 X   GetShotDataInfoA1                   accessible by accessing bullet data constructor
 X   StartShotScript  
@@ -25,8 +25,8 @@ X   ObjShot_Create                      can be done with just create_shot_a1
 X   ObjShot_Regist                      can be done with just create_shot_a1
 -   ObjShot_SetAutoDelete  
 -   ObjShot_FadeDelete  
--   ObjShot_SetDeleteFrame  
--   ObjShot_SetDelay  
+X   ObjShot_SetDeleteFrame              implimented as lifetime and lifespan
+X   ObjShot_SetDelay                    Delay clouds are not supported currently
 -   ObjShot_SetSpellResist  
 -   ObjShot_SetGraphic  
 -   ObjShot_SetSourceBlendType  
@@ -56,30 +56,9 @@ X   ObjShot_AddShotA2                   can be done with just create_shot_a1
 -   ObjLaser_GetLength  
 -   ObjLaser_GetRenderWidth  
 -   ObjLaser_GetIntersectionWidth  
--   ObjStLaser_SetAngle  
--   ObjStLaser_GetAngle  
--   ObjStLaser_SetSource  
+X   ObjStLaser_SetAngle                 redundant
+X   ObjStLaser_GetAngle                 redundant
+X   ObjStLaser_SetSource                redundant
 -   ObjCrLaser_SetTipDecrement  
 
--   ObjMove_SetX  
--   ObjMove_SetY  
--   ObjMove_SetPosition  
--   ObjMove_SetSpeed  
--   ObjMove_SetAngle  
--   ObjMove_SetAcceleration  
--   ObjMove_SetMaxSpeed  
--   ObjMove_SetAngularVelocity  
--   ObjMove_SetDestAtSpeed  
--   ObjMove_SetDestAtFrame  
--   ObjMove_SetDestAtWeight  
--   ObjMove_AddPatternA1  
--   ObjMove_AddPatternA2  
--   ObjMove_AddPatternA3  
--   ObjMove_AddPatternA4  
--   ObjMove_AddPatternB1  
--   ObjMove_AddPatternB2  
--   ObjMove_AddPatternB3  
--   ObjMove_GetX  
--   ObjMove_GetY  
--   ObjMove_GetSpeed  
--   ObjMove_GetAngle  
+

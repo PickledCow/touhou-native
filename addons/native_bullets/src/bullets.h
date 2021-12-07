@@ -100,6 +100,9 @@ public:
 	void add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties);
 	void add_translate(Variant id, int32_t trigger, int32_t time, Dictionary properties);
 
+	void add_aim_at_point(Variant id, int32_t trigger, int32_t time, Vector2 point);
+	void add_aim_at_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
+
 	bool is_deleted(Variant id);
 
 };

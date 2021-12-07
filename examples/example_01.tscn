@@ -41,6 +41,7 @@ texture = ExtResource( 4 )
 script = ExtResource( 5 )
 bullet_kit = ExtResource( 2 )
 bullet_kit_add = ExtResource( 12 )
+player_path = NodePath("../Player")
 
 [node name="Player" type="Area2D" parent="root"]
 position = Vector2( 500, 760 )
