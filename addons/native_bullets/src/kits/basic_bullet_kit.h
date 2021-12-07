@@ -171,7 +171,8 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 
 					case 3: { // aim at object
 						Node2D *node = (Node2D*)pattern[3];
-						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id( (godot_int)node->get_instance_id() ))) {
+						godot_int instance_id = (int)pattern[4];
+						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id(instance_id))) {
 							bullet->angle = ((Vector2)node->get_position()).angle_to_point(bullet->position);
 						}
 						break;
@@ -179,7 +180,8 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 
 					case 4: { // go to object
 						Node2D *node = (Node2D*)pattern[3];
-						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id( (godot_int)node->get_instance_id() ))) {
+						godot_int instance_id = (int)pattern[4];
+						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id(instance_id))) {
 							bullet->position = node->get_position();
 						}
 						break;

@@ -566,6 +566,7 @@ void Bullets::add_aim_at_object(Variant id, int32_t trigger, int32_t time, Node2
 		pattern.append(3);
 		pattern.append(time);
 		pattern.append(object);
+		pattern.append(object->get_instance_id());
 
 		patterns.append(pattern);
 	}
@@ -582,6 +583,7 @@ void Bullets::add_go_to_object(Variant id, int32_t trigger, int32_t time, Node2D
 		pattern.append(4);
 		pattern.append(time);
 		pattern.append(object);
+		pattern.append(object->get_instance_id());
 
 		patterns.append(pattern);
 	}

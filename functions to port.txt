@@ -37,10 +37,10 @@ X   ObjShot_SetDelay                    Delay clouds are not supported currently
 -   ObjShot_ToItem  
 X   ObjShot_AddShotA1                   can be done with just create_shot_a1
 X   ObjShot_AddShotA2                   can be done with just create_shot_a1
--   ObjShot_SetIntersectionCircleA1  
--   ObjShot_SetIntersectionCircleA2  
--   ObjShot_SetIntersectionLine  
--   ObjShot_SetIntersectionEnable  
+X   ObjShot_SetIntersectionCircleA1  
+X   ObjShot_SetIntersectionCircleA2  
+X   ObjShot_SetIntersectionLine  
+X   ObjShot_SetIntersectionEnable  
 -   ObjShot_SetItemChange  
 -   ObjShot_GetDamage  
 -   ObjShot_GetPenetration  
