@@ -47,6 +47,7 @@ void Bullets::_register_methods() {
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
 	register_method("create_shot_a2", &Bullets::create_shot_a2);
 	register_method("add_pattern", &Bullets::add_pattern);
+	register_method("add_transform", &Bullets::add_pattern);
 	register_method("add_translate", &Bullets::add_translate);
 	register_method("is_deleted", &Bullets::is_deleted);
 
@@ -512,7 +513,7 @@ void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary 
 		pattern.append(0);
 		pattern.append(time);
 		pattern.append(properties);
-		
+
 		patterns.append(pattern);
 	}
 }
