@@ -47,6 +47,7 @@ void Bullets::_register_methods() {
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
 	register_method("create_shot_a2", &Bullets::create_shot_a2);
 	register_method("add_pattern", &Bullets::add_pattern);
+	register_method("add_translate", &Bullets::add_translate);
 	register_method("is_deleted", &Bullets::is_deleted);
 
 	// Aliases
@@ -499,7 +500,7 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 	return invalid_id;
 }
 
-// Temp// BulletPattern(trigger, time, properties)
+
 void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties) {
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
@@ -508,8 +509,26 @@ void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary 
 		Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
 		Array pattern = Array();
 		pattern.append(trigger);
+		pattern.append(0);
 		pattern.append(time);
 		pattern.append(properties);
+		
+		patterns.append(pattern);
+	}
+}
+
+void Bullets::add_translate(Variant id, int32_t trigger, int32_t time, Dictionary properties) {
+	PoolIntArray bullet_id = id.operator PoolIntArray();
+
+	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+	if(pool_index >= 0) {
+		Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+		Array pattern = Array();
+		pattern.append(trigger);
+		pattern.append(1);
+		pattern.append(time);
+		pattern.append(properties);
+
 		patterns.append(pattern);
 	}
 }

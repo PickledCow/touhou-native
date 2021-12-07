@@ -96,17 +96,38 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 		bool pattern_applied = false;
 		int j = 0;
 		for (int i = 0; i < bullet->patterns.size(); i++) {
-			Array pattern = bullet->patterns[i];
-			if (pattern[1]) {
-				pattern[1] = (float)pattern[1] - delta;
-				if ((float)pattern[1] <= 0.0f) {
+			Array pattern = bullet->patterns[i]; // trigger, type, time, properties
+			int trigger = pattern[0];
+			// Time triggered
+			if (trigger == 0) {
+				pattern[2] = (float)pattern[2] - delta;
+				if ((float)pattern[2] <= 0.0f) {
 					pattern_applied = true;
-					pattern[1] = 0.0f;
-
-					Dictionary properties = (Dictionary)pattern[2];
-					Array keys = properties.keys();
-					for(int32_t i = 0; i < keys.size(); i++) {
-						bullet->set(keys[i], properties[keys[i]]);
+					pattern[2] = 0.0f;
+					// what type of pattern is this?
+					int type = (int)pattern[1];
+					if (type == 0) { // Set
+						Dictionary properties = (Dictionary)pattern[3];
+						Array keys = properties.keys();
+						for(int32_t i = 0; i < keys.size(); i++) {
+							bullet->set(keys[i], properties[keys[i]]);
+						}
+					}
+					else if (type == 1) { // Add
+						Dictionary properties = (Dictionary)pattern[3];
+						Array keys = properties.keys();
+						for(int32_t i = 0; i < keys.size(); i++) {
+							switch (properties[keys[i]].get_type()) {
+								case (Variant::Type::REAL):
+									bullet->set(keys[i], (float)bullet->get(keys[i]) + (float)properties[keys[i]]);
+									break;
+								case (Variant::Type::VECTOR2):
+									bullet->set(keys[i], (Vector2)bullet->get(keys[i]) + (Vector2)properties[keys[i]]);
+									break;
+								default:
+									break;
+							}
+						}
 					}
 				} else {
 					bullet->patterns[j] = pattern;

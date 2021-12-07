@@ -98,6 +98,7 @@ public:
 	Variant create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data, bool fade_in);
 
 	void add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties);
+	void add_translate(Variant id, int32_t trigger, int32_t time, Dictionary properties);
 
 	bool is_deleted(Variant id);
 
