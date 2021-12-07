@@ -49,6 +49,8 @@ public:
 
 	float fade_timer;
 	float fade_time;
+	bool fade_delete;
+	bool fading;
 
 	Array patterns;
 
@@ -82,6 +84,7 @@ public:
 		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
 		register_property<Bullet, float>("fade_timer", &Bullet::fade_timer, 0.0f);
 		register_property<Bullet, float>("fade_time", &Bullet::fade_time, 0.0f);
+		register_property<Bullet, bool>("fade_delete", &Bullet::fade_delete, false);
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
 		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());
@@ -92,6 +95,9 @@ public:
 
 		register_property<Bullet, Color>("bullet_data", &Bullet::bullet_data, Color(1.0f, 1.0f, 0.99999f, 1.0f));
 		register_property<Bullet, Array>("patterns", &Bullet::patterns, Array());
+
+		
+		register_property<Bullet, bool>("fading", &Bullet::fading, false);
 	}
 
 };

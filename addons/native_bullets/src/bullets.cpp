@@ -51,6 +51,7 @@ void Bullets::_register_methods() {
 	register_method("add_translate", &Bullets::add_translate);
 	register_method("add_aim_at_point", &Bullets::add_aim_at_point);
 	register_method("add_aim_at_object", &Bullets::add_aim_at_object);
+	register_method("add_go_to_object", &Bullets::add_go_to_object);
 	register_method("is_deleted", &Bullets::is_deleted);
 
 	// Aliases
@@ -563,6 +564,22 @@ void Bullets::add_aim_at_object(Variant id, int32_t trigger, int32_t time, Node2
 		Array pattern = Array();
 		pattern.append(trigger);
 		pattern.append(3);
+		pattern.append(time);
+		pattern.append(object);
+
+		patterns.append(pattern);
+	}
+}
+
+void Bullets::add_go_to_object(Variant id, int32_t trigger, int32_t time, Node2D* object) {
+	PoolIntArray bullet_id = id.operator PoolIntArray();
+
+	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+	if(pool_index >= 0) {
+		Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+		Array pattern = Array();
+		pattern.append(trigger);
+		pattern.append(4);
 		pattern.append(time);
 		pattern.append(object);
 

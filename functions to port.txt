@@ -1,5 +1,5 @@
 functions to port
--: not done, O: done, X: rejected
+-: not done, O: done, X: rejected, o: partially
 R | Function                        | Notes
 -   DeleteShotAll 
 X   DeleteShotInCircle                  can be done by the user with any shape
@@ -16,7 +16,7 @@ X   SetShotIntersectionCircle           should be done by the user with engine f
 X   SetShotIntersectionLine             should be done by the user with engine features
 X   GetShotIdInCircleA1                 should be done by the user with engine features
 X   GetShotIdInCircleA2                 should be done by the user with engine features
-*   GetShotCount                        implimented partially for all bullets
+o   GetShotCount                        implimented partially for all bullets
 X   SetShotAutoDeleteClip               not by function but implimented
 X   GetShotDataInfoA1                   accessible by accessing bullet data constructor
 X   StartShotScript  
@@ -24,7 +24,7 @@ X   StartShotScript
 X   ObjShot_Create                      can be done with just create_shot_a1
 X   ObjShot_Regist                      can be done with just create_shot_a1
 -   ObjShot_SetAutoDelete  
--   ObjShot_FadeDelete  
+O   ObjShot_FadeDelete                  Implimented
 X   ObjShot_SetDeleteFrame              implimented as lifetime and lifespan
 X   ObjShot_SetDelay                    Delay clouds are not supported currently
 -   ObjShot_SetSpellResist  

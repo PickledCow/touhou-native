@@ -39,7 +39,8 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 		bullet->lifespan = std::numeric_limits<float>::infinity();
 		bullet->wvel = 0.0f;
 		bullet->rotation = 0.0f;
-		bullet->fade_timer = 0.0001f;
+		bullet->fade_delete = false;
+		bullet->fading = false;
 		bullet->patterns.clear();
 		Rect2 texture_rect = Rect2(-0.5f, -0.5f, 1.0f, 1.0f);
 		RID texture_rid = kit->texture->get_rid();
@@ -75,24 +76,39 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 		if (bullet->fade_timer) {
 			bullet->fade_timer -= delta;
 
-
-			if (bullet->fade_timer <= 0.0f) {
-				bullet->fade_timer = 0.0f;
-				if (collisions_enabled) {
-					Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, false);
+			if (!bullet->fading) {
+				if (bullet->fade_timer <= 0.0f) {
+					bullet->fade_timer = 0.0f;
+					if (collisions_enabled) {
+						Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, false);
+					}
+					bullet->bullet_data.b = bullet->texture_offset;
+					VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, bullet->bullet_data);
+				} else {
+					Color color = bullet->bullet_data;
+					color.b = bullet->texture_offset + bullet->fade_timer / bullet->fade_time;
+					VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 				}
-				bullet->bullet_data.b = bullet->texture_offset;
-				VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, bullet->bullet_data);
 			} else {
+				if (bullet->fade_timer <= 0.0f) {
+					bullet->fade_timer = 0.0f;
+				}
 				Color color = bullet->bullet_data;
-				color.b = bullet->texture_offset + bullet->fade_timer / bullet->fade_time;
+				color.b = -(bullet->texture_offset + 1.0f - bullet->fade_timer / bullet->fade_time);
 				VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 			}
 		}
 
 		if(!active_rect.has_point(bullet->transform.get_origin()) || bullet->lifetime >= bullet->lifespan) {
-			// Return true if the bullet should be deleted.
-			return true;
+			if (!bullet->fade_delete || (bullet->fade_timer <= 0.0f && bullet->fading)) {
+				// Return true if the bullet should be deleted.
+				return true;
+			} else if (!bullet->fading) {
+				// Start fading and disable collision
+				bullet->fading = true;
+				bullet->fade_timer = bullet->fade_time;
+				Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, true);
+			}
 		}
 
 		// Iterate over existing transformations
@@ -120,7 +136,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 				// what type of pattern is this?
 				int type = (int)pattern[1];
 				switch (type) {
-					case 0: {
+					case 0: { // Set
 						Dictionary properties = (Dictionary)pattern[3];
 						Array keys = properties.keys();
 						for(int32_t i = 0; i < keys.size(); i++) {
@@ -129,7 +145,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						break;
 					}
 						
-					case 1: {
+					case 1: { // Add
 						Dictionary properties = (Dictionary)pattern[3];
 						Array keys = properties.keys();
 						for(int32_t i = 0; i < keys.size(); i++) {
@@ -147,16 +163,24 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						break;
 					}
 					
-					case 2: {
+					case 2: { // aim at point
 						Vector2 point = (Vector2)pattern[3];
 						bullet->angle = (point).angle_to_point(bullet->position);
 						break;
 					}
 
-					case 3: {
+					case 3: { // aim at object
 						Node2D *node = (Node2D*)pattern[3];
-						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id( node->get_instance_id() ))) {
+						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id( (godot_int)node->get_instance_id() ))) {
 							bullet->angle = ((Vector2)node->get_position()).angle_to_point(bullet->position);
+						}
+						break;
+					}
+
+					case 4: { // go to object
+						Node2D *node = (Node2D*)pattern[3];
+						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id( (godot_int)node->get_instance_id() ))) {
+							bullet->position = node->get_position();
 						}
 						break;
 					}
@@ -165,38 +189,6 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						break;
 				}
 
-				// if (type == 0) { // Set
-				// 	Dictionary properties = (Dictionary)pattern[3];
-				// 	Array keys = properties.keys();
-				// 	for(int32_t i = 0; i < keys.size(); i++) {
-				// 		bullet->set(keys[i], properties[keys[i]]);
-				// 	}
-				// }
-				// else if (type == 1) { // Add
-				// 	Dictionary properties = (Dictionary)pattern[3];
-				// 	Array keys = properties.keys();
-				// 	for(int32_t i = 0; i < keys.size(); i++) {
-				// 		switch (properties[keys[i]].get_type()) {
-				// 			case (Variant::Type::REAL):
-				// 				bullet->set(keys[i], (float)bullet->get(keys[i]) + (float)properties[keys[i]]);
-				// 				break;
-				// 			case (Variant::Type::VECTOR2):
-				// 				bullet->set(keys[i], (Vector2)bullet->get(keys[i]) + (Vector2)properties[keys[i]]);
-				// 				break;
-				// 			default:
-				// 				break;
-				// 		}
-				// 	}
-				// } else if (type == 2) { // Aim at point
-				// 	Vector2 point = (Vector2)pattern[3];
-				// 	bullet->angle = (point).angle_to_point(bullet->position);
-				// } 
-				// else if (type == 3) { // Aim at object
-				// 	Node2D *node = (Node2D*)pattern[3];
-				// 	if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id( node->get_instance_id() ))) {
-				// 		bullet->angle = ((Vector2)node->get_position()).angle_to_point(bullet->position);
-				// 	}
-				// }
 			}
 		}
 		bullet->patterns.resize(j);

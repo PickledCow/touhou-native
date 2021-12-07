@@ -13,8 +13,8 @@ float fade(float x) {
 }
 
 void vertex() {
-	VERTEX.y += floor(MODULATE.b) / floor(MODULATE.g);
-	VERTEX *= fade(1.0 - fract(MODULATE.b));
+	VERTEX.y += floor(abs(MODULATE.b)) / floor(MODULATE.g);
+	VERTEX *= fade(1.0 - fract(max(0.0, MODULATE.b)));
 }
 
 void fragment() {
@@ -31,7 +31,7 @@ void fragment() {
 	
 	vec4 tex = texture(TEXTURE, uv);
 	
-	float alpha = 1.0 - fract(MODULATE.b);
+	float alpha = 1.0 - fract(abs(MODULATE.b));
 	tex.a *= alpha;
 	
 	COLOR = tex;

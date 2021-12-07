@@ -15,7 +15,7 @@ var density := 5
 var first_bullet
 
 func _physics_process(delta):
-	if t % 2 == 0 && t > 0:
+	if t % 2 == 0 && t >= 0:
 		lr *= -1
 		var o : float = t*t*0.001#PI*0.5 + PI * 0.25 * sin(t*0.15)
 		for i in density:
@@ -38,9 +38,10 @@ func _physics_process(delta):
 			#Bullets.add_pattern(bullet, 0, 90.0, {"accel": -0.3, "max_speed": 2.0})
 			#Bullets.add_pattern(bullet, 0, 60.0, {"angle": 0.0})
 			#var bullet = Bullets.create_shot_a2(bullet_kit_add, position, speed, angle, -speed * 0.1, 100.0, data, true)
-			#Bullets.set_bullet_property(bullet, "lifespan", 60.0)
+			Bullets.set_bullet_property(bullet, "lifespan", 60.0)
+			Bullets.set_bullet_property(bullet, "fade_delete", true)
 			#Bullets.add_translate(bullet, 0, 30, {"speed": -2.0})
-			Bullets.add_aim_at_object(bullet, 0, 45, player)
+			#Bullets.add_go_to_object(bullet, 0, 45, player)
 			#print(Bullets.get_bullet_property(bullet, "lifetime"))
 			if !first_bullet:
 				first_bullet = bullet

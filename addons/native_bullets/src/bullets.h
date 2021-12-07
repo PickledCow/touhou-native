@@ -102,6 +102,7 @@ public:
 
 	void add_aim_at_point(Variant id, int32_t trigger, int32_t time, Vector2 point);
 	void add_aim_at_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
+	void add_go_to_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
 
 	bool is_deleted(Variant id);
 
