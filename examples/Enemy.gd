@@ -8,7 +8,7 @@ onready var player = get_node(player_path)
 
 var t := 0
 var dw := 0.0
-var c = 0
+var c := 0
 var lr := 1
 
 var density := 4
@@ -37,7 +37,7 @@ func _physics_process(delta):
 			data[7] = 1					# anim frame, 1 for no animation (integer)
 			data[8] = 0					# spin
 			data[9] = 1
-			var bullet = Bullets.create_shot_a1(bullet_kit, position, speed, angle, data, true)
+			var bullet: PoolIntArray = Bullets.create_shot_a1(bullet_kit, position, speed, angle, data, true)
 			#Bullets.set_bullet_property(bullet, "max_wvel", 0.1)
 			#Bullets.set_bullet_property(bullet, "waccel", 0.0001)
 		c = (c + 1) % 8
@@ -60,10 +60,10 @@ func _physics_process(delta):
 			data[7] = 1					# anim frame, 1 for no animation (integer)
 			data[8] = 0					# spin
 			data[9] = 0
-			var bullet = Bullets.create_shot_a1(bullet_kit, position, speed, angle, data, true)
+			var bullet: PoolIntArray = Bullets.create_shot_a1(bullet_kit, position, speed, angle, data, true)
 			#Bullets.set_bullet_property(bullet, "scale", 128.0)
-			Bullets.add_transform(bullet, 0, 30, {"max_scale": 256.0})
-			Bullets.add_transform(bullet, 0, 30, {"scale_accel": 1.0})
+			Bullets.add_transform(bullet, 0, 30, {"max_scale": 256.0, "scale_vel": 1.0})
+			#Bullets.add_transform(bullet, 0, 30, {"layer": 8.0})
 		c = (c + 1) % 8
 	
 	

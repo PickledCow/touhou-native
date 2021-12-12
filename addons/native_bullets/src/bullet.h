@@ -35,7 +35,7 @@ public:
 	int32_t shape_index = -1;
 	float scale = 16.0f;
 	float max_scale = 16.0f;
-	float scale_accel = 16.0f;
+	float scale_vel = 16.0f;
 	float hitbox_scale = 0.5f;
 	float texture_offset = 0.0f;
 	int draw_index = 0;
@@ -91,7 +91,7 @@ public:
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
 		register_property<Bullet, float>("scale", &Bullet::scale, 16.0f);
 		register_property<Bullet, float>("max_scale", &Bullet::max_scale, 16.0f);
-		register_property<Bullet, float>("scale_accel", &Bullet::scale_accel, 16.0f);
+		register_property<Bullet, float>("scale_vel", &Bullet::scale_vel, 16.0f);
 		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
 		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
 		register_property<Bullet, float>("fade_timer", &Bullet::fade_timer, 0.0f);

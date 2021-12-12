@@ -36,7 +36,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 	void _enable_bullet(Bullet* bullet) {
 		// Reset some bullet variables that are not set by the create_bullet functions
 		bullet->max_scale = 0.0f;
-		bullet->scale_accel = 0.0f;
+		bullet->scale_vel = 0.0f;
 		bullet->layer = 0;
 		bullet->lifetime = 0.0f;
 		bullet->lifespan = std::numeric_limits<float>::infinity();
@@ -72,9 +72,9 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			bullet->angle += bullet->wvel * delta;
 			bullet->transform = bullet->transform.rotated(bullet->wvel * delta);
 		}
-		if (bullet->scale_accel && bullet->scale != bullet->max_scale) {
-			bullet->scale += bullet->scale_accel * delta;
-			if (((bullet->scale - bullet->max_scale) * bullet->scale_accel) > 0.0f) bullet->scale = bullet->max_scale;
+		if (bullet->scale_vel && bullet->scale != bullet->max_scale) {
+			bullet->scale += bullet->scale_vel * delta;
+			if (((bullet->scale - bullet->max_scale) * bullet->scale_vel) > 0.0f) bullet->scale = bullet->max_scale;
 			bullet->transform = bullet->transform.scaled((bullet->scale / bullet->transform.get_scale().x) * Vector2(1.0f, 1.0f));
 		}
 		bullet->transform = bullet->transform.rotated(bullet->spin * delta);
@@ -215,6 +215,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			//bullet->transform.set_rotation(bullet->angle);
 			bullet->transform = bullet->transform.scaled((bullet->scale / bullet->transform.get_scale().x) * Vector2(1.0f, 1.0f)).rotated(bullet->angle - bullet->transform.get_rotation() + 1.57079632679f + bullet->rotation);
 			bullet->transform.set_origin(bullet->position);
+			VisualServer::get_singleton()->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
 		}
 
 
