@@ -33,8 +33,13 @@ public:
 	RID item_rid;
 	int32_t cycle = 0;
 	int32_t shape_index = -1;
+	float scale = 16.0f;
+	float max_scale = 16.0f;
+	float scale_accel = 16.0f;
 	float hitbox_scale = 0.5f;
 	float texture_offset = 0.0f;
+	int draw_index = 0;
+	int layer = 0;
 	
 	Transform2D transform;
 	Vector2 position;
@@ -44,6 +49,8 @@ public:
 	float max_speed;
 	float accel;
 	float wvel;
+	float max_wvel;
+	float waccel;
 	float rotation;
 	float spin;
 
@@ -76,15 +83,21 @@ public:
 		register_property<Bullet, float>("accel", &Bullet::accel, 0.0f);
 		register_property<Bullet, float>("max_speed", &Bullet::max_speed, 0.0f);
 		register_property<Bullet, float>("wvel", &Bullet::wvel, 0.0f);
+		register_property<Bullet, float>("max_wvel", &Bullet::max_wvel, 0.0f);
+		register_property<Bullet, float>("waccel", &Bullet::waccel, 0.0f);
 		register_property<Bullet, float>("rotation", &Bullet::rotation, 0.0f);
 		register_property<Bullet, float>("spin", &Bullet::spin, 0.0f);
 		register_property<Bullet, float>("lifespan", &Bullet::lifespan, std::numeric_limits<float>::infinity());
 		register_property<Bullet, float>("lifetime", &Bullet::lifetime, 0.0f);
+		register_property<Bullet, float>("scale", &Bullet::scale, 16.0f);
+		register_property<Bullet, float>("max_scale", &Bullet::max_scale, 16.0f);
+		register_property<Bullet, float>("scale_accel", &Bullet::scale_accel, 16.0f);
 		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
 		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
 		register_property<Bullet, float>("fade_timer", &Bullet::fade_timer, 0.0f);
 		register_property<Bullet, float>("fade_time", &Bullet::fade_time, 0.0f);
 		register_property<Bullet, bool>("fade_delete", &Bullet::fade_delete, false);
+		register_property<Bullet, int>("layer", &Bullet::layer, 0);
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
 		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());

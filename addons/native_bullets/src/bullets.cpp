@@ -444,6 +444,7 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(bullet_data[4] * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(pos);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "transform", xform);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "scale", bullet_data[4]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "direction",  Vector2(1.0f, 0.0f).rotated(angle));
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "angle", angle);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "speed", speed);
@@ -459,6 +460,8 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
 
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "layer", bullet_data[9]);
+			
 			return to_return;
 		}
 	}
@@ -486,6 +489,7 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(bullet_data[4] * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(pos);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "transform", xform);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "scale", bullet_data[4]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "direction",  Vector2(1.0f, 0.0f).rotated(angle));
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "angle", angle);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "speed", speed);
@@ -500,6 +504,9 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
+			
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "layer", bullet_data[9]);
+
 			return to_return;
 		}
 	}

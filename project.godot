@@ -73,6 +73,8 @@ gdscript/warnings/return_value_discarded=false
 
 window/size/width=1920
 window/size/height=1080
+window/size/test_width=1280
+window/size/test_height=720
 window/vsync/use_vsync=false
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
@@ -118,11 +120,11 @@ morebullet={
 
 [physics]
 
-2d/thread_model=2
 2d/use_bvh=false
 
 [rendering]
 
+threads/thread_model=2
 quality/shadows/filter_mode=0
 batching/parameters/batch_buffer_size=65535
 environment/default_clear_color=Color( 0, 0, 0, 1 )

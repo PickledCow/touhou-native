@@ -135,7 +135,7 @@ int32_t AbstractBulletsPool<Kit, BulletType>::_process(float delta) {
 
 			Transform2D xform = bullet->transform;
 			Vector2 origin = xform.get_origin();
-			xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
+			xform = xform.scaled(bullet->hitbox_scale * Vector2(1.0f, 1.0f));
 			xform.set_origin(origin);
 			Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
 		}
@@ -177,7 +177,7 @@ void AbstractBulletsPool<Kit, BulletType>::spawn_bullet(Dictionary properties) {
 			Transform2D xform = bullet->transform;
 			Vector2 origin = xform.get_origin();
 			//xform.set_origin(Vector2(0.0f, 0.0f));
-			xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
+			xform = xform.scaled(bullet->hitbox_scale * Vector2(1.0f, 1.0f));
 			xform.set_origin(origin);
 			Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
 		}
@@ -197,8 +197,9 @@ BulletID AbstractBulletsPool<Kit, BulletType>::obtain_bullet() {
 		// if(collisions_enabled)
 		// 	Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, false);
 
-		VisualServer::get_singleton()->canvas_item_set_draw_index(bullet->item_rid, draw_index++);
-		if (draw_index > 65535) draw_index = 0;
+		//VisualServer::get_singleton()->canvas_item_set_draw_index(bullet->item_rid, (draw_index++));
+		bullet->draw_index = draw_index++;
+		if (draw_index > 16777215) draw_index = 0; // 2^24
 		
 		_enable_bullet(bullet);
 
@@ -269,53 +270,78 @@ BulletID AbstractBulletsPool<Kit, BulletType>::get_bullet_from_shape(int32_t sha
 	return BulletID(-1, -1, -1);
 }
 
+
+
 template <class Kit, class BulletType>
 void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, String property, Variant value) {
 	if(is_bullet_valid(id)) {
 		int32_t bullet_index = shapes_to_indices[id.index - starting_shape_index];
 		bullets[bullet_index]->set(property, value);
 
-		if (property == "transform") {
-			BulletType* bullet = bullets[bullet_index];
-			VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
-			Transform2D xform = bullet->transform;
-			Vector2 origin = xform.get_origin();
-			if(collisions_enabled) {
-				xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
-				xform.set_origin(origin);
-				Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
-			}
-			bullets[bullet_index]->set("position", origin);
-		}
-		else if (property == "position") {
-			BulletType* bullet = bullets[bullet_index];
-			Transform2D xform = get_bullet_property(id, "transform");
-			xform.set_origin((Vector2)value);
-			set_bullet_property(id, "transform", xform);
-		}
-		else if (property == "rotation") {
-			BulletType* bullet = bullets[bullet_index];
-			Transform2D xform = get_bullet_property(id, "transform");
-			Vector2 origin = xform.get_origin();
-			xform = xform.rotated(bullet->angle - xform.get_rotation() + 1.57079632679f + (float)value);
-			xform.set_origin(origin);
-			set_bullet_property(id, "transform", xform);
-		}
-		else if (property == "bullet_data") {
-			BulletType* bullet = bullets[bullet_index];
-			Color color = bullet->bullet_data;
-			VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
-		}
-		else if (property == "hitbox_scale") {
-			BulletType* bullet = bullets[bullet_index];
-			if(collisions_enabled) {
+		switch (property.hash()) { // find a better way to do this 
+			case (596893057): { // transform
+				BulletType* bullet = bullets[bullet_index];
+				VisualServer::get_singleton()->canvas_item_set_transform(bullet->item_rid, bullet->transform);
 				Transform2D xform = bullet->transform;
 				Vector2 origin = xform.get_origin();
-				//xform.set_origin(Vector2(0.0f, 0.0f));
-				xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
-				xform.set_origin(origin);
-				Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
+				if(collisions_enabled) {
+					xform = xform.scaled(bullet->hitbox_scale * Vector2(0.5f, 0.5f));
+					xform.set_origin(origin);
+					Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
+				}
+				bullets[bullet_index]->set("position", origin);
+				break;
 			}
+			case (1290762938): { // position
+				BulletType* bullet = bullets[bullet_index];
+				Transform2D xform = get_bullet_property(id, "transform");
+				xform.set_origin((Vector2)value);
+				set_bullet_property(id, "transform", xform);
+				break;
+			}
+			case (657950997): { // rotation
+				BulletType* bullet = bullets[bullet_index];
+				Transform2D xform = get_bullet_property(id, "transform");
+				Vector2 origin = xform.get_origin();
+				xform = xform.rotated(bullet->angle - xform.get_rotation() + 1.57079632679f + (float)value);
+				xform.set_origin(origin);
+				set_bullet_property(id, "transform", xform);
+				break;
+			}
+			case (373355782): { // bullet_data
+				BulletType* bullet = bullets[bullet_index];
+				Color color = bullet->bullet_data;
+				VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
+				break;
+			}
+			case (3334398746): { // hitbox_scale
+				BulletType* bullet = bullets[bullet_index];
+				if(collisions_enabled) {
+					Transform2D xform = bullet->transform;
+					Vector2 origin = xform.get_origin();
+					//xform.set_origin(Vector2(0.0f, 0.0f));
+					xform = xform.scaled(bullet->hitbox_scale * Vector2(1.0f, 1.0f));
+					xform.set_origin(origin);
+					Physics2DServer::get_singleton()->area_set_shape_transform(shared_area, bullet->shape_index, xform);
+				}
+				break;
+			}
+			case (265852802): { // layer
+				BulletType* bullet = bullets[bullet_index];
+				VisualServer::get_singleton()->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
+				break;
+			}
+			case (274200205): { // scale
+				BulletType* bullet = bullets[bullet_index];
+				Transform2D xform = get_bullet_property(id, "transform");
+				Vector2 origin = xform.get_origin();
+				xform = xform.scaled((bullet->scale / xform.get_scale().x) * Vector2(1.0f, 1.0f));
+				xform.set_origin(origin);
+				set_bullet_property(id, "transform", xform);
+				break;
+			}
+			default:
+				break;
 		}
 	}
 }

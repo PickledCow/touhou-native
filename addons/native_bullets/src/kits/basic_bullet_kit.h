@@ -35,9 +35,14 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 
 	void _enable_bullet(Bullet* bullet) {
 		// Reset some bullet variables that are not set by the create_bullet functions
+		bullet->max_scale = 0.0f;
+		bullet->scale_accel = 0.0f;
+		bullet->layer = 0;
 		bullet->lifetime = 0.0f;
 		bullet->lifespan = std::numeric_limits<float>::infinity();
 		bullet->wvel = 0.0f;
+		bullet->max_wvel = 0.0f;
+		bullet->waccel = 0.0f;
 		bullet->rotation = 0.0f;
 		bullet->fade_delete = false;
 		bullet->fading = false;
@@ -58,16 +63,25 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 
 	bool _process_bullet(Bullet* bullet, float delta) {
 		Vector2 origin = bullet->transform.get_origin();
+		if (bullet->waccel && bullet->wvel != bullet->max_wvel) {
+			bullet->wvel += bullet->waccel * delta;
+			if (((bullet->wvel - bullet->max_wvel) * bullet->waccel) > 0.0f) bullet->wvel = bullet->max_wvel;
+		}
 		if (bullet->wvel) {
 			bullet->direction = bullet->direction.rotated(bullet->wvel * delta);
 			bullet->angle += bullet->wvel * delta;
 			bullet->transform = bullet->transform.rotated(bullet->wvel * delta);
 		}
+		if (bullet->scale_accel && bullet->scale != bullet->max_scale) {
+			bullet->scale += bullet->scale_accel * delta;
+			if (((bullet->scale - bullet->max_scale) * bullet->scale_accel) > 0.0f) bullet->scale = bullet->max_scale;
+			bullet->transform = bullet->transform.scaled((bullet->scale / bullet->transform.get_scale().x) * Vector2(1.0f, 1.0f));
+		}
 		bullet->transform = bullet->transform.rotated(bullet->spin * delta);
 		bullet->rotation += bullet->spin * delta;
 		bullet->position += bullet->direction * bullet->speed * delta;
 		bullet->transform.set_origin(bullet->position);
-		if (bullet->accel) {
+		if (bullet->accel && bullet->speed != bullet->max_speed) {
 			bullet->speed += bullet->accel * delta;
 			if (((bullet->speed - bullet->max_speed) * bullet->accel) > 0.0f) bullet->speed = bullet->max_speed;
 		}
@@ -199,7 +213,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 		if (pattern_applied) {
 			bullet->direction = Vector2(1.0f, 0.0f).rotated(bullet->angle);
 			//bullet->transform.set_rotation(bullet->angle);
-			bullet->transform = bullet->transform.rotated(bullet->angle - bullet->transform.get_rotation() + 1.57079632679f + bullet->rotation);
+			bullet->transform = bullet->transform.scaled((bullet->scale / bullet->transform.get_scale().x) * Vector2(1.0f, 1.0f)).rotated(bullet->angle - bullet->transform.get_rotation() + 1.57079632679f + bullet->rotation);
 			bullet->transform.set_origin(bullet->position);
 		}
 
