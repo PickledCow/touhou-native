@@ -208,12 +208,14 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						bullet->texture_offset = (float)pattern[6];
 						bullet->spin = (float)pattern[7];
 						bullet->layer = (float)pattern[8];
+
+						Color color = bullet->bullet_data;
+						color.b = bullet->texture_offset;
 						if (pattern[9]) {
-							bullet->fade_timer = bullet->fade_time;
+							bullet->fade_timer = bullet->fade_time * 0.99999f;
+							color.b += bullet->fade_timer / bullet->fade_time;
 							Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, true);
 						}
-						Color color = bullet->bullet_data;
-						color.b = bullet->texture_offset + bullet->fade_timer / bullet->fade_time;
 						VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
 						break;
 					}
