@@ -41,6 +41,7 @@ public:
 	int draw_index = 0;
 	int layer = 0;
 	
+	
 	Transform2D transform;
 	Vector2 position;
 	Vector2 direction;

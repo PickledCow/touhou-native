@@ -52,6 +52,7 @@ void Bullets::_register_methods() {
 	register_method("add_aim_at_point", &Bullets::add_aim_at_point);
 	register_method("add_aim_at_object", &Bullets::add_aim_at_object);
 	register_method("add_go_to_object", &Bullets::add_go_to_object);
+	register_method("add_change_bullet", &Bullets::add_change_bullet);
 	register_method("is_deleted", &Bullets::is_deleted);
 
 	// Aliases
@@ -592,6 +593,43 @@ void Bullets::add_go_to_object(Variant id, int32_t trigger, int32_t time, Node2D
 		pattern.append(object);
 		pattern.append(object->get_instance_id());
 
+		patterns.append(pattern);
+	}
+}
+
+
+void Bullets::add_change_bullet(Variant id, int32_t trigger, int32_t time, PoolRealArray bullet_data, bool fade_in) {
+	PoolIntArray bullet_id = id.operator PoolIntArray();
+
+	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+	if(pool_index >= 0 && pool_sets[bullet_id[2]].pools[pool_index].pool->is_bullet_valid(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]))) {
+		Ref<BulletKit> kit = pool_sets[bullet_id[2]].pools[pool_index].bullet_kit;
+
+		Color compressed_data = Color();
+		compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
+		compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
+		compressed_data.b = floor(bullet_data[6]) + 0.99999f;
+		compressed_data.a = floor(bullet_data[7]) + animation_random;
+		
+		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
+		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "scale", bullet_data[4]);
+		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
+		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "texture_offset", floor(bullet_data[6]));
+		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
+		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "layer", bullet_data[9]);
+
+		Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+		Array pattern = Array();
+		pattern.append(trigger);
+		pattern.append(5);
+		pattern.append(time);
+		pattern.append(compressed_data);
+		pattern.append(bullet_data[4]);
+		pattern.append(bullet_data[5]);
+		pattern.append(floor(bullet_data[6]));
+		pattern.append(bullet_data[8]);
+		pattern.append(bullet_data[9]);
+		pattern.append(fade_in);
 		patterns.append(pattern);
 	}
 }

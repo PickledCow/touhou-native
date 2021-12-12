@@ -201,6 +201,23 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						break;
 					}
 
+					case 5: { // change bullet type
+						bullet->bullet_data = (Color)pattern[3];
+						bullet->scale = (float)pattern[4];
+						bullet->hitbox_scale = (float)pattern[5];
+						bullet->texture_offset = (float)pattern[6];
+						bullet->spin = (float)pattern[7];
+						bullet->layer = (float)pattern[8];
+						if (pattern[9]) {
+							bullet->fade_timer = bullet->fade_time;
+							Physics2DServer::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, true);
+						}
+						Color color = bullet->bullet_data;
+						color.b = bullet->texture_offset + bullet->fade_timer / bullet->fade_time;
+						VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
+						break;
+					}
+
 					default:
 						break;
 				}

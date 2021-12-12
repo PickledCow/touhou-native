@@ -104,6 +104,8 @@ public:
 	void add_aim_at_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
 	void add_go_to_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
 
+	void add_change_bullet(Variant id, int32_t trigger, int32_t time, PoolRealArray bullet_data, bool fade_in);
+
 	bool is_deleted(Variant id);
 
 };
