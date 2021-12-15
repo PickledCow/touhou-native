@@ -207,7 +207,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						bullet->hitbox_scale = (float)pattern[5];
 						bullet->texture_offset = (float)pattern[6];
 						bullet->spin = (float)pattern[7];
-						bullet->layer = (float)pattern[8];
+						bullet->layer = (int)pattern[8];
 
 						Color color = bullet->bullet_data;
 						color.b = bullet->texture_offset;

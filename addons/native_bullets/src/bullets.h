@@ -97,14 +97,26 @@ public:
 	Variant create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, PoolRealArray bullet_data, bool fade_in);
 	Variant create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data, bool fade_in);
 
+	Variant create_pattern_a1(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float speed1, float angle, int density, float spread, PoolRealArray bullet_data, bool fade_in);
+	Variant create_pattern_a2(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float r2, float speed1, float speed2, float angle, int density, int stack, float spread, PoolRealArray bullet_data, bool fade_in);
+
+
+	void set_bullet_properties(Variant id, Dictionary properties);
+	void set_bullet_properties_bulk(Array bullets, Dictionary properties);
+
 	void add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties);
 	void add_translate(Variant id, int32_t trigger, int32_t time, Dictionary properties);
-
 	void add_aim_at_point(Variant id, int32_t trigger, int32_t time, Vector2 point);
 	void add_aim_at_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
 	void add_go_to_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
-
 	void add_change_bullet(Variant id, int32_t trigger, int32_t time, PoolRealArray bullet_data, bool fade_in);
+
+	void add_pattern_bulk(Array bullets, int32_t trigger, int32_t time, Dictionary properties);
+	void add_translate_bulk(Array bullets, int32_t trigger, int32_t time, Dictionary properties);
+	void add_aim_at_point_bulk(Array bullets, int32_t trigger, int32_t time, Vector2 point);
+	void add_aim_at_object_bulk(Array bullets, int32_t trigger, int32_t time, Node2D* object);
+	void add_go_to_object_bulk(Array bullets, int32_t trigger, int32_t time, Node2D* object);
+	void add_change_bullet_bulk(Array bullets, int32_t trigger, int32_t time, PoolRealArray bullet_data, bool fade_in);
 
 	bool is_deleted(Variant id);
 

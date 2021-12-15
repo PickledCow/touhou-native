@@ -46,6 +46,9 @@ void Bullets::_register_methods() {
 	// New stuff
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
 	register_method("create_shot_a2", &Bullets::create_shot_a2);
+	register_method("create_pattern_a1", &Bullets::create_pattern_a1);
+	register_method("create_pattern_a2", &Bullets::create_pattern_a2);
+
 	register_method("add_pattern", &Bullets::add_pattern);
 	register_method("add_transform", &Bullets::add_pattern);
 	register_method("add_translate", &Bullets::add_translate);
@@ -53,9 +56,23 @@ void Bullets::_register_methods() {
 	register_method("add_aim_at_object", &Bullets::add_aim_at_object);
 	register_method("add_go_to_object", &Bullets::add_go_to_object);
 	register_method("add_change_bullet", &Bullets::add_change_bullet);
-	register_method("is_deleted", &Bullets::is_deleted);
 
-	// Aliases
+	register_method("add_pattern_bulk", &Bullets::add_pattern_bulk);
+	register_method("add_transform_bulk", &Bullets::add_pattern_bulk);
+	register_method("add_translate_bulk", &Bullets::add_translate_bulk);
+	register_method("add_aim_at_point_bulk", &Bullets::add_aim_at_point_bulk);
+	register_method("add_aim_at_object_bulk", &Bullets::add_aim_at_object_bulk);
+	register_method("add_go_to_object_bulk", &Bullets::add_go_to_object_bulk);
+	register_method("add_change_bullet_bulk", &Bullets::add_change_bullet_bulk);
+
+	register_method("is_deleted", &Bullets::is_deleted);
+	
+	register_method("set_bullet_properties", &Bullets::set_bullet_properties);
+	register_method("set_properties", &Bullets::set_bullet_properties);
+	register_method("set_bullet_properties_bulk", &Bullets::set_bullet_properties_bulk);
+	register_method("set_properties_bulk", &Bullets::set_bullet_properties_bulk);
+
+	// Aliases of existing 
 	register_method("set_property", &Bullets::set_bullet_property);
 	register_method("get_property", &Bullets::get_bullet_property);
 	register_method("delete", &Bullets::release_bullet);
@@ -515,6 +532,146 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 }
 
 
+Variant Bullets::create_pattern_a1(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float speed1, float angle, int density, float spread, PoolRealArray bullet_data, bool fade_in) {
+	Array bullets = Array();
+	switch (mode) {
+		case 0: { // ring
+			if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+				PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+				BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+				float step = 6.28318530718f / (float)density;
+
+				for (int i = 0; i < std::min(density, pool->get_available_bullets()); i++) {
+					float a = angle + i * step;
+					Vector2 p = pos + r1 * Vector2(cos(a), sin(a));
+					Variant bullet = create_shot_a1(kit, p, speed1, a, bullet_data, fade_in);
+					bullets.append(bullet);
+				}
+			}
+			break;
+		}
+		
+		case 1: { // fan
+			if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+				PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+				BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+				float step = spread / ((float)density - 1.0f);
+
+				float oset = density % 2 == 0 ? -0.5f : 0.0f;
+
+				for (int i = std::min(density / 2, pool->get_available_bullets()); i > 0; i--) {
+					float a = angle + (i + oset) * step;
+					Vector2 p = pos + r1 * Vector2(cos(a), sin(a));
+					Variant bullet = create_shot_a1(kit, p, speed1, a, bullet_data, fade_in);
+					bullets.append(bullet);
+					
+					a = angle - (i + oset) * step;
+					p = pos + r1 * Vector2(cos(a), sin(a));
+					bullet = create_shot_a1(kit, p, speed1, a, bullet_data, fade_in);
+					bullets.append(bullet);
+				}
+				if (density % 2 == 1) {
+					Vector2 p = pos + r1 * Vector2(cos(angle), sin(angle));
+					Variant bullet = create_shot_a1(kit, p, speed1, angle, bullet_data, fade_in);
+					bullets.append(bullet);
+				}
+			}
+			break;
+		}
+
+		case 2: { // polygon
+			if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+				PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+				BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+				int sides = (int)spread;
+
+				float step = 6.28318530718f / ((float)density * floor(spread));
+				float face_step = 6.28318530718f / floor(spread);
+
+				float oset = -density / 2.0f;
+
+				for (int j = 0; j < sides; j++) {
+					for (int i = 0; i < std::min(density, pool->get_available_bullets()); i++) {
+						float tilt = (i + oset) * step;
+						float a = angle + tilt + j * face_step;
+						float skew = 1.0f / cos(tilt);
+						Vector2 p = pos + r1 * Vector2(cos(a), sin(a)) * skew;
+						float speed = speed1 * skew;
+						Variant bullet = create_shot_a1(kit, p, speed, a, bullet_data, fade_in);
+						bullets.append(bullet);
+					}
+				}
+
+			}
+			break;
+		}
+		
+		default:
+			break;
+	}
+	return bullets;
+}
+
+
+Variant Bullets::create_pattern_a2(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float r2, float speed1, float speed2, float angle, int density, int stack, float spread, PoolRealArray bullet_data, bool fade_in) {
+	Array bullets = Array();
+	switch (mode) {
+	case 0: {
+		if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+			PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+			BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+			float step = 6.28318530718f / (float)density;
+
+			for (int i = 0; i < std::min(density, pool->get_available_bullets()); i++) {
+				float a = angle + i * step;
+				Vector2 p = pos + r1 * Vector2(cos(a), sin(a));
+				Variant bullet = create_shot_a1(kit, p, speed1, a, bullet_data, fade_in);
+				bullets.append(bullet);
+			}
+		}
+		break;
+	}
+	
+	default:
+		break;
+	}
+	return bullets;
+}
+
+
+void Bullets::set_bullet_properties(Variant id, Dictionary properties) {
+	PoolIntArray bullet_id = id.operator PoolIntArray();
+
+	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+	if(pool_index >= 0) {
+		Array keys = properties.keys();
+		for(int32_t i = 0; i < keys.size(); i++) {
+			pool_sets[bullet_id[2]].pools[pool_index].pool->set_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), keys[i], properties[keys[i]]);
+		}
+	}
+	
+}
+
+void Bullets::set_bullet_properties_bulk(Array bullets, Dictionary properties) {
+	for (int i = 0; i < bullets.size(); i++) {
+		PoolIntArray bullet_id = bullets[i].operator PoolIntArray();
+
+		int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+		if(pool_index >= 0) {
+			Array keys = properties.keys();
+			for(int32_t i = 0; i < keys.size(); i++) {
+				pool_sets[bullet_id[2]].pools[pool_index].pool->set_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), keys[i], properties[keys[i]]);
+			}
+		}
+	}
+	
+}
+
+
 void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties) {
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
@@ -597,7 +754,6 @@ void Bullets::add_go_to_object(Variant id, int32_t trigger, int32_t time, Node2D
 	}
 }
 
-
 void Bullets::add_change_bullet(Variant id, int32_t trigger, int32_t time, PoolRealArray bullet_data, bool fade_in) {
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
@@ -610,13 +766,6 @@ void Bullets::add_change_bullet(Variant id, int32_t trigger, int32_t time, PoolR
 		compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
 		compressed_data.b = floor(bullet_data[6]) + 0.99999f;
 		compressed_data.a = floor(bullet_data[7]) + animation_random;
-		
-		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
-		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "scale", bullet_data[4]);
-		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
-		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "texture_offset", floor(bullet_data[6]));
-		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
-		// pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "layer", bullet_data[9]);
 
 		Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
 		Array pattern = Array();
@@ -633,6 +782,134 @@ void Bullets::add_change_bullet(Variant id, int32_t trigger, int32_t time, PoolR
 		patterns.append(pattern);
 	}
 }
+
+
+void Bullets::add_pattern_bulk(Array bullets, int32_t trigger, int32_t time, Dictionary properties) {
+	for (int i = 0; i < bullets.size(); i++) {
+		PoolIntArray bullet_id = bullets[i].operator PoolIntArray();
+
+		int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+		if(pool_index >= 0) {
+			Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+			Array pattern = Array();
+			pattern.append(trigger);
+			pattern.append(0);
+			pattern.append(time);
+			pattern.append(properties);
+
+			patterns.append(pattern);
+		}
+	}
+}
+
+void Bullets::add_translate_bulk(Array bullets, int32_t trigger, int32_t time, Dictionary properties) {
+	for (int i = 0; i < bullets.size(); i++) {
+		PoolIntArray bullet_id = bullets[i].operator PoolIntArray();
+
+		int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+		if(pool_index >= 0) {
+			Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+			Array pattern = Array();
+			pattern.append(trigger);
+			pattern.append(1);
+			pattern.append(time);
+			pattern.append(properties);
+
+			patterns.append(pattern);
+		}
+	}
+}
+
+void Bullets::add_aim_at_point_bulk(Array bullets, int32_t trigger, int32_t time, Vector2 point) {
+	for (int i = 0; i < bullets.size(); i++) {
+		PoolIntArray bullet_id = bullets[i].operator PoolIntArray();
+
+		int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+		if(pool_index >= 0) {
+			Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+			Array pattern = Array();
+			pattern.append(trigger);
+			pattern.append(2);
+			pattern.append(time);
+			pattern.append(point);
+
+			patterns.append(pattern);
+		}
+	}
+}
+
+void Bullets::add_aim_at_object_bulk(Array bullets, int32_t trigger, int32_t time, Node2D* object) {
+	int64_t instance_id = object->get_instance_id();
+	for (int i = 0; i < bullets.size(); i++) {
+		PoolIntArray bullet_id = bullets[i].operator PoolIntArray();
+
+		int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+		if(pool_index >= 0) {
+			Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+			Array pattern = Array();
+			pattern.append(trigger);
+			pattern.append(3);
+			pattern.append(time);
+			pattern.append(object);
+			pattern.append(instance_id);
+
+			patterns.append(pattern);
+		}
+	}
+}
+
+void Bullets::add_go_to_object_bulk(Array bullets, int32_t trigger, int32_t time, Node2D* object) {
+	for (int i = 0; i < bullets.size(); i++) {
+		PoolIntArray bullet_id = bullets[i].operator PoolIntArray();
+
+		int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+		if(pool_index >= 0) {
+			Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+			Array pattern = Array();
+			pattern.append(trigger);
+			pattern.append(4);
+			pattern.append(time);
+			pattern.append(object);
+			pattern.append(object->get_instance_id());
+
+			patterns.append(pattern);
+		}
+	}
+}
+
+void Bullets::add_change_bullet_bulk(Array bullets, int32_t trigger, int32_t time, PoolRealArray bullet_data, bool fade_in) {
+	PoolIntArray first_bullet_id = bullets[0].operator PoolIntArray();
+	int32_t pool_index = _get_pool_index(first_bullet_id[2], first_bullet_id[0]);
+	Ref<BulletKit> kit = pool_sets[first_bullet_id[2]].pools[pool_index].bullet_kit;
+	Color compressed_data = Color();
+	compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
+	compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
+	compressed_data.b = floor(bullet_data[6]) + 0.99999f;
+	compressed_data.a = floor(bullet_data[7]) + animation_random;
+	
+	for (int i = 0; i < bullets.size(); i++) {
+		PoolIntArray bullet_id = bullets[i].operator PoolIntArray();
+
+		if(pool_index >= 0 && pool_sets[bullet_id[2]].pools[pool_index].pool->is_bullet_valid(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]))) {
+
+
+			Array patterns = pool_sets[bullet_id[2]].pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "patterns");
+			Array pattern = Array();
+			pattern.append(trigger);
+			pattern.append(5);
+			pattern.append(time);
+			pattern.append(compressed_data);
+			pattern.append(bullet_data[4]);
+			pattern.append(bullet_data[5]);
+			pattern.append(floor(bullet_data[6]));
+			pattern.append(bullet_data[8]);
+			pattern.append(bullet_data[9]);
+			pattern.append(fade_in);
+			patterns.append(pattern);
+		}
+	}
+}
+
 
 bool Bullets::is_deleted(Variant id) {
 	return !is_bullet_valid(id);

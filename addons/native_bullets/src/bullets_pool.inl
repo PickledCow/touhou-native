@@ -308,6 +308,16 @@ void AbstractBulletsPool<Kit, BulletType>::set_bullet_property(BulletID id, Stri
 				set_bullet_property(id, "transform", xform);
 				break;
 			}
+			case (253255468): { // angle
+				BulletType* bullet = bullets[bullet_index];
+				Transform2D xform = get_bullet_property(id, "transform");
+				Vector2 origin = xform.get_origin();
+				xform = xform.rotated((float)value - xform.get_rotation() + 1.57079632679f + bullet->rotation);
+				xform.set_origin(origin);
+				set_bullet_property(id, "transform", xform);
+				set_bullet_property(id, "direction", Vector2(1.0f, 0.0f).rotated((float)value));
+				break;
+			}
 			case (373355782): { // bullet_data
 				BulletType* bullet = bullets[bullet_index];
 				Color color = bullet->bullet_data;
