@@ -3,7 +3,8 @@ extends Object
 # These should not be changed unless you *really* know what you're doing
 const NC = -999999 # No Change constant for set position
 enum TRIGGER { TIME }
-enum PATTERN { RING, FAN, POLYGON, ARROW, ROSE, ELLIPSE }
+enum PATTERN { RING, ARC, POLYGON }
+enum PATTERN_ADV { RING, FAN, POLYGON, ARROW, ROSE, ELLIPSE }
 
 
 # These are suggestions on how to access and create shot data, if another way works for you then go ahead
