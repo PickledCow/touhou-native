@@ -46,15 +46,16 @@ func _ready():
 	data2[9] = 0
 
 func _physics_process(delta):
-	if t % 30 == 0:
+	if t % 120 == 0:
 		lr *= -1
 		var o : float = t*0.015+ PI * 0.5
-		var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.POLYGON, position, 30.0, 3.0, o, 20, 6, data, true)
+		#var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.POLYGON, position, 30.0, 3.0, o, 20, 6, data, true)
+		var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN.RING, position, 120.0, 40.0, 3.0, 2.0, PI*0.5, 1, 10, 6, data, true)
 		#Bullets.add_transform_bulk(bullets, Constants.TRIGGER.TIME, 60, {"speed": 10.0})
 		#var bullet = Bullets.create_shot_a1(bullet_kit, position, 2.0, 0.0, data, true)
 		#Bullets.set_properties_bulk(bullets, {"speed": 10})
 		#Bullets.add_aim_at_object_bulk(bullets, 0, 60, player)
-		Bullets.add_change_bullet_bulk(bullets, 0, 60, data2, true)
+		#Bullets.add_change_bullet_bulk(bullets, 0, 60, data2, true)
 		#Bullets.add_transform(bullet, Constants.TRIGGER.TIME, 60, {"speed": 10.0, "angle": PI*0.5})
 		c = (c + 1) % 8
 		

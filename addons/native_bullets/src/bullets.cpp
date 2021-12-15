@@ -619,25 +619,131 @@ Variant Bullets::create_pattern_a1(Ref<BulletKit> kit, int mode, Vector2 pos, fl
 Variant Bullets::create_pattern_a2(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float r2, float speed1, float speed2, float angle, int density, int stack, float spread, PoolRealArray bullet_data, bool fade_in) {
 	Array bullets = Array();
 	switch (mode) {
-	case 0: {
-		if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
-			PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
-			BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+		case 0: { // Ring
+			if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) { 
+				PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+				BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
 
-			float step = 6.28318530718f / (float)density;
+				float step = 6.28318530718f / (float)density;
+				float step2 = 1.0f / std::max(1.0f, (float)stack - 1.0f);
 
-			for (int i = 0; i < std::min(density, pool->get_available_bullets()); i++) {
-				float a = angle + i * step;
-				Vector2 p = pos + r1 * Vector2(cos(a), sin(a));
-				Variant bullet = create_shot_a1(kit, p, speed1, a, bullet_data, fade_in);
-				bullets.append(bullet);
+				for (int j = 0; j < stack - 1; j++) {
+					float r = r2 + (r1 - r2) * j * step2;
+					float speed = speed2 + (speed1 - speed2) * j * step2;
+					for (int i = 0; i < std::min(density, pool->get_available_bullets()); i++) {
+						float a = angle + i * step;
+						Vector2 p = pos + r * Vector2(cos(a), sin(a));
+						Variant bullet = create_shot_a1(kit, p, speed, a, bullet_data, fade_in);
+						bullets.append(bullet);
+					}
+				}
+				// Guarantees that r1 and speed1 always shoot
+				for (int i = 0; i < std::min(density, pool->get_available_bullets()); i++) {
+					float a = angle + i * step;
+					Vector2 p = pos + r1 * Vector2(cos(a), sin(a));
+					Variant bullet = create_shot_a1(kit, p, speed1, a, bullet_data, fade_in);
+					bullets.append(bullet);
+				}
 			}
+			break;
 		}
-		break;
-	}
-	
-	default:
-		break;
+			
+		case 1: { // fan
+			if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+				PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+				BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+				float step = spread / ((float)density - 1.0f);
+				float step2 = 1.0f / std::max(1.0f, (float)stack - 1.0f);
+
+				float oset = density % 2 == 0 ? -0.5f : 0.0f;
+
+				for (int j = 0; j < stack - 1; j++) {
+					float r = r2 + (r1 - r2) * j * step2;
+					float speed = speed2 + (speed1 - speed2) * j * step2;
+					for (int i = std::min(density / 2, pool->get_available_bullets()); i > 0; i--) {
+						float a = angle + (i + oset) * step;
+						Vector2 p = pos + r * Vector2(cos(a), sin(a));
+						Variant bullet = create_shot_a1(kit, p, speed, a, bullet_data, fade_in);
+						bullets.append(bullet);
+						
+						a = angle - (i + oset) * step;
+						p = pos + r * Vector2(cos(a), sin(a));
+						bullet = create_shot_a1(kit, p, speed, a, bullet_data, fade_in);
+						bullets.append(bullet);
+					}
+					if (density % 2 == 1) {
+						Vector2 p = pos + r * Vector2(cos(angle), sin(angle));
+						Variant bullet = create_shot_a1(kit, p, speed, angle, bullet_data, fade_in);
+						bullets.append(bullet);
+					}
+				}
+				// Guarantee that r1 and speed1 always shoot
+				for (int i = std::min(density / 2, pool->get_available_bullets()); i > 0; i--) {
+					float a = angle + (i + oset) * step;
+					Vector2 p = pos + r1 * Vector2(cos(a), sin(a));
+					Variant bullet = create_shot_a1(kit, p, speed1, a, bullet_data, fade_in);
+					bullets.append(bullet);
+					
+					a = angle - (i + oset) * step;
+					p = pos + r1 * Vector2(cos(a), sin(a));
+					bullet = create_shot_a1(kit, p, speed1, a, bullet_data, fade_in);
+					bullets.append(bullet);
+				}
+				if (density % 2 == 1) {
+					Vector2 p = pos + r1 * Vector2(cos(angle), sin(angle));
+					Variant bullet = create_shot_a1(kit, p, speed1, angle, bullet_data, fade_in);
+					bullets.append(bullet);
+				}
+			}
+			break;
+		}
+		
+		case 2: { // polygon 
+			if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+				PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+				BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+				int sides = (int)spread;
+
+				float step = 6.28318530718f / ((float)density * floor(spread));
+				float face_step = 6.28318530718f / floor(spread);
+				float step2 = 1.0f / std::max(1.0f, (float)stack - 1.0f);
+
+				float oset = -density / 2.0f;
+
+				for (int k = 0; k < sides; k++) {
+					for (int j = 0; j < stack - 1; j++) {
+						float r = r2 + (r1 - r2) * j * step2;
+						float speed = speed2 + (speed1 - speed2) * j * step2;
+						for (int i = 0; i < std::min(density, pool->get_available_bullets()); i++) {
+							float tilt = (i + oset) * step;
+							float a = angle + tilt + k * face_step;
+							float skew = 1.0f / cos(tilt);
+							Vector2 p = pos + r * Vector2(cos(a), sin(a)) * skew;
+							float true_speed = speed * skew;
+							Variant bullet = create_shot_a1(kit, p, true_speed, a, bullet_data, fade_in);
+							bullets.append(bullet);
+						}
+					}
+					// Guarantee that r1 and speed1 always shoot
+					for (int i = 0; i < std::min(density, pool->get_available_bullets()); i++) {
+						float tilt = (i + oset) * step;
+						float a = angle + tilt + k * face_step;
+						float skew = 1.0f / cos(tilt);
+						Vector2 p = pos + r1 * Vector2(cos(a), sin(a)) * skew;
+						float speed = speed1 * skew;
+						Variant bullet = create_shot_a1(kit, p, speed, a, bullet_data, fade_in);
+						bullets.append(bullet);
+					}
+				}
+
+			}
+			break;
+		}
+		
+		default:
+			break;
 	}
 	return bullets;
 }
