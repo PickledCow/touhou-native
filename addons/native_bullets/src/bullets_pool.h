@@ -46,7 +46,7 @@ public:
 	virtual ~BulletsPool();
 
 	virtual void _init(CanvasItem* canvas_parent, RID shared_area, int32_t starting_shape_index,
-		int32_t set_index, Ref<BulletKit> kit, int32_t pool_size, int32_t z_index) = 0;
+		int32_t set_index, Ref<BulletKit> kit, int32_t pool_size, int32_t z_index, Vector2 origin) = 0;
 	
 	int32_t get_available_bullets();
 	int32_t get_active_bullets();
@@ -86,7 +86,7 @@ public:
 	virtual ~AbstractBulletsPool();
 
 	virtual void _init(CanvasItem* canvas_parent, RID shared_area, int32_t starting_shape_index,
-		int32_t set_index, Ref<BulletKit> kit, int32_t pool_size, int32_t z_index) override;
+		int32_t set_index, Ref<BulletKit> kit, int32_t pool_size, int32_t z_index, Vector2 origin) override;
 
 	virtual int32_t _process(float delta) override;
 

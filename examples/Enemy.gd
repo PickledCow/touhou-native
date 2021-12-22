@@ -52,13 +52,13 @@ func _ready():
 	data[12] = 0.9
 
 func _physics_process(delta):
-	if t % 1 == 0 :
+	if t % 10 == 0 :
 		lr *= -1
 		var o : float = t*t*0.000015+ PI * 0.5
 		#var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.POLYGON, position, 30.0, 3.0, o, 19, 5, data, true)
 		#var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN_ADV.RING, position, 60.0, 60.0, 3.0, 6.0, randf()*TAU, 150, 1, PI*0.5, data, true)
-		for i in 55:
-			var bullet = Bullets.create_shot_a1(bullet_kit, position, rand_range(2.0, 8.0), randf()*TAU, data, true)
+		#for i in 1:
+		var bullet = Bullets.create_shot_a1(bullet_kit, position, 3, TAU/4, data, true)
 		#Bullets.set_properties_bulk(bullets, {"wvel": 0.05})
 		#Bullets.add_transform_bulk(bullets, Constants.TRIGGER.TIME, 60, {"wvel": 0.0})
 		#Bullets.add_aim_at_object_bulk(bullets, 0, 60, player)

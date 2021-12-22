@@ -62,7 +62,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Native Bullets"
+config/name="Touhou Native"
 run/main_scene="res://examples/example_01.tscn"
 boot_splash/fullsize=false
 

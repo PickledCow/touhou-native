@@ -67,7 +67,7 @@ AbstractBulletsPool<Kit, BulletType>::~AbstractBulletsPool() {
 
 template <class Kit, class BulletType>
 void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID shared_area, int32_t starting_shape_index,
-		int32_t set_index, Ref<BulletKit> kit, int32_t pool_size, int32_t z_index) {
+		int32_t set_index, Ref<BulletKit> kit, int32_t pool_size, int32_t z_index, Vector2 origin) {
 	
 	// Check if collisions are enabled and if layer or mask are != 0, 
 	// otherwise the bullets would not collide with anything anyways.
@@ -89,7 +89,7 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 	VisualServer::get_singleton()->canvas_item_set_parent(canvas_item, canvas_parent->get_canvas_item());
 	VisualServer::get_singleton()->canvas_item_set_z_index(canvas_item, z_index);
 	
-	Vector2 origin = Physics2DServer::get_singleton()->area_get_transform(shared_area).get_origin();
+	// Vector2 origin = Physics2DServer::get_singleton()->area_get_transform(shared_area).get_origin();
 	Transform2D xform = Transform2D(0.0f, origin);
 	VisualServer::get_singleton()->canvas_item_set_transform(canvas_item, xform);
 
