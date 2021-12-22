@@ -46,6 +46,9 @@ func remove_bullet(bullet_id):
 	var p = Bullets.get_property(bullet_id, "position")
 	var s = Bullets.get_property(bullet_id, "scale")
 	var c = Bullets.get_property(bullet_id, "fade_color")
+	#var xform = Transform2D(randf()*TAU, Vector2(0,0)).scaled(Vector2(s, abs(s)))
+	#xform.origin = p
+	#Bullets.spawn_bullet(bullet_clear_kit, { "transform": xform, "scale": s, "lifespan": 30, "lifetime": 0, "fade_color": c })
 	Bullets.add_bullet_clear(bullet_clear_kit, p, s, c)
 	Bullets.add_bullet_clear(bullet_clear_kit, p, -s*2, c)
 	#var clear = Bullets.spawn_bullet(bullet_clear_kit, { "position": p, "scale": s, "lifespan": 60 })

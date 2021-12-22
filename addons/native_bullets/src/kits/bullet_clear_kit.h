@@ -37,7 +37,6 @@ class BulletClearsPool : public AbstractBulletsPool<BulletClearKit, Bullet> {
 		// Reset some bullet variables that are not set by the create_bullet functions
 		bullet->layer = 0;
 		bullet->lifetime = 0.0f;
-		bullet->lifespan = 120.0f;
 		Rect2 texture_rect = Rect2(-0.5f, -0.5f, 1.0f, 1.0f);
 		RID texture_rid = kit->texture->get_rid();
 		

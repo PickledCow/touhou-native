@@ -122,7 +122,7 @@ public:
 
 
 
-	Variant add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color);
+	void add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color);
 
 };
 
