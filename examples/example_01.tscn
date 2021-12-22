@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://examples/images/player_ship_2_blue.png" type="Texture" id=1]
 [ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://examples/scripts/bullets_counter.gd" type="Script" id=10]
 [ext_resource path="res://examples/example_01.gd" type="Script" id=11]
 [ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=12]
+[ext_resource path="res://kits/bullet_clear_kit.tres" type="Resource" id=13]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 5.0
@@ -26,16 +27,19 @@ position = Vector2( 460, 40 )
 
 [node name="BulletsEnvironment" type="Node" parent="root"]
 script = ExtResource( 3 )
-bullet_kits = [ ExtResource( 2 ), ExtResource( 12 ) ]
-pools_sizes = [ 10000, 10000 ]
-z_indices = [ 0, null ]
-bullet_types_amount = 2
+bullet_kits = [ ExtResource( 2 ), ExtResource( 12 ), ExtResource( 13 ) ]
+pools_sizes = [ 10000, 10000, 10000 ]
+z_indices = [ 0, null, null ]
+bullet_types_amount = 3
 bullet_type_0/bullet_kit = ExtResource( 2 )
 bullet_type_0/pool_size = 10000
 bullet_type_0/z_index = 0
 bullet_type_1/bullet_kit = ExtResource( 12 )
 bullet_type_1/pool_size = 10000
 bullet_type_1/z_index = null
+bullet_type_2/bullet_kit = ExtResource( 13 )
+bullet_type_2/pool_size = 10000
+bullet_type_2/z_index = null
 
 [node name="Enemy" type="Sprite" parent="root"]
 position = Vector2( 500, 260 )
@@ -49,6 +53,7 @@ player_path = NodePath("../Player")
 position = Vector2( 500, 760 )
 collision_mask = 2
 script = ExtResource( 8 )
+bullet_clear_kit = ExtResource( 13 )
 
 [node name="Sprite" type="Sprite" parent="root/Player"]
 position = Vector2( 0, -6 )

@@ -120,6 +120,10 @@ public:
 
 	bool is_deleted(Variant id);
 
+
+
+	Variant add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color);
+
 };
 
 #endif

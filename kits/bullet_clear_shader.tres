@@ -1,0 +1,18 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_add;
+
+uniform vec2 sprite_count;
+
+void fragment() {
+	vec3 c = MODULATE.rgb;
+	float anim = floor(abs(MODULATE.a) * sprite_count.x * sprite_count.y);
+	float rate = 1.0;
+	vec2 uv = vec2(modf(anim / sprite_count.x, rate), floor(anim / sprite_count.x) / sprite_count.y) + vec2(1.0 / sprite_count.x, 1.0 / sprite_count.y) * UV;
+	uv.x = 0.5 + sign(MODULATE.a) * (uv.x - 0.5);
+	vec4 tex = texture(TEXTURE, uv);
+	COLOR.rgb = tex.rgb * c;
+	COLOR.a = tex.a;
+}"

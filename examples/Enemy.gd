@@ -17,23 +17,25 @@ var data: PoolRealArray
 var data2: PoolRealArray
 
 func _ready():
-	print("angle".hash())
 	
 	data = PoolRealArray()
-	data.resize(10)
+	data.resize(13)
 	data[0] = 64 * 6			# source x (integer) # (16+8*(c/4))
-	data[1] = 64 * 4		# source y (integer) # (24+2*(c%4))
+	data[1] = 64 * 3		# source y (integer) # (24+2*(c%4))
 	data[2] = 64				# source width (integer)
 	data[3] = 64				# source height (integer)
 	data[4] = 32.0				# bullet size [0, inf)
-	data[5] = 0.5				# hitbox ratio [0, 1]
+	data[5] = 0.15				# hitbox ratio [0, 1]
 	data[6] = 0					# Sprite offset y (integer)
 	data[7] = 1					# anim frame, 1 for no animation (integer)
 	data[8] = 0					# spin
-	data[9] = 0
+	data[9] = 0					# layer
+	data[10] = 0.3				# rgb
+	data[11] = 0.3
+	data[12] = 0.9
 	
 	data2 = PoolRealArray()
-	data2.resize(10)
+	data2.resize(13)
 	data2[0] = 64 * 6			# source x (integer) # (16+8*(c/4))
 	data2[1] = 64 * 3		# source y (integer) # (24+2*(c%4))
 	data2[2] = 64			# source width (integer)
@@ -44,16 +46,21 @@ func _ready():
 	data2[7] = 1					# anim frame, 1 for no animation (integer)
 	data2[8] = 0					# spin
 	data2[9] = 0
+	data[10] = 0
+	data[10] = 0.2				# rgb
+	data[11] = 0.2
+	data[12] = 0.9
 
 func _physics_process(delta):
-	if t % 120 == 0:
+	if t % 1 == 0 :
 		lr *= -1
-		var o : float = t*0.015+ PI * 0.5
-		#var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.POLYGON, position, 30.0, 3.0, o, 20, 6, data, true)
-		var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN.RING, position, 120.0, 40.0, 3.0, 2.0, PI*0.5, 1, 10, 6, data, true)
-		#Bullets.add_transform_bulk(bullets, Constants.TRIGGER.TIME, 60, {"speed": 10.0})
-		#var bullet = Bullets.create_shot_a1(bullet_kit, position, 2.0, 0.0, data, true)
-		#Bullets.set_properties_bulk(bullets, {"speed": 10})
+		var o : float = t*t*0.000015+ PI * 0.5
+		#var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.POLYGON, position, 30.0, 3.0, o, 19, 5, data, true)
+		#var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN_ADV.RING, position, 60.0, 60.0, 3.0, 6.0, randf()*TAU, 150, 1, PI*0.5, data, true)
+		for i in 55:
+			var bullet = Bullets.create_shot_a1(bullet_kit, position, rand_range(2.0, 8.0), randf()*TAU, data, true)
+		#Bullets.set_properties_bulk(bullets, {"wvel": 0.05})
+		#Bullets.add_transform_bulk(bullets, Constants.TRIGGER.TIME, 60, {"wvel": 0.0})
 		#Bullets.add_aim_at_object_bulk(bullets, 0, 60, player)
 		#Bullets.add_change_bullet_bulk(bullets, 0, 60, data2, true)
 		#Bullets.add_transform(bullet, Constants.TRIGGER.TIME, 60, {"speed": 10.0, "angle": PI*0.5})

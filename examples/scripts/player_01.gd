@@ -1,5 +1,6 @@
 extends Area2D
 
+export(Resource) var bullet_clear_kit
 
 export(float, 0, 1000) var speed = 500.0
 export(float, 0, 1000) var focus_speed = 200.0
@@ -42,4 +43,12 @@ func _on_area_shape_entered(area_id, _area, area_shape, _local_shape):
 		call_deferred("remove_bullet", bullet_id)
 
 func remove_bullet(bullet_id):
+	var p = Bullets.get_property(bullet_id, "position")
+	var s = Bullets.get_property(bullet_id, "scale")
+	var c = Bullets.get_property(bullet_id, "fade_color")
+	Bullets.add_bullet_clear(bullet_clear_kit, p, s, c)
+	Bullets.add_bullet_clear(bullet_clear_kit, p, -s*2, c)
+	#var clear = Bullets.spawn_bullet(bullet_clear_kit, { "position": p, "scale": s, "lifespan": 60 })
+	#var clear = Bullets.obtain_bullet(bullet_clear_kit)
+	#Bullets.set_property(clear, "scale", 64)
 	Bullets.release_bullet(bullet_id)

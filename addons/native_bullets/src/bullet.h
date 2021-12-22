@@ -40,6 +40,7 @@ public:
 	float texture_offset = 0.0f;
 	int draw_index = 0;
 	int layer = 0;
+	Color fade_color;
 	
 	
 	Transform2D transform;
@@ -99,6 +100,7 @@ public:
 		register_property<Bullet, float>("fade_time", &Bullet::fade_time, 0.0f);
 		register_property<Bullet, bool>("fade_delete", &Bullet::fade_delete, false);
 		register_property<Bullet, int>("layer", &Bullet::layer, 0);
+		register_property<Bullet, Color>("fade_color", &Bullet::fade_color, Color(1.0f, 1.0f, 1.0f, 1.0f));
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
 		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());

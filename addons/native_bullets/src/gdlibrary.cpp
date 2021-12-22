@@ -1,5 +1,6 @@
 #include "bullets.h"
 #include "kits/basic_bullet_kit.h"
+#include "kits/bullet_clear_kit.h"
 // #include "kits/following_bullet_kit.h"
 // #include "kits/dynamic_bullet_kit.h"
 // #include "kits/following_dynamic_bullet_kit.h"
@@ -22,6 +23,7 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 
 	// Default Bullet Kits.
 	godot::register_class<BasicBulletKit>();
+	godot::register_class<BulletClearKit>();
 
 	// godot::register_class<FollowingBullet>();
 	// godot::register_class<FollowingBulletKit>();
