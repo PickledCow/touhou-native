@@ -97,12 +97,16 @@ public:
 	Variant create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, PoolRealArray bullet_data, bool fade_in);
 	Variant create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data, bool fade_in);
 
+	Variant create_item(Ref<BulletKit> kit, PoolRealArray item_data, Vector2 pos, float speed, float angle, float spin);
+
 	Variant create_pattern_a1(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float speed1, float angle, int density, float spread, PoolRealArray bullet_data, bool fade_in);
 	Variant create_pattern_a2(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float r2, float speed1, float speed2, float angle, int density, int stack, float spread, PoolRealArray bullet_data, bool fade_in);
 
 
 	void set_bullet_properties(Variant id, Dictionary properties);
 	void set_bullet_properties_bulk(Array bullets, Dictionary properties);
+
+	void set_magnet_target(Variant id, Node2D *target);
 
 	void add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties);
 	void add_translate(Variant id, int32_t trigger, int32_t time, Dictionary properties);
@@ -119,8 +123,6 @@ public:
 	void add_change_bullet_bulk(Array bullets, int32_t trigger, int32_t time, PoolRealArray bullet_data, bool fade_in);
 
 	bool is_deleted(Variant id);
-
-
 
 	void add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color);
 

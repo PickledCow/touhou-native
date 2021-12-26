@@ -5,6 +5,7 @@
 
 #include <Godot.hpp>
 #include <Transform2D.hpp>
+#include <Node2D.hpp>
 #include <Array.hpp>
 
 using namespace godot;
@@ -42,7 +43,6 @@ public:
 	int layer = 0;
 	Color fade_color;
 	
-	
 	Transform2D transform;
 	Vector2 position;
 	Vector2 direction;
@@ -60,6 +60,13 @@ public:
 	float fade_time;
 	bool fade_delete;
 	bool fading;
+
+	bool grazed;
+	Node2D *magnet_target;
+	int magnet_target_id;
+
+	float damage;
+	int damage_type;
 
 	Array patterns;
 
@@ -101,6 +108,12 @@ public:
 		register_property<Bullet, bool>("fade_delete", &Bullet::fade_delete, false);
 		register_property<Bullet, int>("layer", &Bullet::layer, 0);
 		register_property<Bullet, Color>("fade_color", &Bullet::fade_color, Color(1.0f, 1.0f, 1.0f, 1.0f));
+		register_property<Bullet, bool>("grazed", &Bullet::grazed, false);
+		register_property<Bullet, Node2D*>("magnet_target", &Bullet::magnet_target, NULL);
+		register_property<Bullet, int>("magnet_target_id", &Bullet::magnet_target_id, 0);
+
+		register_property<Bullet, float>("damage", &Bullet::damage, 0);
+		register_property<Bullet, int>("damage_type", &Bullet::damage_type, 0);
 
 		register_property<Bullet, Transform2D>("transform", &Bullet::transform, Transform2D());
 		register_property<Bullet, Vector2>("direction", &Bullet::direction, Vector2());

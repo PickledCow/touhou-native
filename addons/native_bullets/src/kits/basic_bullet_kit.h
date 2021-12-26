@@ -35,6 +35,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 
 	void _enable_bullet(Bullet* bullet) {
 		// Reset some bullet variables that are not set by the create_bullet functions
+		bullet->grazed = false;
 		bullet->max_scale = 0.0f;
 		bullet->scale_vel = 0.0f;
 		bullet->layer = 0;

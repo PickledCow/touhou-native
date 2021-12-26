@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://addons/native_bullets/kits/basic_bullet_kit.gdns"
 }, {
 "base": "Resource",
+"class": "BasicItemKit",
+"language": "NativeScript",
+"path": "res://addons/native_bullets/kits/basic_item_kit.gdns"
+}, {
+"base": "Resource",
 "class": "BulletClearKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/kits/bullet_clear_kit.gdns"
@@ -51,6 +56,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "BasicBulletKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
+"BasicItemKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
 "BulletClearKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
 "BulletKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
 "Bullets": "res://addons/native_bullets/icons/icon_bullets.svg",
@@ -123,6 +129,7 @@ morebullet={
 2d_physics/layer_2="Bullet"
 2d_physics/layer_3="Enemy"
 2d_physics/layer_4="Player Bullet"
+2d_physics/layer_5="Item"
 
 [physics]
 

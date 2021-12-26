@@ -46,6 +46,7 @@ void Bullets::_register_methods() {
 	// New stuff
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
 	register_method("create_shot_a2", &Bullets::create_shot_a2);
+	register_method("create_item", &Bullets::create_item);
 	register_method("create_pattern_a1", &Bullets::create_pattern_a1);
 	register_method("create_pattern_a2", &Bullets::create_pattern_a2);
 
@@ -56,6 +57,7 @@ void Bullets::_register_methods() {
 	register_method("add_aim_at_object", &Bullets::add_aim_at_object);
 	register_method("add_go_to_object", &Bullets::add_go_to_object);
 	register_method("add_change_bullet", &Bullets::add_change_bullet);
+	register_method("set_magnet_target", &Bullets::set_magnet_target);
 
 	register_method("add_pattern_bulk", &Bullets::add_pattern_bulk);
 	register_method("add_transform_bulk", &Bullets::add_pattern_bulk);
@@ -459,8 +461,13 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			Color compressed_data = Color();
 			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
 			compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
-			compressed_data.b = floor(bullet_data[6]) + 0.99999f;
+			compressed_data.b = floor(bullet_data[6]);
 			compressed_data.a = floor(bullet_data[7]) + animation_random;
+			if (fade_in) {
+				compressed_data.b += 0.99999f;
+			} else {
+				pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_timer", -0.0001f);
+			}
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "texture_offset", floor(bullet_data[6]));
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
@@ -507,8 +514,13 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			Color compressed_data = Color();
 			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
 			compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
-			compressed_data.b = floor(bullet_data[6]) + 0.99999f;
+			compressed_data.b = floor(bullet_data[6]);
 			compressed_data.a = floor(bullet_data[7]) + animation_random;
+			if (fade_in) {
+				compressed_data.b += 0.99999f;
+			} else {
+				pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_timer", -0.0001f);
+			}
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "texture_offset", floor(bullet_data[6]));
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
@@ -524,6 +536,54 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 	}
 	return invalid_id;
 }
+
+
+Variant Bullets::create_item(Ref<BulletKit> kit, PoolRealArray item_data, Vector2 pos, float speed, float angle, float spin) {
+	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+		if(pool->get_available_bullets() > 0) {
+			available_bullets -= 1;
+			active_bullets += 1;
+
+			BulletID bullet_id = pool->obtain_bullet();
+			PoolIntArray to_return = invalid_id;
+			to_return.set(0, bullet_id.index);
+			to_return.set(1, bullet_id.cycle);
+			to_return.set(2, bullet_id.set);
+
+			int32_t pool_index = _get_pool_index(bullet_id.set, bullet_id.index);
+
+			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(item_data[4] * Vector2(1.0f, 1.0f));
+			if (speed != 0.0f) {
+				xform = xform.rotated(6.28318530718f * (float)rand() / (float)RAND_MAX);
+			} else {
+				pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_timer", -1.0f);
+			}
+			xform.set_origin(pos);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "transform", xform);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "scale", item_data[4]);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "direction",  Vector2(1.0f, 0.0f).rotated(angle));
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "angle", angle);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "speed", speed);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "spin", spin);
+			Color compressed_data = Color();
+			compressed_data.r = item_data[1] + item_data[0] / kit->texture_width;
+			compressed_data.g = item_data[3] + item_data[2] / kit->texture_width;
+			compressed_data.a = floor(item_data[7]) + animation_random;
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", item_data[5]);
+
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "layer", item_data[8]);
+
+			return to_return;
+		}
+	}
+	return invalid_id;
+}
+
+
 
 
 Variant Bullets::create_pattern_a1(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float speed1, float angle, int density, float spread, PoolRealArray bullet_data, bool fade_in) {
@@ -790,6 +850,16 @@ void Bullets::set_bullet_properties_bulk(Array bullets, Dictionary properties) {
 	
 }
 
+
+void Bullets::set_magnet_target(Variant id, Node2D *target) {
+	PoolIntArray bullet_id = id.operator PoolIntArray();
+
+	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
+	if(pool_index >= 0) {
+		pool_sets[bullet_id[2]].pools[pool_index].pool->set_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "magnet_target", target);
+		pool_sets[bullet_id[2]].pools[pool_index].pool->set_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), "magnet_target_id", target->get_instance_id());
+	}
+}
 
 void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties) {
 	PoolIntArray bullet_id = id.operator PoolIntArray();

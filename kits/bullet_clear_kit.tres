@@ -1,23 +1,19 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://addons/native_bullets/kits/bullet_clear_kit.gdns" type="Script" id=1]
 [ext_resource path="res://etbreak.png" type="Texture" id=2]
 [ext_resource path="res://kits/bullet_clear_material.tres" type="Material" id=3]
 
-[sub_resource type="CircleShape2D" id=3]
-radius = 0.01
-
 [resource]
 script = ExtResource( 1 )
 texture = ExtResource( 2 )
 bullet_class_name = "Bullet"
+texture_width = 1024.0
 material = ExtResource( 3 )
-texture_width = 0.0
 fade_time = 30.0
 collisions_enabled = false
 collision_layer = 0
-collision_mask = 1
-collision_shape = SubResource( 3 )
+collision_mask = 0
 active_rect = Rect2( 0, 0, 0, 0 )
 time_scale = 1.0
 data = {

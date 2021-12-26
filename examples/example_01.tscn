@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://examples/images/player_ship_2_blue.png" type="Texture" id=1]
 [ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
@@ -13,9 +13,19 @@
 [ext_resource path="res://examples/example_01.gd" type="Script" id=11]
 [ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=12]
 [ext_resource path="res://kits/bullet_clear_kit.tres" type="Resource" id=13]
+[ext_resource path="res://kits/basic_item_kit.tres" type="Resource" id=14]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 5.0
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 96.0
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 32.0
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 10000.0
 
 [sub_resource type="Theme" id=2]
 
@@ -27,19 +37,22 @@ position = Vector2( 460, 40 )
 
 [node name="BulletsEnvironment" type="Node" parent="root"]
 script = ExtResource( 3 )
-bullet_kits = [ ExtResource( 2 ), ExtResource( 12 ), ExtResource( 13 ) ]
-pools_sizes = [ 10000, 10000, 10000 ]
-z_indices = [ 0, null, null ]
-bullet_types_amount = 3
+bullet_kits = [ ExtResource( 2 ), ExtResource( 12 ), ExtResource( 14 ), ExtResource( 13 ) ]
+pools_sizes = [ 10000, 10000, 10000, 10000 ]
+z_indices = [ 2, null, 1, 9 ]
+bullet_types_amount = 4
 bullet_type_0/bullet_kit = ExtResource( 2 )
 bullet_type_0/pool_size = 10000
-bullet_type_0/z_index = 0
+bullet_type_0/z_index = 2
 bullet_type_1/bullet_kit = ExtResource( 12 )
 bullet_type_1/pool_size = 10000
 bullet_type_1/z_index = null
-bullet_type_2/bullet_kit = ExtResource( 13 )
+bullet_type_2/bullet_kit = ExtResource( 14 )
 bullet_type_2/pool_size = 10000
-bullet_type_2/z_index = null
+bullet_type_2/z_index = 1
+bullet_type_3/bullet_kit = ExtResource( 13 )
+bullet_type_3/pool_size = 10000
+bullet_type_3/z_index = 9
 
 [node name="Enemy" type="Sprite" parent="root"]
 position = Vector2( 500, 260 )
@@ -47,6 +60,7 @@ texture = ExtResource( 4 )
 script = ExtResource( 5 )
 bullet_kit = ExtResource( 2 )
 bullet_kit_add = ExtResource( 12 )
+item_kit = ExtResource( 14 )
 player_path = NodePath("../Player")
 
 [node name="Player" type="Area2D" parent="root"]
@@ -76,6 +90,40 @@ shape = SubResource( 1 )
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="grazebox" type="Area2D" parent="root/Player"]
+visible = false
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="root/Player/grazebox"]
+shape = SubResource( 3 )
+
+[node name="itembox" type="Area2D" parent="root/Player"]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="root/Player/itembox"]
+shape = SubResource( 3 )
+
+[node name="itemcollection" type="Area2D" parent="root/Player"]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="root/Player/itemcollection"]
+shape = SubResource( 4 )
+
+[node name="itempoc" type="Area2D" parent="root/Player"]
+visible = false
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="root/Player/itempoc"]
+shape = SubResource( 5 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -114,3 +162,7 @@ __meta__ = {
 }
 
 [connection signal="area_shape_entered" from="root/Player" to="root/Player" method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="root/Player/grazebox" to="root/Player" method="_on_grazebox_area_shape_entered"]
+[connection signal="area_shape_entered" from="root/Player/itembox" to="root/Player" method="_on_itembox_area_shape_entered"]
+[connection signal="area_shape_entered" from="root/Player/itemcollection" to="root/Player" method="_on_itemcollection_area_shape_entered"]
+[connection signal="area_shape_entered" from="root/Player/itempoc" to="root/Player" method="_on_itempoc_area_shape_entered"]
