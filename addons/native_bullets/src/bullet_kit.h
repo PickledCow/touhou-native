@@ -89,7 +89,8 @@ public:
 			&BulletKit::_property_setter, &BulletKit::_property_getter, "",
 			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_EDITOR);
 	}
-
+	
+	virtual bool is_valid() { return material.is_valid(); }
 	virtual std::unique_ptr<BulletsPool> _create_pool() { return std::unique_ptr<BulletsPool>(); }
 };
 
