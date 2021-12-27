@@ -45,6 +45,7 @@ class BasicItemsPool : public AbstractBulletsPool<BasicItemKit, Bullet> {
 	void _enable_bullet(Bullet* bullet) {
 		// Reset some bullet variables that are not set by the create_bullet functions
 		bullet->grazed = false;
+		bullet->fading = false;
 		bullet->magnet_target_id = 0;
 		bullet->layer = 0;
 		bullet->lifetime = 0.0f;
@@ -69,6 +70,7 @@ class BasicItemsPool : public AbstractBulletsPool<BasicItemKit, Bullet> {
 	// void _disable_bullet(Bullet* bullet); Use default implementation.
 
 	bool _process_bullet(Bullet* bullet, float delta) {
+        Vector2 last_pos = bullet->position;
         if (bullet->magnet_target_id) {
             if (bullet->fade_timer) {
                 bullet->fade_timer = 0.0f;
@@ -94,8 +96,22 @@ class BasicItemsPool : public AbstractBulletsPool<BasicItemKit, Bullet> {
         } else {
             bullet->position += kit->gravity;
         }
-        bullet->transform.set_origin(bullet->position);
-
+        if (bullet->position.y < bullet->scale * -0.5f) {
+            Vector2 pos = bullet->position;
+            pos.y = bullet->scale * 0.5f;
+            bullet->transform = bullet->transform.rotated(-bullet->transform.get_rotation());
+            bullet->transform.set_origin(pos);
+            Color color = bullet->bullet_data;
+            color.b = 1.0f;
+            VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
+        } else { 
+            if (last_pos.y < bullet->scale * -0.5f) {
+                Color color = bullet->bullet_data;
+                VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, color);
+            }
+            bullet->transform.set_origin(bullet->position);
+        }
+        
         if(!active_rect.has_point(bullet->position) || bullet->lifetime >= bullet->lifespan) {
             return true;
         }

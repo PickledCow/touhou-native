@@ -26,7 +26,7 @@ void fragment() {
 	vec2 uv = texPixel * position + texPixel * size * UV;
 	
 	float frame_count = floor(MODULATE.a);
-	float frame = mod(floor(animation_speed * TIME + fract(MODULATE.a)), frame_count);
+	float frame = mod(floor(animation_speed * TIME + fract(MODULATE.a) * frame_count), frame_count);
 	uv.x += size.x * frame;
 	
 	vec4 tex = texture(TEXTURE, uv);

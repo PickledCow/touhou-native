@@ -575,11 +575,15 @@ Variant Bullets::create_item(Ref<BulletKit> kit, PoolRealArray item_data, Vector
 			Color compressed_data = Color();
 			compressed_data.r = item_data[1] + item_data[0] / kit->texture_width;
 			compressed_data.g = item_data[3] + item_data[2] / kit->texture_width;
+			compressed_data.b = 0.0f;
 			compressed_data.a = floor(item_data[7]) + animation_random;
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", item_data[5]);
 
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "layer", item_data[8]);
+
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "damage_type", item_data[9]);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "damage", item_data[10]);
 
 			return to_return;
 		}
@@ -1108,33 +1112,7 @@ bool Bullets::is_deleted(Variant id) {
 	return !is_bullet_valid(id);
 }
 
-void Bullets::add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color) {
-	// if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
-	// 	PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
-	// 	BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
-
-	// 	if(pool->get_available_bullets() > 0) {
-	// 		available_bullets -= 1;
-	// 		active_bullets += 1;
-
-	// 		BulletID bullet_id = pool->obtain_bullet();
-	// 		PoolIntArray to_return = invalid_id;
-	// 		to_return.set(0, bullet_id.index);
-	// 		to_return.set(1, bullet_id.cycle);
-	// 		to_return.set(2, bullet_id.set);
-
-	// 		int32_t pool_index = _get_pool_index(bullet_id.set, 0);
-	// 		Transform2D xform = Transform2D(6.28318530718f * (float)rand() / RAND_MAX, Vector2(0.0f, 0.0f)).scaled(Vector2(size, abs(size)));
-	// 		xform.set_origin(pos);
-	// 		pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "transform", xform);
-	// 		pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "lifespan", kit->fade_time);
-	// 		pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "lifetime", 0.0f);
-	// 		pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_color", color);
-			
-	// 		return to_return;
-	// 	}
-	// }
-	// return invalid_id;
+void Bullets::add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color, bool upright) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -1144,7 +1122,11 @@ void Bullets::add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Colo
 			active_bullets += 1;
 
 			Dictionary properties = Dictionary();
-			Transform2D xform = Transform2D(6.28318530718f * (float)rand() / RAND_MAX, Vector2(0.0f, 0.0f)).scaled(Vector2(size, abs(size)));
+			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f));
+			if (!upright) {
+				xform = xform.rotated(6.28318530718f * (float)rand() / RAND_MAX);
+			}
+			xform = xform.scaled(Vector2(size, abs(size)));
 	 		xform.set_origin(pos);
 			properties["transform"] = xform;
 			properties["lifespan"] = kit->fade_time;

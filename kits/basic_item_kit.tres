@@ -22,7 +22,7 @@ collisions_enabled = true
 collision_layer = 16
 collision_mask = 0
 collision_shape = SubResource( 1 )
-active_rect = Rect2( -64, -64, 1128, 1128 )
+active_rect = Rect2( -64, -564, 1128, 1628 )
 time_scale = 1.0
 data = {
 }
