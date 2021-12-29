@@ -73,14 +73,14 @@ void Bullets::_register_methods() {
 	register_method("is_deleted", &Bullets::is_deleted);
 	
 	register_method("set_bullet_properties", &Bullets::set_bullet_properties);
-	register_method("set_properties", &Bullets::set_bullet_properties);
 	register_method("set_bullet_properties_bulk", &Bullets::set_bullet_properties_bulk);
-	register_method("set_properties_bulk", &Bullets::set_bullet_properties_bulk);
 
 	
 
 	// Aliases of existing 
 	register_method("set_property", &Bullets::set_bullet_property);
+	register_method("set_properties", &Bullets::set_bullet_properties);
+	register_method("set_properties_bulk", &Bullets::set_bullet_properties_bulk);
 	register_method("get_property", &Bullets::get_bullet_property);
 	register_method("delete", &Bullets::release_bullet);
 
@@ -484,6 +484,10 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 
 			Color fade_color = Color(bullet_data[10], bullet_data[11], bullet_data[12]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_color", fade_color);
+
+			
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "damage_type", (int)bullet_data[13]);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "damage", bullet_data[14]);
 			
 			return to_return;
 		}
@@ -537,6 +541,10 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 
 			Color fade_color = Color(bullet_data[10], bullet_data[11], bullet_data[12]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_color", fade_color);
+
+			
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "damage_type", (int)bullet_data[13]);
+			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "damage", bullet_data[14]);
 
 			return to_return;
 		}

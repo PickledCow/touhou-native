@@ -23,7 +23,7 @@ var item_data2: PoolRealArray
 func _ready():
 	
 	data = PoolRealArray()
-	data.resize(13)
+	data.resize(15)
 	data[0] = 64 * 0			# source x (integer) # (16+8*(c/4))
 	data[1] = 64 * 0		# source y (integer) # (24+2*(c%4))
 	data[2] = 64				# source width (integer)
@@ -37,9 +37,11 @@ func _ready():
 	data[10] = 0.3				# rgb
 	data[11] = 0.3
 	data[12] = 0.9
+	data[13] = 0
+	data[14] = 0
 	
 	data2 = PoolRealArray()
-	data2.resize(13)
+	data2.resize(15)
 	data2[0] = 64 * 6			# source x (integer) # (16+8*(c/4))
 	data2[1] = 64 * 3		# source y (integer) # (24+2*(c%4))
 	data2[2] = 64			# source width (integer)
@@ -54,6 +56,8 @@ func _ready():
 	data[10] = 0.2				# rgb
 	data[11] = 0.2
 	data[12] = 0.9
+	data[13] = 0
+	data[14] = 0
 	
 	
 	item_data = PoolRealArray()
@@ -91,10 +95,10 @@ func _physics_process(delta):
 		#var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.POLYGON, position, 30.0, 3.0, o, 19, 5, data, true)
 		#var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN_ADV.RING, position, 60.0, 60.0, 3.0, 6.0, randf()*TAU, 150, 1, PI*0.5, data, true)
 		#for i in 1:
-		#var bullet = Bullets.create_shot_a1(bullet_kit, position, 3, TAU/4, data, false)
+		var bullet = Bullets.create_shot_a1(bullet_kit, position, 3, TAU/4, data, false)
 		for i in 20:
-			#pass
-			Bullets.create_item(item_kit, item_data2, position, rand_range(3, 6), randf()*TAU, (randi()%2-0.5)*2.0*0.5)
+			pass
+			#Bullets.create_item(item_kit, item_data2, position, rand_range(3, 6), randf()*TAU, (randi()%2-0.5)*2.0*0.5)
 			#Bullets.create_item(item_kit, item_data2, Vector2(rand_range(0,1000), -300), 0*rand_range(3, 6), randf()*TAU, (randi()%2-1)*1)
 		#Bullets.set_properties_bulk(bullets, {"wvel": 0.05})
 		#item_kit.time_scale = 0.1
