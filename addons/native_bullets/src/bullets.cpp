@@ -47,7 +47,7 @@ void Bullets::_register_methods() {
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
 	register_method("create_shot_a2", &Bullets::create_shot_a2);
 	register_method("create_item", &Bullets::create_item);
-	register_method("add_bullet_clear", &Bullets::add_bullet_clear);
+	register_method("add_particle", &Bullets::add_particle);
 	register_method("create_pattern_a1", &Bullets::create_pattern_a1);
 	register_method("create_pattern_a2", &Bullets::create_pattern_a2);
 
@@ -1151,7 +1151,7 @@ bool Bullets::is_deleted(Variant id) {
 	return !is_bullet_valid(id);
 }
 
-void Bullets::add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color, Vector2 drift, bool upright) {
+void Bullets::add_particle(Ref<BulletKit> kit, Vector2 pos, float size, Color color, Vector2 drift, bool upright) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();

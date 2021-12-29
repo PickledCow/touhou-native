@@ -54,8 +54,8 @@ func remove_bullet(bullet_id):
 	var p = Bullets.get_property(bullet_id, "position")
 	var s = Bullets.get_property(bullet_id, "scale")
 	var c = Bullets.get_property(bullet_id, "fade_color")
-	Bullets.add_bullet_clear(bullet_clear_kit, p, s, c, Vector2(), false)
-	Bullets.add_bullet_clear(bullet_clear_kit, p, -s*2, c, Vector2(), false)
+	Bullets.add_particle(bullet_clear_kit, p, s, c, Vector2(), false)
+	Bullets.add_particle(bullet_clear_kit, p, -s*2, c, Vector2(), false)
 	Bullets.release_bullet(bullet_id)
 
 func remove_item(bullet_id):
@@ -66,7 +66,7 @@ func remove_item(bullet_id):
 		if !Bullets.get_property(bullet_id, "fading"):
 			value *= min(1.0, 1.0 - (min(p.y, position.y) - 350.0) / 1300.0)
 		var c = Color(value, 0, 1 if value == max_value else 0, 0)
-		Bullets.add_bullet_clear(item_text_kit, p, 16, c, Vector2(0, -0.1), true)
+		Bullets.add_particle(item_text_kit, p, 16, c, Vector2(0, -0.1), true)
 		
 	Bullets.release_bullet(bullet_id)
 
