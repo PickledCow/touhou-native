@@ -20,9 +20,9 @@ _global_script_classes=[ {
 "path": "res://addons/native_bullets/kits/basic_item_kit.gdns"
 }, {
 "base": "Resource",
-"class": "BulletClearKit",
+"class": "BasicParticleKit",
 "language": "NativeScript",
-"path": "res://addons/native_bullets/kits/bullet_clear_kit.gdns"
+"path": "res://addons/native_bullets/kits/basic_particle_kit.gdns"
 }, {
 "base": "Resource",
 "class": "BulletKit",
@@ -56,8 +56,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "BasicBulletKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
-"BasicItemKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
-"BulletClearKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
+"BasicItemKit": "res://addons/native_bullets/icons/icon_item_kit.png",
+"BasicParticleKit": "res://addons/native_bullets/icons/icon_particle_kit.png",
 "BulletKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
 "Bullets": "res://addons/native_bullets/icons/icon_bullets.svg",
 "BulletsEnvironment": "res://addons/native_bullets/icons/icon_bullets_environment.svg",

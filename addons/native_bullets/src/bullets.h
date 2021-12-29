@@ -110,6 +110,7 @@ public:
 
 	void add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties);
 	void add_translate(Variant id, int32_t trigger, int32_t time, Dictionary properties);
+	void add_multiply(Variant id, int32_t trigger, int32_t time, Dictionary properties);
 	void add_aim_at_point(Variant id, int32_t trigger, int32_t time, Vector2 point);
 	void add_aim_at_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
 	void add_go_to_object(Variant id, int32_t trigger, int32_t time, Node2D* object);
@@ -117,6 +118,7 @@ public:
 
 	void add_pattern_bulk(Array bullets, int32_t trigger, int32_t time, Dictionary properties);
 	void add_translate_bulk(Array bullets, int32_t trigger, int32_t time, Dictionary properties);
+	void add_multiply_bulk(Array bullets, int32_t trigger, int32_t time, Dictionary properties);
 	void add_aim_at_point_bulk(Array bullets, int32_t trigger, int32_t time, Vector2 point);
 	void add_aim_at_object_bulk(Array bullets, int32_t trigger, int32_t time, Node2D* object);
 	void add_go_to_object_bulk(Array bullets, int32_t trigger, int32_t time, Node2D* object);
@@ -124,7 +126,7 @@ public:
 
 	bool is_deleted(Variant id);
 
-	void add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color, bool upright);
+	void add_bullet_clear(Ref<BulletKit> kit, Vector2 pos, float size, Color color, Vector2 drift, bool upright);
 
 };
 

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
-[ext_resource path="res://addons/native_bullets/kits/bullet_clear_kit.gdns" type="Script" id=1]
+[ext_resource path="res://addons/native_bullets/kits/basic_particle_kit.gdns" type="Script" id=1]
 [ext_resource path="res://itemtext.png" type="Texture" id=2]
 [ext_resource path="res://kits/item_text_material.tres" type="Material" id=3]
 

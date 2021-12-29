@@ -1,5 +1,5 @@
-#ifndef BULLET_CLEAR_KIT_H
-#define BULLET_CLEAR_KIT_H
+#ifndef BASIC_PARTICLE_KIT_H
+#define BASIC_PARTICLE_KIT_H
 
 #include <Godot.hpp>
 
@@ -13,23 +13,23 @@ using namespace godot;
 
 
 // Bullet kit definition.
-class BulletClearKit : public BulletKit {
-	GODOT_CLASS(BulletClearKit, BulletKit)
+class BasicParticleKit : public BulletKit {
+	GODOT_CLASS(BasicParticleKit, BulletKit)
 public:
-	BULLET_KIT(BulletClearsPool)
+	BULLET_KIT(BasicParticlesPool)
 
 	Ref<Texture> texture;
 
 	static void _register_methods() {
-		register_property<BulletClearKit, Ref<Texture>>("texture", &BulletClearKit::texture, Ref<Texture>(), 
+		register_property<BasicParticleKit, Ref<Texture>>("texture", &BasicParticleKit::texture, Ref<Texture>(), 
 			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_RESOURCE_TYPE, "Texture");
 		
-		BULLET_KIT_REGISTRATION(BulletClearKit, Bullet)
+		BULLET_KIT_REGISTRATION(BasicParticleKit, Bullet)
 	}
 };
 
 // Bullets pool definition.
-class BulletClearsPool : public AbstractBulletsPool<BulletClearKit, Bullet> {
+class BasicParticlesPool : public AbstractBulletsPool<BasicParticleKit, Bullet> {
 
 	// void _init_bullet(Bullet* bullet); Use default implementation.
 
@@ -56,6 +56,7 @@ class BulletClearsPool : public AbstractBulletsPool<BulletClearKit, Bullet> {
         Color c = bullet->fade_color;
         c.a = bullet->lifetime / bullet->lifespan;
         VisualServer::get_singleton()->canvas_item_set_modulate(bullet->item_rid, c);
+		bullet->transform = bullet->transform.translated(bullet->direction);
         if (bullet->lifetime >= bullet->lifespan) {
             return true;
         }
@@ -66,6 +67,6 @@ class BulletClearsPool : public AbstractBulletsPool<BulletClearKit, Bullet> {
 	}
 };
 
-BULLET_KIT_IMPLEMENTATION(BulletClearKit, BulletClearsPool)
+BULLET_KIT_IMPLEMENTATION(BasicParticleKit, BasicParticlesPool)
 
 #endif

@@ -4,6 +4,5 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/move_amount = 1.0
 shader_param/normal_color = Color( 1, 1, 1, 1 )
 shader_param/max_color = Color( 1, 1, 0, 1 )

@@ -3,8 +3,8 @@
 [ext_resource path="res://addons/native_bullets/bullets.gdnlib" type="GDNativeLibrary" id=1]
 
 [resource]
-resource_name = "BulletClearKit"
-class_name = "BulletClearKit"
+resource_name = "BasicParticleKit"
+class_name = "BasicParticleKit"
 library = ExtResource( 1 )
-script_class_name = "BulletClearKit"
-script_class_icon_path = "res://addons/native_bullets/icons/icon_bullet_kit.svg"
+script_class_name = "BasicParticleKit"
+script_class_icon_path = "res://addons/native_bullets/icons/icon_particle_kit.png"

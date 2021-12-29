@@ -7,4 +7,4 @@ resource_name = "BasicItemKit"
 class_name = "BasicItemKit"
 library = ExtResource( 1 )
 script_class_name = "BasicItemKit"
-script_class_icon_path = "res://addons/native_bullets/icons/icon_bullet_kit.svg"
+script_class_icon_path = "res://addons/native_bullets/icons/icon_item_kit.png"

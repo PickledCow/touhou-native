@@ -3,7 +3,6 @@
 [resource]
 code = "shader_type canvas_item;
 
-uniform float move_amount = 20.0;
 uniform vec4 normal_color : hint_color;
 uniform vec4 max_color : hint_color;
 
@@ -22,7 +21,6 @@ void vertex() {
 	float fade = MODULATE.a; // Gets the fade value from the custom colour of the mesh instance
 	VERTEX.x *= digits; // Resizes the number, shifting it outwards as more digits are added
 	VERTEX.y *= TEXTURE_PIXEL_SIZE.x / TEXTURE_PIXEL_SIZE.y * 10.0; // Resize the height to the required factor
-	VERTEX.y -= fade * move_amount; // Moves the text up as it fades up
 }
 
 // Finds the n'th digit given a number

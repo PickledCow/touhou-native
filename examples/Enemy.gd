@@ -92,15 +92,16 @@ func _physics_process(delta):
 		#var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN_ADV.RING, position, 60.0, 60.0, 3.0, 6.0, randf()*TAU, 150, 1, PI*0.5, data, true)
 		#for i in 1:
 		#var bullet = Bullets.create_shot_a1(bullet_kit, position, 3, TAU/4, data, false)
-		for i in 200:
+		for i in 20:
 			#pass
-			#Bullets.create_item(item_kit, item_data2, position, rand_range(3, 6), randf()*TAU, (randi()%2-1)*0.5)
-			Bullets.create_item(item_kit, item_data2, Vector2(rand_range(0,1000), -300), 0*rand_range(3, 6), randf()*TAU, (randi()%2-1)*1)
+			Bullets.create_item(item_kit, item_data2, position, rand_range(3, 6), randf()*TAU, (randi()%2-0.5)*2.0*0.5)
+			#Bullets.create_item(item_kit, item_data2, Vector2(rand_range(0,1000), -300), 0*rand_range(3, 6), randf()*TAU, (randi()%2-1)*1)
 		#Bullets.set_properties_bulk(bullets, {"wvel": 0.05})
+		#item_kit.time_scale = 0.1
 		#Bullets.add_transform_bulk(bullets, Constants.TRIGGER.TIME, 60, {"wvel": 0.0})
 		#Bullets.add_aim_at_object_bulk(bullets, 0, 60, player)
 		#Bullets.add_change_bullet_bulk(bullets, 0, 60, data2, true)
-		#Bullets.add_transform(bullet, Constants.TRIGGER.TIME, 60, {"speed": 10.0, "angle": PI*0.5})
+		#Bullets.add_multiply(bullet, Constants.TRIGGER.TIME, 60, {"speed": 10.0})
 		c = (c + 1) % 8
 		
 	

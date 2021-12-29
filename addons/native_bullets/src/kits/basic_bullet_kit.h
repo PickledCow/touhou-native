@@ -177,14 +177,35 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						}
 						break;
 					}
+
+					case 2: { // Multiply
+						Dictionary properties = (Dictionary)pattern[3];
+						Array keys = properties.keys();
+						for(int32_t i = 0; i < keys.size(); i++) {
+							switch (properties[keys[i]].get_type()) {
+								case (Variant::Type::REAL):
+									bullet->set(keys[i], (float)bullet->get(keys[i]) * (float)properties[keys[i]]);
+									break;
+								case (Variant::Type::VECTOR2): {
+									Vector2 f = (Vector2)properties[keys[i]];
+									Vector2 v = (Vector2)bullet->get(keys[i]);
+									bullet->set(keys[i], Vector2(f.x * v.x, f.y * v.y));
+									break;
+									}
+								default:
+									break;
+							}
+						}
+						break;
+					}
 					
-					case 2: { // aim at point
+					case 3: { // aim at point
 						Vector2 point = (Vector2)pattern[3];
 						bullet->angle = (point).angle_to_point(bullet->position);
 						break;
 					}
 
-					case 3: { // aim at object
+					case 4: { // aim at object
 						Node2D *node = (Node2D*)pattern[3];
 						godot_int instance_id = (int)pattern[4];
 						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id(instance_id))) {
@@ -193,7 +214,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						break;
 					}
 
-					case 4: { // go to object
+					case 5: { // go to object
 						Node2D *node = (Node2D*)pattern[3];
 						godot_int instance_id = (int)pattern[4];
 						if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id(instance_id))) {
@@ -202,7 +223,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 						break;
 					}
 
-					case 5: { // change bullet type
+					case 6: { // change bullet type
 						bullet->bullet_data = (Color)pattern[3];
 						bullet->scale = (float)pattern[4];
 						bullet->hitbox_scale = (float)pattern[5];

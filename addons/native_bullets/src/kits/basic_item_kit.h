@@ -80,12 +80,16 @@ class BasicItemsPool : public AbstractBulletsPool<BasicItemKit, Bullet> {
             godot_int instance_id = bullet->magnet_target_id;
             if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id(instance_id))) {
                 float angle = ((Vector2)node->get_position()).angle_to_point(bullet->position);
-                bullet->position += Vector2(kit->magnet_strength, 0.0f).rotated(angle);
+                bullet->position += Vector2(kit->magnet_strength * delta, 0.0f).rotated(angle);
             }
         } else if (bullet->fade_timer) {
             bullet->fade_timer -= delta;
-            bullet->position += bullet->speed * bullet->direction;
-            bullet->speed *= kit->damp;
+            bullet->position += bullet->speed * bullet->direction * delta;
+            if (delta == 1) {
+                bullet->speed *= kit->damp;
+            } else {
+                bullet->speed *= powf(kit->damp, delta);
+            }
             Transform2D xform = bullet->transform.rotated(bullet->spin);
             if (bullet->fade_timer <= 0.0f) {
                 bullet->fade_timer = 0.0f;
@@ -94,7 +98,7 @@ class BasicItemsPool : public AbstractBulletsPool<BasicItemKit, Bullet> {
             xform.set_origin(bullet->position);
             bullet->transform = xform;
         } else {
-            bullet->position += kit->gravity;
+            bullet->position += kit->gravity * delta;
         }
         if (bullet->position.y < bullet->scale * -0.5f) {
             Vector2 pos = bullet->position;
