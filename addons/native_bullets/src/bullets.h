@@ -126,7 +126,7 @@ public:
 
 	bool is_deleted(Variant id);
 
-	void add_particle(Ref<BulletKit> kit, Vector2 pos, float size, Color color, Vector2 drift, bool upright);
+	void create_particle(Ref<BulletKit> kit, Vector2 pos, float size, Color color, Vector2 drift, bool upright);
 
 };
 

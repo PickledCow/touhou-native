@@ -47,7 +47,7 @@ void Bullets::_register_methods() {
 	register_method("create_shot_a1", &Bullets::create_shot_a1);
 	register_method("create_shot_a2", &Bullets::create_shot_a2);
 	register_method("create_item", &Bullets::create_item);
-	register_method("add_particle", &Bullets::add_particle);
+	register_method("create_particle", &Bullets::create_particle);
 	register_method("create_pattern_a1", &Bullets::create_pattern_a1);
 	register_method("create_pattern_a2", &Bullets::create_pattern_a2);
 
@@ -485,7 +485,7 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			Color fade_color = Color(bullet_data[10], bullet_data[11], bullet_data[12]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "fade_color", fade_color);
 
-			
+
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "damage_type", (int)bullet_data[13]);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "damage", bullet_data[14]);
 			
@@ -1159,7 +1159,7 @@ bool Bullets::is_deleted(Variant id) {
 	return !is_bullet_valid(id);
 }
 
-void Bullets::add_particle(Ref<BulletKit> kit, Vector2 pos, float size, Color color, Vector2 drift, bool upright) {
+void Bullets::create_particle(Ref<BulletKit> kit, Vector2 pos, float size, Color color, Vector2 drift, bool upright) {
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();

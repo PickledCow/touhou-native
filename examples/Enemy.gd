@@ -97,8 +97,8 @@ func _physics_process(delta):
 		#for i in 1:
 		var bullet = Bullets.create_shot_a1(bullet_kit, position, 3, TAU/4, data, false)
 		for i in 20:
-			pass
-			#Bullets.create_item(item_kit, item_data2, position, rand_range(3, 6), randf()*TAU, (randi()%2-0.5)*2.0*0.5)
+			#pass
+			Bullets.create_item(item_kit, item_data2, position, rand_range(3, 6), randf()*TAU, (randi()%2-0.5)*2.0*0.5)
 			#Bullets.create_item(item_kit, item_data2, Vector2(rand_range(0,1000), -300), 0*rand_range(3, 6), randf()*TAU, (randi()%2-1)*1)
 		#Bullets.set_properties_bulk(bullets, {"wvel": 0.05})
 		#item_kit.time_scale = 0.1
