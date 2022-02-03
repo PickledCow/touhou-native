@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mgun00.wav-0331c7ef743b8005be2631b9a35d3738.sample"
+
+[deps]
+
+source_file="res://default/se/mgun00.wav"
+dest_files=[ "res://.import/mgun00.wav-0331c7ef743b8005be2631b9a35d3738.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

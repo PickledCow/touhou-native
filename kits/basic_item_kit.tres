@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/native_bullets/kits/basic_item_kit.gdns" type="Script" id=1]
 [ext_resource path="res://kits/basic_item_material.tres" type="Material" id=2]
-[ext_resource path="res://item.png" type="Texture" id=3]
+[ext_resource path="res://default/bullets/item.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 0.5
@@ -12,7 +12,6 @@ script = ExtResource( 1 )
 texture = ExtResource( 3 )
 gravity = Vector2( 0, 2 )
 damp = 0.95
-spin = 1.0
 magnet_strength = 15.0
 bullet_class_name = "Bullet"
 texture_width = 1024.0
@@ -23,6 +22,7 @@ collision_layer = 16
 collision_mask = 0
 collision_shape = SubResource( 1 )
 active_rect = Rect2( -64, -564, 1128, 1628 )
+bounce_rect = Rect2( 0, 0, 0, 0 )
 time_scale = 1.0
 data = {
 }

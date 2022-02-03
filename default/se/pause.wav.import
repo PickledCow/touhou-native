@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/pause.wav-19f63d479d271b0f274eda6af5a6f633.sample"
+
+[deps]
+
+source_file="res://default/se/pause.wav"
+dest_files=[ "res://.import/pause.wav-19f63d479d271b0f274eda6af5a6f633.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

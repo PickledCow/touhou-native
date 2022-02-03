@@ -6,6 +6,7 @@
 #include <Engine.hpp>
 #include <Font.hpp>
 #include <RegExMatch.hpp>
+#include <Node2D.hpp>
 #include <Transform2D.hpp>
 #include <Array.hpp>
 
@@ -107,7 +108,17 @@ void Bullets::_init() {
 void Bullets::_physics_process(float delta) {
 	if(Engine::get_singleton()->is_editor_hint()) {
 		return;
+	
 	}
+	
+	Vector2 origin = parent->get_global_position();
+	if (last_origin != origin) {
+		last_origin = origin;
+		for (int i = 0; i < shared_areas.size(); i++) {
+			Physics2DServer::get_singleton()->area_set_transform(shared_areas[i], Transform2D(0.0f, origin));
+		}
+	}
+
 	int32_t bullets_variation = 0;
 
 	for(int32_t i = 0; i < pool_sets.size(); i++) {
@@ -160,7 +171,9 @@ void Bullets::mount(Node* bullets_environment) {
 	Array bullet_kits = bullets_environment->get("bullet_kits");
 	Array pools_sizes = bullets_environment->get("pools_sizes");
 	Array z_indices = bullets_environment->get("z_indices");
-	Vector2 origin = bullets_environment->get_parent()->get("position");
+	parent = (Node2D*)bullets_environment->get_parent();
+	Vector2 origin = parent->get_global_position();
+	last_origin = origin;
 
 	pool_sets.clear();
 	areas_to_pool_set_indices.clear();
@@ -239,7 +252,7 @@ void Bullets::mount(Node* bullets_environment) {
 			pool_sets[i].pools[j].size = pool_size;
 			pool_sets[i].pools[j].z_index = z_indices[kit_index_in_node];
 
-			pool_sets[i].pools[j].pool->_init(this, shared_area, pool_set_available_bullets,
+			pool_sets[i].pools[j].pool->_init(((CanvasItem*)bullets_environment->get_parent()), shared_area, pool_set_available_bullets,
 				i, kit, pool_size, z_indices[kit_index_in_node], origin);
 
 			pool_set_available_bullets += pool_size;
@@ -834,6 +847,38 @@ Variant Bullets::create_pattern_a2(Ref<BulletKit> kit, int mode, Vector2 pos, fl
 			break;
 		}
 		
+		case 4: { // chevron
+			if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
+				PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
+				BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+
+				float step = spread / ((float)density - 1.0f);
+
+				float oset = density % 2 == 0 ? -0.5f : 0.0f;
+
+				// Stack does nothing
+				for (int i = std::min(density / 2, pool->get_available_bullets()); i > 0; i--) {
+					float a = angle + (i + oset) * step;
+					float interp = (2.0f * i) / density;
+					float r = r1 + (r2 - r1) * interp;
+					float speed = speed1 + (speed2 - speed1) * interp;
+					Vector2 p = pos + r * Vector2(cos(a), sin(a));
+					Variant bullet = create_shot_a1(kit, p, speed, a, bullet_data, fade_in);
+					bullets.append(bullet);
+					
+					a = angle - (i + oset) * step;
+					p = pos + r * Vector2(cos(a), sin(a));
+					bullet = create_shot_a1(kit, p, speed, a, bullet_data, fade_in);
+					bullets.append(bullet);
+				}
+				if (density % 2 == 1) {
+					Vector2 p = pos + r1 * Vector2(cos(angle), sin(angle));
+					Variant bullet = create_shot_a1(kit, p, speed1, angle, bullet_data, fade_in);
+					bullets.append(bullet);
+				}
+			}
+			break;
+		}
 		default:
 			break;
 	}

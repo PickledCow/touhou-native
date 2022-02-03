@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://addons/native_bullets/kits/basic_bullet_kit.gdns" type="Script" id=1]
+[ext_resource path="res://examples/player/shots.png" type="Texture" id=2]
+[ext_resource path="res://kits/basic_bullet_material.tres" type="Material" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 0.5
+
+[resource]
+script = ExtResource( 1 )
+texture = ExtResource( 2 )
+bullet_class_name = "Bullet"
+texture_width = 512.0
+material = ExtResource( 3 )
+fade_time = 8.0
+collisions_enabled = true
+collision_layer = 8
+collision_mask = 0
+collision_shape = SubResource( 1 )
+active_rect = Rect2( -64, -64, 1128, 1128 )
+bounce_rect = Rect2( 0, 0, 1000, 1000 )
+time_scale = 1.0
+data = {
+}

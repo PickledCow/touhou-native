@@ -1,0 +1,28 @@
+#ifndef BLUR_H
+#define BLUR_H
+
+#include <Godot.hpp>
+// #include <dwmapi.h>
+
+
+#include <Node.hpp>
+
+using namespace godot;
+
+class Blur : public Node {
+	GODOT_CLASS(Blur, Node)
+    
+public:
+
+	static void _register_methods();
+
+	Blur();
+	~Blur();
+
+	void _init();
+
+	// HRESULT EnableBlurBehind(HWND hwnd);
+	void blur_screen(int64_t pointer);
+
+};
+#endif

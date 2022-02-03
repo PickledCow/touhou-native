@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/graze.wav-6533fb407dfed7e2ab6a600a87e5707d.sample"
+
+[deps]
+
+source_file="res://default/se/graze.wav"
+dest_files=[ "res://.import/graze.wav-6533fb407dfed7e2ab6a600a87e5707d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

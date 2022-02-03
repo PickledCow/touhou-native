@@ -6,14 +6,14 @@ code = "shader_type canvas_item;
 uniform vec4 normal_color : hint_color;
 uniform vec4 max_color : hint_color;
 
-const float inv_log10 = 1.0 / log(10.0);
+const float inv_log10 = 1.0 / log2(10.0);
 const float base = 10.0;
 const float one = 1.0;
 
 // Custom colour: (value, fade, max_item, unused)
 
 float log10(float x) {
-	return log(x) * inv_log10;
+	return log2(x) * inv_log10;
 }
 
 void vertex() {

@@ -56,6 +56,7 @@ public:
 	float rotation;
 	float spin;
 
+	bool auto_delete;
 	float fade_timer;
 	float fade_time;
 	bool fade_delete;
@@ -64,6 +65,9 @@ public:
 	bool grazed;
 	Node2D *magnet_target;
 	int magnet_target_id;
+
+	int bounce_count;
+	int bounce_surfaces; // right left down up
 
 	float damage;
 	int damage_type;
@@ -103,6 +107,7 @@ public:
 		register_property<Bullet, float>("scale_vel", &Bullet::scale_vel, 16.0f);
 		register_property<Bullet, float>("hitbox_scale", &Bullet::hitbox_scale, 0.5f);
 		register_property<Bullet, float>("texture_offset", &Bullet::texture_offset, 0.0f);
+		register_property<Bullet, bool>("auto_delete", &Bullet::auto_delete, true);
 		register_property<Bullet, float>("fade_timer", &Bullet::fade_timer, 0.0f);
 		register_property<Bullet, float>("fade_time", &Bullet::fade_time, 0.0f);
 		register_property<Bullet, bool>("fade_delete", &Bullet::fade_delete, false);
@@ -111,6 +116,8 @@ public:
 		register_property<Bullet, bool>("grazed", &Bullet::grazed, false);
 		register_property<Bullet, Node2D*>("magnet_target", &Bullet::magnet_target, NULL);
 		register_property<Bullet, int>("magnet_target_id", &Bullet::magnet_target_id, 0);
+		register_property<Bullet, int>("bounce_count", &Bullet::bounce_count, 0);
+		register_property<Bullet, int>("bounce_surfaces", &Bullet::bounce_surfaces, 0);
 
 		register_property<Bullet, float>("damage", &Bullet::damage, 0);
 		register_property<Bullet, int>("damage_type", &Bullet::damage_type, 0);

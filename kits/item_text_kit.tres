@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://addons/native_bullets/kits/basic_particle_kit.gdns" type="Script" id=1]
-[ext_resource path="res://itemtext.png" type="Texture" id=2]
+[ext_resource path="res://default/bullets/itemtext.png" type="Texture" id=2]
 [ext_resource path="res://kits/item_text_material.tres" type="Material" id=3]
 
 [resource]
@@ -15,6 +15,7 @@ collisions_enabled = false
 collision_layer = 0
 collision_mask = 0
 active_rect = Rect2( 0, 0, 0, 0 )
+bounce_rect = Rect2( 0, 0, 0, 0 )
 time_scale = 1.0
 data = {
 }

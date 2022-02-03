@@ -1,4 +1,4 @@
-extends Sprite
+extends Node2D
 
 export(Resource) var bullet_kit
 export(Resource) var bullet_kit_add
@@ -7,111 +7,112 @@ export(Resource) var item_kit
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 
+var first_bullet 
+
 var t := 0
 var dw := 0.0
 var c := 0
-var lr := 1
+var lr := 1.0
+var a := 0.0
 
-var density := 30
+var density := 50
+
+var health := 10000.0
+var max_health := 10000.0
+
+var galacta_start_position := Vector2()
+var galacta_target_position := Vector2()
+var galacta_travel_time := 0.0
+var galacta_travel_timer := 0.0
+
+var remilia_start_position := Vector2()
+var remilia_target_position := Vector2()
+var remilia_travel_time := 0.0
+var remilia_travel_timer := 0.0
 
 var data: PoolRealArray
 var data2: PoolRealArray
+var data3: PoolRealArray
 
 var item_data: PoolRealArray
 var item_data2: PoolRealArray
 
+onready var galacta := $galacta
+onready var remilia := $remilia
+
+var attack_prefabs := [ preload("res://examples/boss/attacks/non1.tscn"), 
+						preload("res://examples/boss/attacks/non2.tscn"), 
+]
+var attacks := []
+var phase := 0
+
 func _ready():
+	data = DefSys.get_bullet_data(DefSys.BULLET_TYPE.KNIFE, DefSys.COLORS_LARGE.ORANGE)
+	data[Constants.BULLET_DATA_STRUCTURE.SIZE] *= 1.5
+	data[Constants.BULLET_DATA_STRUCTURE.LAYER] = DefSys.LAYERS.LARGE_BULLETS + 1
+	data2 = DefSys.get_bullet_data(DefSys.BULLET_TYPE.KNIFE, DefSys.COLORS_LARGE.ORANGE)
+	data2[Constants.BULLET_DATA_STRUCTURE.SIZE] *= 1.25
+	data3 = DefSys.get_bullet_data(DefSys.BULLET_TYPE.KNIFE, DefSys.COLORS_LARGE.RED)
+	data3[Constants.BULLET_DATA_STRUCTURE.SIZE] *= 1.5
 	
-	data = PoolRealArray()
-	data.resize(15)
-	data[0] = 64 * 0			# source x (integer) # (16+8*(c/4))
-	data[1] = 64 * 0		# source y (integer) # (24+2*(c%4))
-	data[2] = 64				# source width (integer)
-	data[3] = 64				# source height (integer)
-	data[4] = 32.0				# bullet size [0, inf)
-	data[5] = 0.15				# hitbox ratio [0, 1]
-	data[6] = 0					# Sprite offset y (integer)
-	data[7] = 1					# anim frame, 1 for no animation (integer)
-	data[8] = 0					# spin
-	data[9] = 0					# layer
-	data[10] = 0.3				# rgb
-	data[11] = 0.3
-	data[12] = 0.9
-	data[13] = 0
-	data[14] = 0
-	
-	data2 = PoolRealArray()
-	data2.resize(15)
-	data2[0] = 64 * 6			# source x (integer) # (16+8*(c/4))
-	data2[1] = 64 * 3		# source y (integer) # (24+2*(c%4))
-	data2[2] = 64			# source width (integer)
-	data2[3] = 64				# source height (integer)
-	data2[4] = 32.0				# bullet size [0, inf)
-	data2[5] = 0.5				# hitbox ratio [0, 1]
-	data2[6] = 0					# Sprite offset y (integer)
-	data2[7] = 1					# anim frame, 1 for no animation (integer)
-	data2[8] = 0					# spin
-	data2[9] = 0
-	data[10] = 0
-	data[10] = 0.2				# rgb
-	data[11] = 0.2
-	data[12] = 0.9
-	data[13] = 0
-	data[14] = 0
+	for attack in attack_prefabs:
+		attacks.append(attack.instance())
 	
 	
-	item_data = PoolRealArray()
-	item_data.resize(11)
-	item_data[0] = 128 * 4			# source x (integer) # (16+8*(c/4))
-	item_data[1] = 128 * 0		# source y (integer) # (24+2*(c%4))
-	item_data[2] = 128				# source width (integer)
-	item_data[3] = 128				# source height (integer)
-	item_data[4] = 64.0				# bullet size [0, inf)
-	item_data[5] = 1.0				# hitbox ratio [0, 1]
-	item_data[6] = 0					# Sprite offset y (integer)
-	item_data[7] = 0					# anim frame, 1 for no animation (integer)
-	item_data[8] = 0					# layer
-	item_data[9] = 1					# type
-	item_data[10] = 1					# value
-	
-	item_data2 = PoolRealArray()
-	item_data2.resize(11)
-	item_data2[0] = 64 * 13			# source x (integer) # (16+8*(c/4))
-	item_data2[1] = 64 * 0		# source y (integer) # (24+2*(c%4))
-	item_data2[2] = 64				# source width (integer)
-	item_data2[3] = 64				# source height (integer)
-	item_data2[4] = 32.0				# bullet size [0, inf)
-	item_data2[5] = 1.0				# hitbox ratio [0, 1]
-	item_data2[6] = 0					# Sprite offset y (integer)
-	item_data2[7] = 1					# anim frame, 1 for no animation (integer)
-	item_data2[8] = 1					# layer
-	item_data2[9] = 0					# type
-	item_data2[10] = 0					# value
+
+func smooth_interp(x: float):
+	return (2.0 - x) * x
 
 func _physics_process(delta):
-	if t % 10 == 0 :
-		lr *= -1
-		var o : float = t*t*0.000015+ PI * 0.5
-		#var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.POLYGON, position, 30.0, 3.0, o, 19, 5, data, true)
-		#var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN_ADV.RING, position, 60.0, 60.0, 3.0, 6.0, randf()*TAU, 150, 1, PI*0.5, data, true)
-		#for i in 1:
-		var bullet = Bullets.create_shot_a1(bullet_kit, position, 3, TAU/4, data, false)
-		for i in 20:
-			#pass
-			Bullets.create_item(item_kit, item_data2, position, rand_range(3, 6), randf()*TAU, (randi()%2-0.5)*2.0*0.5)
-			#Bullets.create_item(item_kit, item_data2, Vector2(rand_range(0,1000), -300), 0*rand_range(3, 6), randf()*TAU, (randi()%2-1)*1)
-		#Bullets.set_properties_bulk(bullets, {"wvel": 0.05})
-		#item_kit.time_scale = 0.1
-		#Bullets.add_transform_bulk(bullets, Constants.TRIGGER.TIME, 60, {"wvel": 0.0})
-		#Bullets.add_aim_at_object_bulk(bullets, 0, 60, player)
-		#Bullets.add_change_bullet_bulk(bullets, 0, 60, data2, true)
-		#Bullets.add_multiply(bullet, Constants.TRIGGER.TIME, 60, {"speed": 10.0})
-		c = (c + 1) % 8
-		
-	
+	if t == 0:
+		var attack_types = []
+		for i in range(len(attacks) - 1, -1, -1):
+			attack_types.append(attacks[i].attack_type)
+		DefSys.boss_bar.set_phase_icons(attack_types)
+	DefSys.boss_bar.health = health
+	if t == 350:
+		DefSys.background_controller.flash()
+	if t == 375:
+		galacta.position = Vector2(500, 350)
+		#remilia.position.y = 150
+		add_child(attacks[0])
+	if t > 1200:
+		health -= 0
+	if t >= 35:
+		if false:
+			var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING, Vector2(500, 500), 0.0, 10.0, randf()*TAU, density, 0, data, true)
+			if Input.is_action_just_pressed("debug2"):
+				density -= 1
+			if Input.is_action_just_pressed("debug3"):
+				density += 1
+			DefSys.hacky_common_data = density
+
 	t += 1
-	if Input.is_action_just_pressed("lessbullet"):
-		density = max(density-10, 10)
-	if Input.is_action_just_pressed("morebullet"):
-		density = min(density+10, 1000)
-		
+	
+	if galacta_travel_timer < galacta_travel_time:
+		galacta_travel_timer += 1.0
+		galacta.position = galacta_start_position + (galacta_target_position - galacta_start_position) * smooth_interp(min(1.0, galacta_travel_timer / galacta_travel_time))
+
+	if remilia_travel_timer < remilia_travel_time:
+		remilia_travel_timer += 1.0
+		remilia.position = remilia_start_position + (remilia_target_position - remilia_start_position) * smooth_interp(min(1.0, remilia_travel_timer / remilia_travel_time))
+
+func set_galacta_dest(dest: Vector2, frame: float):
+	galacta_start_position = galacta.position
+	galacta_target_position = dest
+	galacta_travel_time = frame
+	galacta_travel_timer = 0.0
+	
+func set_remilia_dest(dest: Vector2, frame: float):
+	remilia_start_position = remilia.position
+	remilia_target_position = dest
+	remilia_travel_time = frame
+	remilia_travel_timer = 0.0
+
+func _on_area_shape_entered(area_id, _area, area_shape, _local_shape):
+	var bullet_id = Bullets.get_bullet_from_shape(area_id, area_shape)
+	health -= Bullets.get_property(bullet_id, "damage")
+	call_deferred("remove_bullet", bullet_id)
+
+func remove_bullet(bullet_id):
+	Bullets.delete(bullet_id)

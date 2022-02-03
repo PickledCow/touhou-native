@@ -48,6 +48,9 @@ private:
 	int32_t active_bullets = 0;
 	int32_t total_bullets = 0;
 
+	Node2D* parent;
+	Vector2 last_origin;
+
 	Array shared_areas;
 	PoolIntArray invalid_id;
 

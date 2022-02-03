@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://examples/boss/spark.tscn" type="PackedScene" id=1]
+[ext_resource path="res://examples/boss/fire.png" type="Texture" id=2]
+[ext_resource path="res://examples/boss/suck.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = true
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.256579, 0.28692, 0.323171, 0.997722, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 1.18008, 0, 1.2, 1, 2.81113, 1.16, 2.88, 0.99, 1.03945, 0, 1.2, 1, 0, 0, 0, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.223684, 1 ), 0.006643, 0.006643, 0, 0, Vector2( 1, 0.454545 ), -0.0921211, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+trail_divisor = 2
+emission_shape = 1
+emission_sphere_radius = 16.0
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, -600, 0 )
+initial_velocity = 50.0
+initial_velocity_random = 0.1
+angular_velocity = 45.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 8.0
+linear_accel_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale = 0.75
+scale_random = 0.5
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
+hue_variation = -0.25
+hue_variation_random = 1.0
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[node name="cosmicflame" type="Particles2D"]
+material = SubResource( 1 )
+amount = 128
+lifetime = 0.5
+local_coords = false
+process_material = SubResource( 6 )
+texture = ExtResource( 2 )
+
+[node name="flame" type="Particles2D" parent="."]
+material = SubResource( 1 )
+z_index = 2
+amount = 36
+local_coords = false
+draw_order = 1
+process_material = SubResource( 6 )
+texture = ExtResource( 2 )
+
+[node name="spark" parent="." instance=ExtResource( 1 )]
+visible = false
+
+[node name="suck" parent="." instance=ExtResource( 3 )]

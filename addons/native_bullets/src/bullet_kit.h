@@ -49,6 +49,8 @@ public:
 	Ref<Shape2D> collision_shape;
 	// Controls where the bullets can live, if a bullet exits this rect, it will be removed.
 	Rect2 active_rect;
+	// The box for where the bullets bounce off of
+	Rect2 bounce_rect;
 	// How "fast" bullets act
 	float time_scale = 1.0f;
 	// Additional data the user can set via the editor.
@@ -76,6 +78,8 @@ public:
 			Ref<Shape2D>(), GODOT_METHOD_RPC_MODE_DISABLED,GODOT_PROPERTY_USAGE_DEFAULT,
 			GODOT_PROPERTY_HINT_RESOURCE_TYPE, "Shape2D");
 		register_property<BulletKit, Rect2>("active_rect", &BulletKit::active_rect, Rect2(),
+			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_NONE);
+		register_property<BulletKit, Rect2>("bounce_rect", &BulletKit::bounce_rect, Rect2(),
 			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_NONE);
 		register_property<BulletKit, float>("time_scale", &BulletKit::time_scale, 1.0f);
 		register_property<BulletKit, Variant>("data", &BulletKit::data, Dictionary(),

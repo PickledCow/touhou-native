@@ -91,7 +91,7 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 	
 	// Vector2 origin = Physics2DServer::get_singleton()->area_get_transform(shared_area).get_origin();
 	Transform2D xform = Transform2D(0.0f, origin);
-	VisualServer::get_singleton()->canvas_item_set_transform(canvas_item, xform);
+	// VisualServer::get_singleton()->canvas_item_set_transform(canvas_item, xform);
 
 	for(int32_t i = 0; i < pool_size; i++) {
 		BulletType* bullet = BulletType::_new();
@@ -118,6 +118,7 @@ void AbstractBulletsPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, RID 
 template <class Kit, class BulletType>
 int32_t AbstractBulletsPool<Kit, BulletType>::_process(float delta) {
 	active_rect = kit->active_rect;
+	bounce_rect = kit->bounce_rect;
 	int32_t amount_variation = 0;
 
 	if(collisions_enabled) {

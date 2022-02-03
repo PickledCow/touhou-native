@@ -1,0 +1,42 @@
+#include <OS.hpp>
+#include "blur.h"
+
+using namespace godot;
+
+void Blur::_register_methods() {
+	register_method("blur_screen", &Blur::blur_screen);
+}
+
+
+Blur::Blur() { }
+
+Blur::~Blur() { }
+
+void Blur::_init() { }
+
+
+// HRESULT Blur::EnableBlurBehind(HWND hwnd)
+// {
+//     HRESULT hr = S_OK;
+
+//     // Create and populate the blur-behind structure.
+//     DWM_BLURBEHIND bb = {0};
+
+//     // Specify blur-behind and blur region.
+//     bb.dwFlags = DWM_BB_ENABLE;
+//     bb.fEnable = true;
+//     bb.hRgnBlur = NULL;
+
+//     // Enable blur-behind.
+//     hr = DwmEnableBlurBehindWindow(hwnd, &bb);
+//     if (SUCCEEDED(hr))
+//     {
+//         // ...
+//     }
+//     return hr;
+// }
+
+void Blur::blur_screen(int64_t pointer) {
+	// EnableBlurBehind(HWND(pointer)); // 2 = OS::WINDOW_HANDLE
+}
+

@@ -19,11 +19,15 @@ public:
 	BULLET_KIT(BasicBulletsPool)
 
 	Ref<Texture> texture;
+	// The box for where the bullets bounce off of
+	//Rect2 bounce_rect;
 
 	static void _register_methods() {
 		register_property<BasicBulletKit, Ref<Texture>>("texture", &BasicBulletKit::texture, Ref<Texture>(), 
 			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_RESOURCE_TYPE, "Texture");
-		
+		//register_property<BasicBulletKit, Rect2>("bounce_rect", &BasicBulletKit::bounce_rect, Rect2(),
+		//	GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_NONE);
+
 		BULLET_KIT_REGISTRATION(BasicBulletKit, Bullet)
 	}
 };
@@ -35,6 +39,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 
 	void _enable_bullet(Bullet* bullet) {
 		// Reset some bullet variables that are not set by the create_bullet functions
+		bullet->auto_delete = true;
 		bullet->grazed = false;
 		bullet->max_scale = 0.0f;
 		bullet->scale_vel = 0.0f;
@@ -47,6 +52,8 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 		bullet->rotation = 0.0f;
 		bullet->fade_delete = false;
 		bullet->fading = false;
+		bullet->bounce_count = 0;
+		bullet->bounce_surfaces = 0b1100;
 		bullet->patterns.clear();
 		Rect2 texture_rect = Rect2(-0.5f, -0.5f, 1.0f, 1.0f);
 		RID texture_rid = kit->texture->get_rid();
@@ -87,6 +94,49 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			if (((bullet->speed - bullet->max_speed) * bullet->accel) > 0.0f) bullet->speed = bullet->max_speed;
 		}
 
+		int bounce_count = 0;
+
+		// Bullet bounce
+		if (bullet->bounce_count > 0) {
+			bool vertical_bounced = false;
+			if (((bullet->bounce_surfaces & 0b0001) == 0b0001) && bullet->position.y < bounce_rect.position.y) {
+				vertical_bounced = true;
+				bullet->position.y = bounce_rect.position.y + (bounce_rect.position.y - bullet->position.y);
+			}
+			else if (((bullet->bounce_surfaces & 0b0010) == 0b0010) && (bullet->position.y > (bounce_rect.position.y + bounce_rect.size.y))) {
+				vertical_bounced = true;
+				bullet->position.y = bounce_rect.position.y + bounce_rect.size.y + (bounce_rect.position.y + bounce_rect.size.y - bullet->position.y);
+			}
+			if (vertical_bounced) {
+				bounce_count += 1;
+				bullet->bounce_count -= 1;
+				bullet->angle *= -1.0f;
+				bullet->direction.y *= -1.0f;
+				bullet->transform = bullet->transform.rotated(bullet->angle * 2.0f);
+				bullet->transform.set_origin(bullet->position);
+			}
+		}
+		if (bullet->bounce_count > 0) {
+			bool horizontal_bounced = false;
+			if (((bullet->bounce_surfaces & 0b0100) == 0b0100) && bullet->position.x < bounce_rect.position.x) {
+				horizontal_bounced = true;
+				bullet->position.x = bounce_rect.position.x + (bounce_rect.position.x - bullet->position.x);
+			}
+			else if (((bullet->bounce_surfaces & 0b1000) == 0b1000) && (bullet->position.x > (bounce_rect.position.x + bounce_rect.size.x))) {
+				horizontal_bounced = true;
+				bullet->position.x = bounce_rect.position.x + bounce_rect.size.x + (bounce_rect.position.x + bounce_rect.size.x - bullet->position.x);
+			}
+			if (horizontal_bounced) {
+				bounce_count += 1;
+				bullet->bounce_count -= 1;
+				bullet->angle = 3.14159265359f - bullet->angle;
+				bullet->direction.x *= -1.0f;
+				bullet->transform = bullet->transform.rotated(-3.14159265359f + bullet->angle * 2.0f);
+				bullet->transform.set_origin(bullet->position);
+			}
+		}
+
+
 		// Decrease fade timer
 		if (bullet->fade_timer) {
 			bullet->fade_timer -= delta;
@@ -114,7 +164,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			}
 		}
 
-		if(!active_rect.has_point(bullet->transform.get_origin()) || bullet->lifetime >= bullet->lifespan) {
+		if((!active_rect.has_point(bullet->transform.get_origin()) && bullet->auto_delete)|| bullet->lifetime >= bullet->lifespan) {
 			if (!bullet->fade_delete || (bullet->fade_timer <= 0.0f && bullet->fading)) {
 				// Return true if the bullet should be deleted.
 				return true;
@@ -126,6 +176,7 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			}
 		}
 
+
 		// Iterate over existing transformations
 		bool pattern_applied = false;
 		int j = 0;
@@ -133,17 +184,30 @@ class BasicBulletsPool : public AbstractBulletsPool<BasicBulletKit, Bullet> {
 			Array pattern = bullet->patterns[i]; // trigger, type, time, properties
 			bool should_apply = false;
 			int trigger = pattern[0];
-			// Time triggered
-			if (trigger == 0) {
-				pattern[2] = (float)pattern[2] - delta;
-				if ((float)pattern[2] <= 0.0f) {
-					should_apply = true;
-					pattern_applied = true;
-					pattern[2] = 0.0f;
-				} else {
-					bullet->patterns[j] = pattern;
-					j++;
-				}
+			switch (trigger) {
+				case 0: // Time
+					pattern[2] = (float)pattern[2] - delta;
+					if ((float)pattern[2] <= 0.0f) {
+						should_apply = true;
+						pattern_applied = true;
+						pattern[2] = 0.0f;
+					} else {
+						bullet->patterns[j] = pattern;
+						j++;
+					}
+					break;
+				case 1: // Bounce
+					pattern[2] = (int)pattern[2] - bounce_count;
+					if ((int)pattern[2] <= 0) {
+						should_apply = true;
+						pattern_applied = true;
+						pattern[2] = 0;
+					} else {
+						bullet->patterns[j] = pattern;
+						j++;
+					}
+					break;
+				
 			}
 
 

@@ -1,0 +1,258 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://examples/player/player.gd" type="Script" id=1]
+[ext_resource path="res://examples/player/p1/pl.png" type="Texture" id=2]
+[ext_resource path="res://examples/player/focus.png" type="Texture" id=3]
+[ext_resource path="res://kits/item_text_kit.tres" type="Resource" id=4]
+[ext_resource path="res://kits/bullet_clear_kit.tres" type="Resource" id=5]
+[ext_resource path="res://kits/player_bullet_kit.tres" type="Resource" id=6]
+[ext_resource path="res://kits/player_bullet_kit_add.tres" type="Resource" id=7]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 3.0
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("focus:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("focus:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "focus"
+length = 0.25
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("focus:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("focus2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("focus:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.02 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("focus:scale:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.025, -1, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.25 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("focus:scale:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.025, -1, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.25 )
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("focus2:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.03 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 96.0
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 512.0
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 32.0
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 10000.0
+
+[node name="Player" type="Area2D"]
+collision_mask = 2
+script = ExtResource( 1 )
+player_bullet_kit = ExtResource( 6 )
+player_bullet_kit_add = ExtResource( 7 )
+bullet_clear_kit = ExtResource( 5 )
+item_text_kit = ExtResource( 4 )
+speed = 10.0
+focus_speed = 4.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focusanimation" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 7 )
+anims/focus = SubResource( 8 )
+
+[node name="focus2" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="grazebox" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="grazebox"]
+shape = SubResource( 3 )
+
+[node name="bulletclearbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bulletclearbox"]
+shape = SubResource( 6 )
+
+[node name="itembox" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="itembox"]
+shape = SubResource( 3 )
+
+[node name="enemybox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemybox"]
+shape = SubResource( 1 )
+
+[node name="itemcollection" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="itemcollection"]
+shape = SubResource( 4 )
+
+[node name="itempoc" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="itempoc"]
+shape = SubResource( 5 )
+
+[node name="options" type="Node2D" parent="."]
+
+[node name="0" type="Sprite" parent="options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="grazebox" to="." method="_on_grazebox_area_shape_entered"]
+[connection signal="area_shape_entered" from="bulletclearbox" to="." method="_on_bulletclearbox_area_shape_entered"]
+[connection signal="area_shape_entered" from="itembox" to="." method="_on_itembox_area_shape_entered"]
+[connection signal="area_shape_entered" from="enemybox" to="." method="_on_enemybox_area_shape_entered"]
+[connection signal="area_shape_entered" from="itemcollection" to="." method="_on_itemcollection_area_shape_entered"]
+[connection signal="area_shape_entered" from="itempoc" to="." method="_on_itempoc_area_shape_entered"]

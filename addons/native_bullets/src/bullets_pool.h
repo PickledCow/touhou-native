@@ -28,6 +28,7 @@ protected:
 	int32_t starting_shape_index;
 
 	Rect2 active_rect;
+	Rect2 bounce_rect;
 
 	template<typename T>
 	void _swap(T &a, T &b) {

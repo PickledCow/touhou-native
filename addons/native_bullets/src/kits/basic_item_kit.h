@@ -22,7 +22,7 @@ public:
 	// Vector of what directions items naturally fall at. 
 	Vector2 gravity = Vector2();
 	float damp = 0.95f;
-	float spin = 1.0f;
+	//float spin = 1.0f;
     float magnet_strength = 10.0f;
 
 	static void _register_methods() {
@@ -30,7 +30,7 @@ public:
 			GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_DEFAULT, GODOT_PROPERTY_HINT_RESOURCE_TYPE, "Texture");
 		register_property<BasicItemKit, Vector2>("gravity", &BasicItemKit::gravity, Vector2());
 		register_property<BasicItemKit, float>("damp", &BasicItemKit::damp, 0.9f);
-		register_property<BasicItemKit, float>("spin", &BasicItemKit::spin, 1.0f);
+		//register_property<BasicItemKit, float>("spin", &BasicItemKit::spin, 1.0f);
 		register_property<BasicItemKit, float>("magnet_strength", &BasicItemKit::magnet_strength, 1.0f);
 		
 		BULLET_KIT_REGISTRATION(BasicItemKit, Bullet)
