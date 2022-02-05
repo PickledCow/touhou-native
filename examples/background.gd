@@ -12,3 +12,11 @@ func _process(_delta):
 	
 func flash():
 	$AnimationPlayer.play("flash")
+
+func spell(is_spell := true):
+	if !$AnimationPlayer.is_playing():
+		if is_spell:
+			$AnimationPlayer.play("spell")
+		else:
+			$AnimationPlayer.play_backwards("spell")
+			

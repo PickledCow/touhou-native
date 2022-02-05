@@ -23,9 +23,6 @@ func _ready():
 	#toggle_fullscreen()
 	
 
-func _on_Player_hit(extra_arg_0):
-	pass # Replace with function body.
-
 func _process(delta):
 	if Input.is_action_just_pressed("debug1"):
 		toggle_fullscreen()

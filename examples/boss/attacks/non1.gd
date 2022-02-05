@@ -27,7 +27,9 @@ func attack_init():
 func attack(t):
 	if t >= 0:
 		if t == 0:
-			parent.galacta.monitoring = false
+			parent.invincible = true
+			#parent.galacta.monitoring = false
+			#parent.remilia.monitoring = false
 			for wave in waves:
 				wave.hide()
 		if t <= 700:
@@ -67,10 +69,14 @@ func attack(t):
 		if t == 600:
 			set_remilia_dest(Vector2(500.0, 250), 45)
 			set_galacta_dest(Vector2(500.0, 400), 45)
-			parent.galacta.monitoring = true
 			DefSys.boss_bar.max_health = parent.max_health
 			parent.health = parent.max_health
+			parent.time_left = attack_time
 			DefSys.boss_bar.entry_anim()
+		if t == 720:
+			parent.invincible = false
+			#parent.galacta.monitoring = true
+			#parent.remilia.monitoring = true
 		if t >= 645:
 			if t % 2 == 0:
 				DefSys.sfx.play("shoot1")

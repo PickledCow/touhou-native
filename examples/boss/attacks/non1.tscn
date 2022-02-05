@@ -58,9 +58,11 @@ extents = Vector2( 337.5, 500 )
 extents = Vector2( 412.5, 500 )
 
 [node name="non1" type="Node2D"]
+rotation = 0.000877632
 z_index = 1
 script = ExtResource( 1 )
-remilia_start_pos = Vector2( 500, 150 )
+remilia_start_pos = Vector2( 1500, -600 )
+health = 10000
 start_delay = 0
 no_bg = true
 scb = 0
@@ -199,6 +201,7 @@ position = Vector2( 825, 500 )
 shape = SubResource( 22 )
 
 [node name="wave1" type="Node2D" parent="."]
+visible = false
 
 [node name="sprites" type="Node2D" parent="wave1"]
 

@@ -5,10 +5,16 @@ export(Resource) var player_bullet_kit_add
 export(Resource) var bullet_clear_kit
 export(Resource) var item_text_kit
 
+export var pid := 1
+
+# Movement
 export(float, 0, 1000) var speed = 500.0
 export(float, 0, 1000) var focus_speed = 200.0
-
-export var pid := 1
+var velocity = Vector2()
+enum HORIZONTAL_PRIORITY { LEFT, RIGHT }
+var horizontal_priority = 0
+enum VERTICAL_PRIORITY { UP, DOWN }
+var vertical_priority = 0
 
 # States
 var is_focused := false
@@ -19,6 +25,7 @@ var hit := false
 var dead := false
 var invincible_time := 180.0
 var invincible_timer := 0.0
+
 # Bullet clear
 var clear_time := 42.0
 var clear_timer := 0.0
@@ -41,10 +48,11 @@ onready var hitbox2 = $focus2
 onready var hitbox_anim = $focusanimation
 
 # Shooting
-enum PLAYER_BULLET_INDEX { REIMU_MAIN, MARISA_MAIN, MARISA_MISSILE }
-var player_bullets = [ PoolRealArray([0, 0, 192, 192, 144, 0.25, 47, 1, 0, 0, 0, 0, 0, 0, 15]),
-						PoolRealArray([0, 192, 128, 128, 96, 0.375, 0, 1, 0, 0, 0, 0, 0, 0, 15]),
-						PoolRealArray([128, 0, 192, 192, 128, 0.25, 52, 2, 0, 0, 0, 0, 0, 0, 15]) 
+enum PLAYER_BULLET_INDEX { REIMU_MAIN, REIMU_HOMING, MARISA_MAIN, MARISA_MISSILE }
+var player_bullets = [ PoolRealArray([0, 0, 192, 192, 144, 0.25, 47, 1, 0, 0, 0, 0, 0, 0, 0]),
+						PoolRealArray(),
+						PoolRealArray([0, 192, 128, 128, 96, 0.375, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
+						PoolRealArray([128, 0, 192, 192, 128, 0.25, 52, 2, 0, 0, 0, 0, 0, 0, 0]) 
 ]
 #source x (integer) # (16+8*(c/4))
 #source y (integer) # (24+2*(c%4))
@@ -96,7 +104,9 @@ class Shooter:
 	var sprite
 	var kit
 	var option = 0
+	var sfx
 	
+var shoot_sfx = ["playershoot", "playermissile"]
 
 
 func _ready():
@@ -135,11 +145,12 @@ func create_shooter(shooter_data):
 	shooter.kit = player_bullet_kit if !shooter_data["additive"] else player_bullet_kit_add
 	shooter.accel = shooter_data["accel"]
 	shooter.max_speed = shooter_data["max_speed"]
+	shooter.sfx = shooter_data["sfx"]
 	return shooter
 
 
 func _process(delta):
-	var last_position = position
+	#var last_position = position
 	hitbox1.rotation += 2.0 * delta
 	hitbox2.rotation -= 2.0 * delta
 	
@@ -150,9 +161,6 @@ func _process(delta):
 		hitbox1.visible = false
 		hitbox2.visible = false
 	
-	var left_pressed = Input.is_action_pressed("left")
-	var right_pressed = Input.is_action_pressed("right")
-	
 	anim_timer += delta
 	if anim_timer >= anim_time:
 		anim_frame += 1
@@ -160,9 +168,9 @@ func _process(delta):
 	if anim_frame >= 120:
 		anim_frame -= 120
 	
-	if !left_pressed && !right_pressed:
+	if velocity.x == 0.0:
 		sprite.frame = int(anim_frame) % 4
-	elif left_pressed:
+	elif velocity.x < 0.0:
 		facing = -1
 		sprite.frame = 4 + int(anim_frame) % 4
 	else:
@@ -172,6 +180,7 @@ func _process(delta):
 	sprite.scale.x = facing * abs(sprite.scale.x)
 	
 	if invincible_timer:
+# warning-ignore:integer_division
 		sprite.modulate = Color(0, 0, 1) if (int(invincible_timer) / 6) % 2 == 1 else Color(1,1,1)
 		
 	for option in option_sprites:
@@ -179,16 +188,25 @@ func _process(delta):
 		if option.rotation <= 0.0: option.rotation += TAU
 
 func move():
-	var velocity = Vector2()
+	velocity = Vector2()
 	
-	if(Input.is_action_pressed("up")):
-		velocity.y -= 1
-	if(Input.is_action_pressed("down")):
-		velocity.y += 1
-	if(Input.is_action_pressed("left")):
-		velocity.x -= 1
-	if(Input.is_action_pressed("right")):
-		velocity.x += 1
+	if Input.is_action_just_pressed("left"):
+		horizontal_priority = HORIZONTAL_PRIORITY.LEFT
+	elif Input.is_action_just_pressed("right"):
+		horizontal_priority = HORIZONTAL_PRIORITY.RIGHT
+	if Input.is_action_just_pressed("up"):
+		vertical_priority = VERTICAL_PRIORITY.UP
+	elif Input.is_action_just_pressed("down"):
+		vertical_priority = VERTICAL_PRIORITY.DOWN
+	
+	if Input.is_action_pressed("left") && !(horizontal_priority == HORIZONTAL_PRIORITY.RIGHT && Input.is_action_pressed("right")):
+		velocity.x = -1
+	elif Input.is_action_pressed("right") && !(horizontal_priority == HORIZONTAL_PRIORITY.LEFT && Input.is_action_pressed("left")):
+		velocity.x = 1
+	if Input.is_action_pressed("up") && !(vertical_priority == VERTICAL_PRIORITY.DOWN && Input.is_action_pressed("down")):
+		velocity.y = -1
+	elif Input.is_action_pressed("down") && !(vertical_priority == VERTICAL_PRIORITY.UP && Input.is_action_pressed("up")):
+		velocity.y = 1
 	
 	is_focused = Input.is_action_pressed("focus")
 	
@@ -218,9 +236,15 @@ func shoot():
 				s.fire_timer = s.fire_rate
 				var option_pos = option_positions_unfocus[s.option] * (1 - option_interp) + option_positions_focus[s.option] * option_interp
 				var p = position + s.offset + option_pos
-				Bullets.create_shot_a2(s.kit, p, s.speed, s.angle, s.accel, s.max_speed, player_bullets[s.sprite], false)
+				var bullet = Bullets.create_shot_a2(s.kit, p, s.speed, s.angle, s.accel, s.max_speed, player_bullets[s.sprite], false)
+				Bullets.set_bullet_properties(bullet, {"damage": s.damage})
+				DefSys.sfx.play(shoot_sfx[s.sfx])
 
 func _physics_process(_delta):
+	remove_bullets(bullets_to_remove)
+	bullets_to_remove.clear()
+	
+	
 	move()
 	
 	if is_focused && option_interp < 1.0:
@@ -255,8 +279,6 @@ func _physics_process(_delta):
 			bullet_clear_box.monitoring = false
 			bullet_clear_box_shape.shape.radius = 0.0
 	hit = false
-	remove_bullets(bullets_to_remove)
-	bullets_to_remove.clear()
 	
 
 func create_bullet_clear(bullet_id):

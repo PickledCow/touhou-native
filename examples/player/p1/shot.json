@@ -48,11 +48,12 @@
                 "offset_y": -16,
                 "angle": -1.5707963705062866,
                 "speed": 24,
-                "sprite": 1,
+                "sprite": 2,
                 "additive": true,
                 "accel": 0,
                 "max_speed": 0,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 0
             },
             {
                 "fire_rate": 3,
@@ -63,11 +64,12 @@
                 "offset_y": -16,
                 "angle": -1.5707963705062866,
                 "speed": 24,
-                "sprite": 1,
+                "sprite": 2,
                 "additive": true,
                 "accel": 0,
                 "max_speed": 0,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 0
             },
             {
                 "fire_rate": 8,
@@ -78,11 +80,12 @@
                 "offset_y": -31.9220496083,
                 "angle": -1.64060954059,
                 "speed": 0,
-                "sprite": 2,
+                "sprite": 3,
                 "additive": false,
                 "accel": 0.5,
                 "max_speed": 32,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 1
             },
             {
                 "fire_rate": 8,
@@ -93,11 +96,12 @@
                 "offset_y": -31.9220496083,
                 "angle": -1.50098320043,
                 "speed": 0,
-                "sprite": 2,
+                "sprite": 3,
                 "additive": false,
                 "accel": 0.5,
                 "max_speed": 32,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 1
             },
             {
                 "fire_rate": 8,
@@ -108,11 +112,12 @@
                 "offset_y": -32,
                 "angle": -1.5707963705062866,
                 "speed": 0,
-                "sprite": 2,
+                "sprite": 3,
                 "additive": false,
                 "accel": 0.5,
                 "max_speed": 32,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 1
             },
             {
                 "fire_rate": 8,
@@ -123,11 +128,12 @@
                 "offset_y": -32,
                 "angle": -1.5707963705062866,
                 "speed": 0,
-                "sprite": 2,
+                "sprite": 3,
                 "additive": false,
                 "accel": 0.5,
                 "max_speed": 32,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 1
             }
 
 
@@ -143,11 +149,12 @@
                 "offset_y": -16,
                 "angle": -1.5707963705062866,
                 "speed": 24,
-                "sprite": 1,
+                "sprite": 2,
                 "additive": true,
                 "accel": 0,
                 "max_speed": 0,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 0
             },
             {
                 "fire_rate": 3,
@@ -158,11 +165,12 @@
                 "offset_y": -16,
                 "angle": -1.5707963705062866,
                 "speed": 24,
-                "sprite": 1,
+                "sprite": 2,
                 "additive": true,
                 "accel": 0,
                 "max_speed": 0,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 0
             },
             {
                 "fire_rate": 8,
@@ -173,11 +181,12 @@
                 "offset_y": -32,
                 "angle": -1.5707963705062866,
                 "speed": 0,
-                "sprite": 2,
+                "sprite": 3,
                 "additive": false,
                 "accel": 0.5,
                 "max_speed": 32,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 1
             },
             {
                 "fire_rate": 8,
@@ -188,11 +197,12 @@
                 "offset_y": -32,
                 "angle": -1.5707963705062866,
                 "speed": 0,
-                "sprite": 2,
+                "sprite": 3,
                 "additive": false,
                 "accel": 0.5,
                 "max_speed": 32,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 1
             },
             {
                 "fire_rate": 8,
@@ -203,11 +213,12 @@
                 "offset_y": -32,
                 "angle": -1.5707963705062866,
                 "speed": 0,
-                "sprite": 2,
+                "sprite": 3,
                 "additive": false,
                 "accel": 0.5,
                 "max_speed": 32,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 1
             },
             {
                 "fire_rate": 8,
@@ -218,11 +229,12 @@
                 "offset_y": -32,
                 "angle": -1.5707963705062866,
                 "speed": 0,
-                "sprite": 2,
+                "sprite": 3,
                 "additive": false,
                 "accel": 0.5,
                 "max_speed": 32,
-                "homing_strength": 0
+                "homing_strength": 0,
+                "sfx": 1
             }
 
 

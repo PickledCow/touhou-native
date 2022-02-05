@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "Attack",
+"language": "GDScript",
+"path": "res://examples/boss/attacks/attack.gd"
+}, {
 "base": "Resource",
 "class": "BasicBulletKit",
 "language": "NativeScript",
@@ -65,6 +70,7 @@ _global_script_classes=[ {
 "path": "res://examples/warp.gd"
 } ]
 _global_script_class_icons={
+"Attack": "",
 "BasicBulletKit": "res://addons/native_bullets/icons/icon_bullet_kit.svg",
 "BasicItemKit": "res://addons/native_bullets/icons/icon_item_kit.png",
 "BasicParticleKit": "res://addons/native_bullets/icons/icon_particle_kit.png",

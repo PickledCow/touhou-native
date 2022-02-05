@@ -1,4 +1,6 @@
 extends Node2D
+class_name Attack
+
 
 var galacta_position : Vector2
 var remilia_position : Vector2
@@ -33,14 +35,17 @@ func _ready():
 	parent = get_parent()
 	attack_init()
 
+# warning-ignore:unused_argument
 func attack(u):
 	pass
 
-func _process(delta):
+func _physics_process(_delta):
 	galacta_position = parent.galacta.position
 	remilia_position = parent.remilia.position
 	
 	var t = t_raw - start_delay
+#	if t == 0:
+#		parent.invincible = false
 	attack(t)
 	
 	t_raw += 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=103 format=2]
+[gd_scene load_steps=124 format=2]
 
 [ext_resource path="res://examples/ui/healthfacehurt0.png" type="Texture" id=1]
 [ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://examples/Enemy.gd" type="Script" id=5]
 [ext_resource path="res://dummy.png" type="Texture" id=6]
 [ext_resource path="res://examples/FPS.gd" type="Script" id=7]
-[ext_resource path="res://examples/ui/healthbarunder.tres" type="StyleBox" id=8]
 [ext_resource path="res://fonts/Inter-Light.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://examples/scripts/bullets_counter.gd" type="Script" id=10]
 [ext_resource path="res://examples/example_01.gd" type="Script" id=11]
@@ -49,13 +48,23 @@
 [ext_resource path="res://examples/ui/sweat.png" type="Texture" id=47]
 [ext_resource path="res://examples/ui/spells.png" type="Texture" id=48]
 [ext_resource path="res://examples/boss/cosmicflame.tscn" type="PackedScene" id=49]
-[ext_resource path="res://default/se/se_ch02.wav" type="AudioStream" id=50]
-[ext_resource path="res://default/se/se_ch00.wav" type="AudioStream" id=51]
-[ext_resource path="res://default/se/se_enep02.wav" type="AudioStream" id=52]
+[ext_resource path="res://default/se/charge2.wav" type="AudioStream" id=50]
+[ext_resource path="res://default/se/charge1.wav" type="AudioStream" id=51]
+[ext_resource path="res://default/se/explode.wav" type="AudioStream" id=52]
 [ext_resource path="res://examples/ui/heal.wav" type="AudioStream" id=53]
 [ext_resource path="res://examples/playfield_root.gd" type="Script" id=54]
 [ext_resource path="res://kits/player_bullet_kit.tres" type="Resource" id=55]
 [ext_resource path="res://kits/player_bullet_kit_add.tres" type="Resource" id=56]
+[ext_resource path="res://examples/ui/markers.gd" type="Script" id=57]
+[ext_resource path="res://default/se/hit1.wav" type="AudioStream" id=58]
+[ext_resource path="res://default/se/hit2.wav" type="AudioStream" id=59]
+[ext_resource path="res://default/se/player_missile.wav" type="AudioStream" id=60]
+[ext_resource path="res://default/se/player_shoot.wav" type="AudioStream" id=61]
+[ext_resource path="res://default/se/spark.wav" type="AudioStream" id=62]
+[ext_resource path="res://default/se/spark_long.wav" type="AudioStream" id=63]
+[ext_resource path="res://default/se/timer2.wav" type="AudioStream" id=64]
+[ext_resource path="res://default/se/timer1.wav" type="AudioStream" id=65]
+[ext_resource path="res://default/se/laser1.wav" type="AudioStream" id=66]
 
 [sub_resource type="World" id=10]
 
@@ -193,31 +202,6 @@ void fragment() {
 shader = SubResource( 14 )
 shader_param/rotate = 0.0
 
-[sub_resource type="Animation" id=16]
-resource_name = "spell"
-tracks/0/type = "bezier"
-tracks/0/path = NodePath(".:material:shader_param/rotate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.5, 0, 1.5, -0.5, 0, 0.25, 0 ),
-"times": PoolRealArray( 0.1, 1 )
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-
 [sub_resource type="Animation" id=50]
 resource_name = "flash"
 length = 0.5
@@ -232,6 +216,31 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "spell"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("BG/Viewport/huerotate:material:shader_param/rotate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.5, 0, 1.5, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 1 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("BG/Viewport/huerotate:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 
 [sub_resource type="CircleShape2D" id=8]
@@ -285,6 +294,34 @@ shader_param/colour = Vector3( 0.2, -0.1, -0.05 )
 [sub_resource type="CircleShape2D" id=51]
 radius = 1000.0
 
+[sub_resource type="Animation" id=67]
+resource_name = "darken"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("galacta/Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.5, 0.5, 0.5, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("remilia/Sprite:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.5, 0.5, 0.5, 1 ) ]
+}
+
 [sub_resource type="Shader" id=7]
 code = "shader_type canvas_item;
 
@@ -311,8 +348,8 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=43]
 shader = SubResource( 7 )
 shader_param/centre = Vector2( 0.288, 0.5 )
-shader_param/force = 0.0
-shader_param/size = 1.0
+shader_param/force = 0.2
+shader_param/size = 0.0
 shader_param/thickness = 0.25
 shader_param/abberation = 0.15
 
@@ -341,6 +378,49 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Theme" id=11]
+
+[sub_resource type="Shader" id=52]
+code = "shader_type canvas_item;
+
+void fragment() {
+	if (COLOR.a == 1.0) {
+		COLOR.b += max(1.0 - UV.y, 0.0) * 0.25;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=53]
+shader = SubResource( 52 )
+
+[sub_resource type="StyleBoxFlat" id=54]
+bg_color = Color( 1, 0.266667, 0.627451, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color( 0, 0, 0, 0.501961 )
+shadow_size = 6
+
+[sub_resource type="Shader" id=56]
+code = "shader_type canvas_item;
+
+void fragment() {
+	if (COLOR.a == 1.0) {
+		COLOR.g += max(1.0 - UV.y, 0.0) * 0.2;
+		COLOR.b += max(1.0 - UV.y, 0.0) * 0.1;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=57]
+shader = SubResource( 56 )
+
+[sub_resource type="StyleBoxFlat" id=55]
+bg_color = Color( 0.917647, 0.0627451, 0.0627451, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color( 0, 0, 0, 0.501961 )
+shadow_size = 6
 
 [sub_resource type="DynamicFont" id=22]
 size = 52
@@ -409,19 +489,24 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 9 )
 
-[sub_resource type="Shader" id=18]
+[sub_resource type="Shader" id=37]
 code = "shader_type canvas_item;
+
+uniform vec4 left_color : hint_color;
+uniform vec4 right_color : hint_color; 
 
 uniform float progress = 0.0;
 
 void fragment() {
-	if (COLOR.a == 1.0) {
-		COLOR.g += max(0.667 - UV.x * progress, 0.0);
+	if (COLOR.a > .75) {
+		COLOR = left_color + (right_color - left_color) * UV.x * progress;
 	}
 }"
 
 [sub_resource type="ShaderMaterial" id=19]
-shader = SubResource( 18 )
+shader = SubResource( 37 )
+shader_param/left_color = Color( 1, 0.960784, 0, 1 )
+shader_param/right_color = Color( 1, 0.0941176, 0, 1 )
 shader_param/progress = 1.0
 
 [sub_resource type="DynamicFont" id=21]
@@ -831,45 +916,11 @@ colors = PoolColorArray( 0.74902, 0.74902, 0.74902, 0, 0.74902, 0.74902, 0.74902
 gradient = SubResource( 34 )
 width = 360
 
-[sub_resource type="Shader" id=37]
-code = "shader_type canvas_item;
-
-uniform float progress = 0.0;
-
-void fragment() {
-	if (COLOR.a == 1.0) {
-		COLOR.b += max(1.0 - UV.x * progress, 0.0) * 0.5;
-	}
-}"
-
 [sub_resource type="ShaderMaterial" id=38]
 shader = SubResource( 37 )
+shader_param/left_color = Color( 1, 0, 0.701961, 1 )
+shader_param/right_color = Color( 1, 0, 0.211765, 1 )
 shader_param/progress = 1.0
-
-[sub_resource type="StyleBoxFlat" id=39]
-bg_color = Color( 1, 0, 0.164706, 1 )
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-anti_aliasing_size = 1.0
-
-[sub_resource type="StyleBoxFlat" id=40]
-bg_color = Color( 0, 0, 0, 0 )
-draw_center = false
-shadow_size = 1
-
-[sub_resource type="DynamicFont" id=20]
-size = 24
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 33 )
-
-[sub_resource type="Theme" id=41]
-default_font = SubResource( 20 )
-ProgressBar/fonts/font = null
-ProgressBar/styles/bg = ExtResource( 8 )
-ProgressBar/styles/fg = SubResource( 39 )
-RichTextLabel/styles/normal = SubResource( 40 )
 
 [sub_resource type="DynamicFont" id=42]
 size = 48
@@ -878,6 +929,34 @@ outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 9 )
+
+[sub_resource type="Animation" id=64]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("../timer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=68]
+resource_name = "fill"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 100, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
 
 [sub_resource type="Animation" id=46]
 resource_name = "show"
@@ -976,6 +1055,226 @@ tracks/7/keys = {
 "update": 1,
 "values": [ true ]
 }
+tracks/8/type = "value"
+tracks/8/path = NodePath("../timer:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/9/type = "bezier"
+tracks/9/path = NodePath("../timer:rect_position:y")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"points": PoolRealArray( 212, -0.25, 0, 0.25, 0, 148, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("../timer:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=58]
+resource_name = "spawn"
+length = 1.8
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:rect_position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 932, -0.25, 0, 0.25, 0, 932, -0.25, 0, 0.5, 0, 120, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1, 1.8 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:rect_scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:rect_scale:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("underline:rect_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 2, 6 ), Vector2( 2, 6 ), Vector2( 1, 4 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("underline:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("bonuslabel:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 1.6, 1.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("historylabel:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 1.6, 1.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("bonus:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 1.6, 1.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("history:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 1.6, 1.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="DynamicFont" id=59]
+size = 24
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+extra_spacing_char = 1
+font_data = ExtResource( 20 )
+
+[sub_resource type="Gradient" id=60]
+offsets = PoolRealArray( 0, 0.4, 0.6, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=61]
+gradient = SubResource( 60 )
+width = 500
+
+[sub_resource type="DynamicFont" id=65]
+size = 24
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 33 )
+
+[sub_resource type="DynamicFont" id=62]
+size = 24
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 33 )
+
+[sub_resource type="DynamicFont" id=63]
+size = 48
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 33 )
+
+[sub_resource type="Animation" id=66]
+resource_name = "timeout"
+tracks/0/type = "value"
+tracks/0/path = NodePath("bossbar:material:shader_param/left_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0.701961, 1 ), Color( 0.027451, 0.886275, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("bossbar:material:shader_param/right_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0.211765, 1 ), Color( 0, 0.180392, 1, 1 ) ]
+}
 
 [node name="world" type="Control"]
 anchor_left = 0.5
@@ -1043,10 +1342,6 @@ scale = Vector2( 1064, 1064 )
 texture = ExtResource( 6 )
 centered = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="gameport/root/background/BG/Viewport/huerotate"]
-reset_on_save = false
-anims/spell = SubResource( 16 )
-
 [node name="flash" type="Sprite" parent="gameport/root/background"]
 modulate = Color( 1, 1, 1, 0 )
 scale = Vector2( 1000, 1000 )
@@ -1059,6 +1354,7 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="gameport/root/background"]
 anims/flash = SubResource( 50 )
+anims/spell = SubResource( 16 )
 
 [node name="playfield" type="Node2D" parent="gameport/root"]
 
@@ -1094,11 +1390,12 @@ bullet_type_6/z_index = -2
 script = ExtResource( 5 )
 bullet_kit = ExtResource( 2 )
 bullet_kit_add = ExtResource( 12 )
+bullet_clear_kit = ExtResource( 13 )
 item_kit = ExtResource( 14 )
 player_path = NodePath("../Player")
 
 [node name="galacta" type="Area2D" parent="gameport/root/playfield/Enemy"]
-position = Vector2( 496, -500 )
+position = Vector2( 1500, -500 )
 collision_layer = 0
 collision_mask = 8
 monitorable = false
@@ -1121,7 +1418,7 @@ __meta__ = {
 }
 
 [node name="remilia" type="Area2D" parent="gameport/root/playfield/Enemy"]
-position = Vector2( 700, -500 )
+position = Vector2( 1500, -500 )
 collision_layer = 0
 collision_mask = 8
 monitorable = false
@@ -1129,6 +1426,7 @@ monitorable = false
 [node name="wave" type="Sprite" parent="gameport/root/playfield/Enemy/remilia"]
 material = SubResource( 13 )
 scale = Vector2( 512, 512 )
+z_index = -10
 texture = ExtResource( 6 )
 __meta__ = {
 "_edit_lock_": true
@@ -1151,12 +1449,15 @@ __meta__ = {
 [node name="BulletClear" type="Area2D" parent="gameport/root/playfield/Enemy"]
 position = Vector2( 500, 500 )
 collision_layer = 0
-collision_mask = 8
+collision_mask = 2
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Enemy/BulletClear"]
 visible = false
 shape = SubResource( 51 )
+
+[node name="darkener" type="AnimationPlayer" parent="gameport/root/playfield/Enemy"]
+anims/darken = SubResource( 67 )
 
 [node name="Player" parent="gameport/root/playfield" instance=ExtResource( 16 )]
 position = Vector2( 500, 850 )
@@ -1179,20 +1480,35 @@ stream = ExtResource( 45 )
 volume_db = -10.0
 bus = "SFX"
 
+[node name="playershoot" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 61 )
+volume_db = -20.0
+bus = "SFX"
+
+[node name="playermissile" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 60 )
+volume_db = -15.0
+bus = "SFX"
+
 [node name="shoot1" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
 stream = ExtResource( 37 )
 volume_db = -22.0
-bus = "SFX"
+bus = "Shoot"
 
 [node name="shoot2" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
 stream = ExtResource( 38 )
 volume_db = -22.0
-bus = "SFX"
+bus = "Shoot"
 
 [node name="shoot3" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
 stream = ExtResource( 39 )
 volume_db = -15.0
-bus = "SFX"
+bus = "Shoot"
+
+[node name="laser1" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 66 )
+volume_db = -15.0
+bus = "Shoot"
 
 [node name="warning1" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
 stream = ExtResource( 42 )
@@ -1224,11 +1540,39 @@ stream = ExtResource( 52 )
 volume_db = -15.0
 bus = "SFX"
 
+[node name="damage1" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 58 )
+volume_db = -15.0
+bus = "SFX"
+
+[node name="damage2" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 59 )
+volume_db = -15.0
+bus = "SFX"
+
+[node name="spark" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 62 )
+volume_db = -5.0
+bus = "SFX"
+
+[node name="sparklong" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 63 )
+volume_db = -5.0
+bus = "SFX"
+
+[node name="timer1" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 65 )
+bus = "SFX"
+
+[node name="timer2" type="AudioStreamPlayer" parent="gameport/root/playfield/sfx"]
+stream = ExtResource( 64 )
+bus = "SFX"
+
 [node name="UI" type="TextureRect" parent="."]
 margin_left = -960.0
 margin_top = -540.0
-margin_right = -920.0
-margin_bottom = -500.0
+margin_right = -960.0
+margin_bottom = -540.0
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
@@ -1282,17 +1626,17 @@ __meta__ = {
 z_index = 50
 
 [node name="bottom" type="Control" parent="UI/high"]
-margin_left = 8.0
-margin_top = 1000.0
-margin_right = 48.0
-margin_bottom = 1040.0
+margin_top = 1040.0
+margin_right = 40.0
+margin_bottom = 1080.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Bullets" type="Label" parent="UI/high/bottom"]
+margin_top = -32.0
 margin_right = 1904.0
-margin_bottom = 14.0
+margin_bottom = -18.0
 rect_scale = Vector2( 4, 4 )
 text = "Bullets: {0} "
 script = ExtResource( 10 )
@@ -1301,13 +1645,44 @@ __meta__ = {
 }
 
 [node name="FPS" type="Label" parent="UI/high/bottom"]
+margin_top = -32.0
 margin_right = 476.0
-margin_bottom = 14.0
+margin_bottom = -18.0
 rect_scale = Vector2( 4, 4 )
 theme = SubResource( 11 )
 text = "FPS: {0}"
 align = 2
 script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="markers" type="Control" parent="UI/high/bottom"]
+margin_left = 460.0
+margin_right = 460.0
+script = ExtResource( 57 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="galacta" type="Panel" parent="UI/high/bottom/markers"]
+material = SubResource( 53 )
+margin_left = 916.0
+margin_top = 12.0
+margin_right = 980.0
+margin_bottom = 20.0
+custom_styles/panel = SubResource( 54 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="remilia" type="Panel" parent="UI/high/bottom/markers"]
+material = SubResource( 57 )
+margin_left = 916.0
+margin_top = 24.0
+margin_right = 980.0
+margin_bottom = 32.0
+custom_styles/panel = SubResource( 55 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1515,7 +1890,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/high/rightbar/healthbar"]
+[node name="faceanimator" type="AnimationPlayer" parent="UI/high/rightbar/healthbar"]
 anims/RESET = SubResource( 3 )
 anims/hurt = SubResource( 4 )
 anims/hurt_dead = SubResource( 36 )
@@ -1649,7 +2024,7 @@ margin_left = 152.0
 margin_top = 24.0
 margin_right = 153.0
 margin_bottom = 72.0
-theme = SubResource( 41 )
+theme = ExtResource( 32 )
 step = 0.0
 percent_visible = false
 __meta__ = {
@@ -1658,9 +2033,9 @@ __meta__ = {
 
 [node name="percent" type="Label" parent="UI/high/topbar"]
 visible = false
-margin_left = 59.0
+margin_left = 878.0
 margin_top = 24.0
-margin_right = 152.0
+margin_right = 971.0
 margin_bottom = 72.0
 custom_fonts/font = SubResource( 21 )
 text = "100%"
@@ -1683,6 +2058,8 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/high/topbar"]
 root_node = NodePath("../bossbar")
+anims/RESET = SubResource( 64 )
+anims/fill = SubResource( 68 )
 anims/show = SubResource( 46 )
 
 [node name="heal" type="AudioStreamPlayer" parent="UI/high/topbar"]
@@ -1771,13 +2148,12 @@ region_enabled = true
 region_rect = Rect2( 128, 0, 128, 128 )
 
 [node name="8" type="Sprite" parent="UI/high/topbar/phases"]
-modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 417, 0 )
 scale = Vector2( 0.45, 0.45 )
 texture = ExtResource( 48 )
 centered = false
 region_enabled = true
-region_rect = Rect2( 0, 0, 128, 128 )
+region_rect = Rect2( 128, 0, 128, 128 )
 
 [node name="9" type="Sprite" parent="UI/high/topbar/phases"]
 modulate = Color( 1, 1, 1, 0 )
@@ -1852,16 +2228,137 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 128, 128 )
 
 [node name="17" type="Sprite" parent="UI/high/topbar/phases"]
-modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 884, 0 )
 scale = Vector2( 0.45, 0.45 )
 texture = ExtResource( 48 )
 centered = false
 region_enabled = true
-region_rect = Rect2( 0, 0, 128, 128 )
+region_rect = Rect2( 256, 0, 128, 128 )
+
+[node name="spellclip" type="Control" parent="UI/high/topbar"]
+margin_right = 1000.0
+margin_bottom = 1000.0
+rect_clip_content = true
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="spell" type="Control" parent="UI/high/topbar/spellclip"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 968.0
+margin_top = 932.0
+margin_right = 968.0
+margin_bottom = 932.0
+rect_scale = Vector2( 2, 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/high/topbar/spellclip/spell"]
+anims/spawn = SubResource( 58 )
+
+[node name="name" type="RichTextLabel" parent="UI/high/topbar/spellclip/spell"]
+margin_left = -944.0
+margin_bottom = 32.0
+custom_fonts/normal_font = SubResource( 59 )
+bbcode_enabled = true
+bbcode_text = "[right]\"It came from outer space\""
+text = "\"It came from outer space\""
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="underline" type="TextureRect" parent="UI/high/topbar/spellclip/spell"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 23 )
+margin_left = -484.0
+margin_top = 28.0
+margin_right = 16.0
+margin_bottom = 29.0
+rect_scale = Vector2( 2, 6 )
+rect_pivot_offset = Vector2( 500, 0 )
+texture = SubResource( 61 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bonuslabel" type="Label" parent="UI/high/topbar/spellclip/spell"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -400.0
+margin_top = 32.0
+margin_right = -325.0
+margin_bottom = 62.0
+custom_colors/font_color = Color( 0.737255, 0.745098, 1, 1 )
+custom_fonts/font = SubResource( 59 )
+text = "Bonus"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bonus" type="Label" parent="UI/high/topbar/spellclip/spell"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -333.0
+margin_top = 32.0
+margin_right = -201.0
+margin_bottom = 63.0
+custom_fonts/font = SubResource( 65 )
+text = "1OOOOOO"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="historylabel" type="Label" parent="UI/high/topbar/spellclip/spell"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -181.0
+margin_top = 32.0
+margin_right = -92.0
+margin_bottom = 62.0
+custom_colors/font_color = Color( 0.737255, 0.745098, 1, 1 )
+custom_fonts/font = SubResource( 59 )
+text = "History"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="history" type="Label" parent="UI/high/topbar/spellclip/spell"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -104.0
+margin_top = 32.0
+margin_bottom = 62.0
+custom_fonts/font = SubResource( 65 )
+text = "MASTER"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="timer" type="RichTextLabel" parent="UI/high/topbar"]
+visible = false
+margin_left = 404.0
+margin_top = 212.0
+margin_right = 596.0
+margin_bottom = 276.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.25098 )
+custom_constants/shadow_offset_x = 3
+custom_constants/shadow_offset_y = 3
+custom_constants/shadow_as_outline = 1
+custom_fonts/bold_font = SubResource( 62 )
+custom_fonts/normal_font = SubResource( 63 )
+bbcode_enabled = true
+bbcode_text = "[center]12[b].OO"
+text = "12.OO"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="healthbarcolor" type="AnimationPlayer" parent="UI/high/topbar"]
+anims/timeout = SubResource( 66 )
 
 [connection signal="area_shape_entered" from="gameport/root/playfield/Enemy/galacta" to="gameport/root/playfield/Enemy" method="_on_area_shape_entered"]
 [connection signal="area_shape_entered" from="gameport/root/playfield/Enemy/remilia" to="gameport/root/playfield/Enemy" method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="gameport/root/playfield/Enemy/BulletClear" to="gameport/root/playfield/Enemy" method="_on_BulletClear_area_shape_entered"]
 [connection signal="hit" from="gameport/root/playfield/Player" to="UI/high/rightbar/healthbar" method="_on_Player_hit"]
 [connection signal="value_changed" from="UI/high/rightbar/healthbar/healthbar" to="UI/high/rightbar/healthbar" method="_on_healthbar_value_changed"]
 [connection signal="value_changed" from="UI/high/topbar/bossbar" to="UI/high/topbar" method="_on_bossbar_value_changed"]

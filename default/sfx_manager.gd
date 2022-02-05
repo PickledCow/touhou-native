@@ -10,6 +10,7 @@ onready var warning1 := $warning1
 onready var warning2 := $warning2
 onready var warning3 := $warning3
 
+
 var sound_effects := {}
 
 func _ready():
@@ -17,5 +18,5 @@ func _ready():
 	for sfx in get_children():
 		sound_effects[sfx.name] = sfx
 
-func play(sfx: String, position := DefSys.playfield_size.x * 0.5):
+func play(sfx: String):
 	sound_effects[sfx].play()

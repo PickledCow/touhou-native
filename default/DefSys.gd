@@ -2,6 +2,7 @@ extends Node
 var sfx #: SFX_manager
 var warp_effect #: Warp
 var boss_bar
+var markers
 var background_controller
 var playfield_root
 
