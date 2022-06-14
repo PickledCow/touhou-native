@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://examples/boss/attacks/non3.gd" type="Script" id=1]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=3]
+
+[node name="non3" type="Node2D"]
+script = ExtResource( 1 )
+attack_time = 2700
+galacta_start_pos = Vector2( -500, -500 )
+remilia_start_pos = Vector2( 500, 301 )
+health = 25000
+start_delay = 180
+scb = 0
+bg_flag = 2
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 3 )

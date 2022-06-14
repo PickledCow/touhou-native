@@ -1,0 +1,122 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://examples/boss/attacks/spell2.gd" type="Script" id=1]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=3]
+[ext_resource path="res://dummy.png" type="Texture" id=4]
+[ext_resource path="res://kits/bullet_clear_kit.tres" type="Resource" id=5]
+[ext_resource path="res://examples/boss/gungnir.png" type="Texture" id=6]
+
+[sub_resource type="CanvasItemMaterial" id=11]
+blend_mode = 1
+
+[sub_resource type="Animation" id=15]
+resource_name = "spawn"
+length = 0.75
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("gungnir/sprite:material:shader_param/bend")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.4, 0.75 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.25, 1.25, 0.0 ]
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("gungnir/sprite:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0, -0.0182069, 1.03005, -0.11, 1.43895, 0.00999999, -0.147479, 1, -0.11, 0.047778, 0.25, 0, 1, 0, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.49, 0.75 )
+}
+
+[sub_resource type="RectangleShape2D" id=16]
+extents = Vector2( 400, 10 )
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+//render_mode blend_add;
+
+uniform float bend = 0.5;
+
+const float TIME_SCALE = -30.0;
+
+void vertex() {
+	VERTEX.y *= 3.0;
+}
+
+void fragment() {
+	float scale = 3.0 + sin(UV.x * 50.0 + TIME * TIME_SCALE) * bend + sin(UV.x * 50.0 * 1.673 + TIME * TIME_SCALE) * bend;
+	vec2 uv = vec2(UV.x, UV.y * scale - 0.5 * (scale - 1.0));
+	
+	COLOR = texture(TEXTURE, uv);
+}"
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+shader_param/bend = 0.0
+
+[node name="spell2" type="Node2D"]
+script = ExtResource( 1 )
+attack_type = 2
+attack_name = "you gonna get speared"
+attack_time = 2700
+galacta_start_pos = Vector2( 600, 450 )
+remilia_start_pos = Vector2( 400, 350 )
+health = 15000
+start_delay = 180
+scb = 150
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 3 )
+bullet_clear_kit = ExtResource( 5 )
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+margin_right = 1000.0
+margin_bottom = 1000.0
+border_width = 4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="warning" type="Sprite" parent="."]
+modulate = Color( 10, 1, 1, 1 )
+material = SubResource( 11 )
+position = Vector2( -250, 539 )
+rotation = -3.14159
+scale = Vector2( 3000, 5 )
+texture = ExtResource( 4 )
+offset = Vector2( 0.5, 0 )
+
+[node name="warning2" type="Sprite" parent="."]
+modulate = Color( 10, 1, 1, 1 )
+material = SubResource( 11 )
+position = Vector2( -250, 539 )
+rotation = -3.14159
+scale = Vector2( 3000, 5 )
+texture = ExtResource( 4 )
+offset = Vector2( 0.5, 0 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/spawn = SubResource( 15 )
+
+[node name="gungnir" type="Area2D" parent="."]
+position = Vector2( -512, 114 )
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="gungnir"]
+shape = SubResource( 16 )
+
+[node name="sprite" type="Sprite" parent="gungnir"]
+material = SubResource( 14 )
+scale = Vector2( 1, 1e-05 )
+z_index = 1
+texture = ExtResource( 6 )

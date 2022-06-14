@@ -25,8 +25,11 @@ func attack_init():
 	orange_knife[Constants.BULLET_DATA_STRUCTURE.LAYER] = DefSys.LAYERS.LARGE_BULLETS + 1
 	
 	orange_knife_small = DefSys.get_bullet_data(DefSys.BULLET_TYPE.KNIFE, DefSys.COLORS_LARGE.ORANGE)
+	
 
 func attack(t):
+	if t == -240:
+		DefSys.background_controller.suck()
 	# Galacta
 	if t >= 0:
 		if t % 90 == 0:

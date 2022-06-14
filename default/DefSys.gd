@@ -1,20 +1,46 @@
 extends Node
 var sfx #: SFX_manager
 var warp_effect #: Warp
+var health_bar
 var boss_bar
 var markers
 var background_controller
 var playfield_root
+var playfield
+var pause_menu
+
+var is_3d := true
+
+var transluscent := true
+
+# Global data
+enum PLAYER_ID { REIMU, MARISA }
+var player_id := 0
+
+var spell_bonus := true
+var score := 0
+var piv := 1000
+var graze := 0
+
+var music_percent := 50.0
+var sfx_percent := 40.0
+
+var bg_scale := 80
 
 var hacky_common_data := 0
 
+var item_data := []
 var bullet_data := []
 
 const playfield_size := Vector2(1000, 1000)
 
 # for transparent titlebar 
-var borderlessed = false
+var borderlessed := false
+var fullscreen := false
+var size_before_fullscreen := Vector2(1280, 720)
+var position_before_fullscreen : Vector2
 
+enum ITEM_TYPE { BIG_POWER, LIFE_FRAGMENT, LIFE, BOMB_FRAGMENT, BOMB, FULL_POWER, POWER, POINT, PIV }
 
 # These are suggestions on how to access and create shot data, if another way works for you then go ahead
 
@@ -36,7 +62,7 @@ enum BULLET_TYPE {	STRAIGHT_LASER, ARROWHEAD, BALL_OUTLINE, BALL, RICE, KUNAI, I
 					NOTE, # 35
 }
 
-const BULLET_SIZES := [  0.3, 0.1, 0.3, 0.3, 0.25, 2.5, 0.3, 0.28, 0.25, 0.25, 0.3, 0.2,
+const BULLET_SIZES := [  0.3, 0.3, 0.3, 0.3, 0.25, 2.5, 0.3, 0.28, 0.25, 0.25, 0.3, 0.2,
 						 0.2, 0.15, 0.2, 0.3,
 						 0.3, 0.4, 0.2, 0.1, 0.2,
 						 0.25,
@@ -107,8 +133,7 @@ const DIVINE_RGB := [
 	Vector3(0.66, 0.66, 0.66),	# Grey dark
 ]
 
-func _ready():
-	
+func generate_bullet_data():
 	# Generate Bullet Data 
 	
 	# Small bullets
@@ -294,6 +319,7 @@ func _ready():
 	
 	# Divine Spirit
 	#{GREY, RED, PURPLE, BLUE, CYAN, GREEN, YELLOW, WHITE, ORANGE, RED_D, PURPLE_D, BLUE_D, CYAN_D, GREEN_D, YELLOW_D, GREY_D}
+# warning-ignore:unused_variable
 	var divine_offsets := [ Vector2(0, 1536), Vector2(256, 1536), Vector2(256 * 2, 1536), Vector2(256 * 3, 1536),
 							Vector2(0, 1536 + 256), Vector2(256, 1536 + 256), Vector2(0, 1536 + 256), 
 	]
@@ -321,35 +347,65 @@ func _ready():
 			array.append(data)
 		bullet_data.append(array)
 	
+	
+	
+	# Generate item data
+	
+	# Large items
+	for i in 6:
+		var array = PoolRealArray()
+		array.resize(11)
+		array[0] = 128 * i			# source x (integer) # (16+8*(c/4))
+		array[1] = 0		# source y (integer) # (24+2*(c%4))
+		array[2] = 128				# source width (integer)
+		array[3] = 128				# source height (integer)
+		array[4] = 96.0				# bullet size [0, inf)
+		array[5] = 1.0				# hitbox ratio [0, 1]
+		array[6] = 0					# Sprite offset y (integer)
+		array[7] = 0					# anim frame, 1 for no animation (integer)
+		array[8] = 0					# layer
+		array[9] = i					# type
+		array[10] = 0					# value
+		item_data.append(array)
+		
+	# Small items
+	for i in 3:
+		var array = PoolRealArray()
+		array.resize(11)
+		array[0] = 128 * 6 + 64 * i			# source x (integer) # (16+8*(c/4))
+		array[1] = 0		# source y (integer) # (24+2*(c%4))
+		array[2] = 64				# source width (integer)
+		array[3] = 64				# source height (integer)
+		array[4] = 32.0				# bullet size [0, inf)
+		array[5] = 1.0				# hitbox ratio [0, 1]
+		array[6] = 0					# Sprite offset y (integer)
+		array[7] = 0					# anim frame, 1 for no animation (integer)
+		array[8] = 0					# layer
+		array[9] = 6+i					# type
+		array[10] = 0					# value
+		item_data.append(array)
+	
+
+func _ready():
+	generate_bullet_data()
+	change_volume(0.0, false)
+	change_volume(0.0, true)
+
+func reset():
+	score = 0
+	piv = 1000
+	graze = 0
 
 func get_bullet_data(type: int, color: int):
 	return bullet_data[type][color]
 
+func get_item_data(type: int):
+	return item_data[type]
 
-	#item_data = PoolRealArray()
-	#item_data.resize(11)
-	#item_data[0] = 128 * 4			# source x (integer) # (16+8*(c/4))
-	#item_data[1] = 128 * 0		# source y (integer) # (24+2*(c%4))
-	#item_data[2] = 128				# source width (integer)
-	#item_data[3] = 128				# source height (integer)
-	#item_data[4] = 64.0				# bullet size [0, inf)
-	#item_data[5] = 1.0				# hitbox ratio [0, 1]
-	#item_data[6] = 0					# Sprite offset y (integer)
-	#item_data[7] = 0					# anim frame, 1 for no animation (integer)
-	#item_data[8] = 0					# layer
-	#item_data[9] = 1					# type
-	#item_data[10] = 1					# value
-	
-	#item_data2 = PoolRealArray()
-	#item_data2.resize(11)
-	#item_data2[0] = 64 * 13			# source x (integer) # (16+8*(c/4))
-	#item_data2[1] = 64 * 0		# source y (integer) # (24+2*(c%4))
-	#item_data2[2] = 64				# source width (integer)
-	#item_data2[3] = 64				# source height (integer)
-	#item_data2[4] = 32.0				# bullet size [0, inf)
-	#item_data2[5] = 1.0				# hitbox ratio [0, 1]
-	#item_data2[6] = 0					# Sprite offset y (integer)
-	#item_data2[7] = 1					# anim frame, 1 for no animation (integer)
-	#item_data2[8] = 1					# layer
-	#item_data2[9] = 0					# type
-	#item_data2[10] = 0					# value
+func change_volume(change: float, is_music: bool):
+	if is_music:
+		music_percent = clamp(music_percent + change, 0, 100)
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear2db(music_percent * 0.01))
+	else:
+		sfx_percent = clamp(sfx_percent + change, 0, 100)
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear2db(sfx_percent * 0.01))

@@ -1,0 +1,519 @@
+[gd_scene load_steps=26 format=2]
+
+[ext_resource path="res://examples/boss/attacks/spell3.gd" type="Script" id=1]
+[ext_resource path="res://examples/boss/fire.png" type="Texture" id=2]
+[ext_resource path="res://kits/bullet_clear_kit.tres" type="Resource" id=3]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=4]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=5]
+[ext_resource path="res://examples/ui/Screenshot 2022-02-13 213954.png" type="Texture" id=6]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D noise;
+uniform vec4 colour : hint_color;
+uniform float fade = 32.0;
+uniform float scroll_time_scale = 0.5;
+uniform float skew_angle = 1.0;
+uniform float wave_time_scale = 15.0;
+uniform float amplitude = 0.07;
+uniform float frequency = 10.0;
+uniform float skew = 2.0;
+uniform float wave_time_scale2 = 15.0;
+uniform float amplitude2 = 0.07;
+uniform float frequency2 = 10.0;
+uniform float skew2 = 2.0;
+uniform float depth = 0.4;
+uniform float x_margin = 1.5;
+uniform float glow = 0.2;
+const float COLOR_INFLUENCE = -0.3;
+
+
+void fragment() {
+	vec2 uv = UV;
+	float margin_l = (depth) * (UV.y + (1.0 - UV.y) * amplitude * sin(UV.y * frequency + TIME * wave_time_scale) + (1.0 -  UV.y) * amplitude2 * sin(UV.y * frequency2 + TIME * wave_time_scale2));
+	float margin_r = (depth) * (UV.y + (1.0 - UV.y) * amplitude * sin(UV.y * frequency + TIME * wave_time_scale + skew) + (1.0 -  UV.y) * amplitude2 * sin(UV.y * frequency2 + TIME * wave_time_scale2 + skew2));
+	//uv.x = acos(-2.0 * mod(uv.x, 1.0) + 1.0) / 3.14159265359;
+	uv.x = acos((-2.0 * (mod(uv.x, 1.0) - 0.5 * (1.0 + margin_l - margin_r))) / (1.0 - margin_l - margin_r)) / 3.14159265359 * 0.5;
+	uv.x = uv.x * cos(skew_angle) + uv.y * sin(skew_angle);
+	uv.y = -uv.x * sin(skew_angle) + uv.y * cos(skew_angle);
+	uv.x *= 0.5 * scroll_time_scale;
+	uv.x += TIME * scroll_time_scale;
+	//uv.x = cos(3.14159265359 * uv.x) * -0.5 + 0.5;
+	vec4 c = texture(noise, uv);
+	//c *= c;
+	//c = c*0.9+0.1;
+	//c *= 3.0;
+	//c = sqrt(c);
+	c = c*0.7+0.3;
+	c *= 2.0;
+	c *= colour;
+	margin_l += ((1.0 - UV.y) * COLOR_INFLUENCE * c.r) * (UV.y + (1.0 -  UV.y) * amplitude * sin(UV.y * frequency + TIME * wave_time_scale) + (1.0 -  UV.y) * amplitude2 * sin(UV.y * frequency2 + TIME * wave_time_scale2));
+	margin_r += ((1.0 - UV.y) * COLOR_INFLUENCE * c.r) * (UV.y + (1.0 -  UV.y) * amplitude * sin(UV.y * frequency + TIME * wave_time_scale + skew) + (1.0 -  UV.y) * amplitude2 * sin(UV.y * frequency2 + TIME * wave_time_scale2 + skew2));
+	float x = (UV.x - 0.5) * x_margin + 0.5;
+	float prog = clamp(-fade * (x - margin_l) * (x - 1.0 + margin_r), 0.0, 1.0);
+	c.a = min(1.0, max(c.r, 0.9) * clamp(-fade * (x - margin_l) * (x - 1.0 + margin_r), 0.0, 1.0));
+	c.rgb += clamp(-fade * (0.1 + UV.y * 0.2) * (x - margin_l) * (x - 1.0 + margin_r), 0.0, 1.0) * -.8 + .8;
+	//margin_l = (depth + (1.0 - UV.y) * (-glow)) * (UV.y + (1.0 -  UV.y) * amplitude * sin(UV.y * frequency + TIME * wave_time_scale) + (1.0 -  UV.y) * amplitude2 * sin(UV.y * frequency2 + TIME * wave_time_scale2));
+	//margin_r = (depth + (1.0 - UV.y) * (-glow)) * (UV.y + (1.0 -  UV.y) * amplitude * sin(UV.y * frequency + TIME * wave_time_scale + skew) + (1.0 -  UV.y) * amplitude2 * sin(UV.y * frequency2 + TIME * wave_time_scale2 + skew2));
+	//c += vec4(clamp(fade * 0.2 * (x - margin_l + 0.15) * (x - 1.0 + margin_r - 0.15), -1.0, 0.0) * (c.a - 1.0));
+	
+	COLOR = c;
+}
+"
+
+[sub_resource type="OpenSimplexNoise" id=3]
+seed = 4120
+octaves = 1
+period = 24.0
+
+[sub_resource type="NoiseTexture" id=4]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/colour = Color( 0.941176, 0.592157, 0.717647, 0 )
+shader_param/fade = 0.0
+shader_param/scroll_time_scale = 0.2
+shader_param/skew_angle = 3.347
+shader_param/wave_time_scale = 8.0
+shader_param/amplitude = 0.0
+shader_param/frequency = 4.0
+shader_param/skew = 9.999
+shader_param/wave_time_scale2 = 16.0
+shader_param/amplitude2 = 0.76
+shader_param/frequency2 = 35.572
+shader_param/skew2 = 9.796
+shader_param/depth = 0.4
+shader_param/x_margin = 1.5
+shader_param/glow = 0.24
+shader_param/noise = SubResource( 4 )
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+render_mode blend_add;
+
+uniform sampler2D noise;
+uniform float thickness = 0.02;
+uniform float fade = 32.0;
+uniform float scroll_time_scale = 0.5;
+uniform float wave_time_scale = 15.0;
+uniform float freq = 15.0;
+uniform float scroll_time_scale2 = 0.5;
+uniform float wave_time_scale2 = 15.0;
+uniform float freq2 = 10.0;
+uniform float offset = 1.0;
+
+
+void fragment() {
+	vec2 uv = UV;
+	float line_equation = (0.5 + 0.5 * (0.95 + (0.2 - 0.95) * UV.y) * (sin(freq * UV.y + TIME * wave_time_scale)));
+	float derivative = 0.5 * (1.0 - UV.y) * 15.0*cos(freq * UV.y + TIME * wave_time_scale) - 0.5 * sin(freq * UV.y + TIME * wave_time_scale);
+	float phase = max(0.0, sin(UV.y * 10.0 + TIME * scroll_time_scale));
+	vec4 c = vec4(float(abs(UV.x - line_equation) < phase * thickness / cos(atan(derivative)) ));
+	c.a = max(0.0, (clamp(1.0 - abs(UV.x - line_equation) / (phase * thickness / cos(atan(derivative))), 0.0, 1.0)) * 2.0 - 1.0);
+	
+	line_equation = (0.5 + 0.5 * (0.85 + (0.15 - 0.85) * UV.y) * (sin(freq2* UV.y + (TIME - offset) * wave_time_scale2)));
+	derivative = 0.5 * (1.0 - UV.y) * freq2*cos(freq2 * UV.y + (TIME - offset) * wave_time_scale2) - 0.5 * sin(freq2 * UV.y + (TIME - offset) * wave_time_scale2);
+	phase = max(0.0, sin(UV.y * 10.0 + (TIME - offset) * scroll_time_scale2));
+	vec4 c2 = vec4(float(abs(UV.x - line_equation) < phase * thickness / cos(atan(derivative)) ));
+	c2.a = max(0.0, (clamp(1.0 - abs(UV.x - line_equation) / (phase * thickness / cos(atan(derivative))), 0.0, 1.0)) * 2.0 - 1.0);
+	COLOR = c + c2;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+shader_param/thickness = 0.03
+shader_param/fade = 42.0
+shader_param/scroll_time_scale = 12.0
+shader_param/wave_time_scale = 8.0
+shader_param/freq = 15.0
+shader_param/scroll_time_scale2 = 7.0
+shader_param/wave_time_scale2 = 3.0
+shader_param/freq2 = 10.0
+shader_param/offset = -0.477
+shader_param/noise = SubResource( 4 )
+
+[sub_resource type="CanvasItemMaterial" id=7]
+particles_animation = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id=15]
+colors = PoolColorArray( 1, 1, 1, 0.596078, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=16]
+gradient = SubResource( 15 )
+
+[sub_resource type="Curve" id=11]
+_data = [ Vector2( 0, 0.227273 ), 0.0, 0.0, 0, 0, Vector2( 0.067086, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.932914, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=17]
+curve = SubResource( 11 )
+
+[sub_resource type="ParticlesMaterial" id=18]
+emission_shape = 1
+emission_sphere_radius = 32.0
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 60.0
+gravity = Vector3( 0, 45, 0 )
+initial_velocity = 240.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 360.0
+angle_random = 1.0
+scale = 0.25
+scale_random = 0.5
+scale_curve = SubResource( 17 )
+color_ramp = SubResource( 16 )
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[sub_resource type="Animation" id=19]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("tornado/dust:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "despawn"
+tracks/0/type = "value"
+tracks/0/path = NodePath("tornado/sprite:material:shader_param/amplitude")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.2, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("tornado/sprite:material:shader_param/amplitude2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.4, 0.76 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("tornado/sprite:material:shader_param/fade")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 42.0, 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("tornado:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("tornado/lines:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1.5, 1, 1.25, 1 ), Color( 1.50196, 1, 1.25098, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("tornado/dust:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "spawn"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("tornado/sprite:material:shader_param/amplitude")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.8 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("tornado/sprite:material:shader_param/amplitude2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.4 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("tornado/sprite:material:shader_param/fade")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 42.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("tornado:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("tornado/dust:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("tornado/lines:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1.50196, 1, 1.25098, 0 ), Color( 1.5, 1, 1.25, 1 ) ]
+}
+
+[sub_resource type="ParticlesMaterial" id=8]
+emission_shape = 1
+emission_sphere_radius = 128.0
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 200.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 360.0
+angle_random = 1.0
+scale = 1.25
+scale_random = 0.5
+hue_variation = 0.2
+hue_variation_random = 1.0
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[sub_resource type="CurveTexture" id=12]
+curve = SubResource( 11 )
+
+[sub_resource type="ParticlesMaterial" id=10]
+emission_shape = 1
+emission_sphere_radius = 32.0
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 30.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 360.0
+angle_random = 1.0
+scale_random = 0.5
+scale_curve = SubResource( 12 )
+hue_variation = 0.2
+hue_variation_random = 1.0
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[sub_resource type="Animation" id=9]
+resource_name = "entry"
+length = 5.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("clouds:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -256, -0.25, 0, 0, 0, 72, -2, 0, 0.25, 0 ),
+"times": PoolRealArray( 2, 5 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("cloudlaunch:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[node name="spell3" type="Node2D"]
+script = ExtResource( 1 )
+attack_type = 4
+attack_name = "red storm"
+attack_time = 5940
+galacta_start_pos = Vector2( 900, 400 )
+remilia_start_pos = Vector2( 500, 350 )
+health = 27500
+scb = 200
+bullet_kit = ExtResource( 4 )
+bullet_kit_add = ExtResource( 5 )
+bullet_clear_kit = ExtResource( 3 )
+
+[node name="TextureRect" type="Sprite" parent="."]
+visible = false
+position = Vector2( 491, 530 )
+texture = ExtResource( 6 )
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+margin_right = 1000.0
+margin_bottom = 1000.0
+border_width = 4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tornado" type="Node2D" parent="."]
+visible = false
+position = Vector2( 900, 0 )
+z_index = 1
+
+[node name="sprite" type="ColorRect" parent="tornado"]
+modulate = Color( 1, 1, 1, 0.917647 )
+material = SubResource( 2 )
+margin_left = -180.0
+margin_top = -16.0
+margin_right = 180.0
+margin_bottom = 1008.0
+rect_pivot_offset = Vector2( 180, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lines" type="ColorRect" parent="tornado"]
+modulate = Color( 1.50196, 1, 1.25098, 0 )
+material = SubResource( 14 )
+margin_left = -180.0
+margin_top = -16.0
+margin_right = 180.0
+margin_bottom = 1008.0
+rect_pivot_offset = Vector2( 180, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="dust" type="Particles2D" parent="tornado"]
+modulate = Color( 1, 0.756863, 0.87451, 1 )
+self_modulate = Color( 6, 6, 6, 1 )
+material = SubResource( 7 )
+position = Vector2( 0, 1000 )
+amount = 64
+visibility_rect = Rect2( 0, 0, 500, 500 )
+local_coords = false
+process_material = SubResource( 18 )
+texture = ExtResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="tornado"]
+visible = false
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="tornado/Area2D"]
+polygon = PoolVector2Array( -72, 0, 72, 0, 0, 1000 )
+
+[node name="tornadoanim" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 19 )
+anims/despawn = SubResource( 6 )
+anims/spawn = SubResource( 5 )
+
+[node name="clouds" type="Particles2D" parent="."]
+modulate = Color( 0.94, 0, 0.48, 0.75 )
+material = SubResource( 7 )
+position = Vector2( -256, -256 )
+z_index = 5
+amount = 360
+lifetime = 16.0
+preprocess = 10.0
+visibility_rect = Rect2( 0, 0, 500, 500 )
+process_material = SubResource( 8 )
+texture = ExtResource( 2 )
+
+[node name="cloudlaunch" type="Particles2D" parent="."]
+modulate = Color( 0.94, 0, 0.48, 0.75 )
+material = SubResource( 7 )
+position = Vector2( 400, 300 )
+emitting = false
+amount = 90
+lifetime = 4.0
+visibility_rect = Rect2( 0, 0, 500, 500 )
+local_coords = false
+process_material = SubResource( 10 )
+texture = ExtResource( 2 )
+
+[node name="cloudanim" type="AnimationPlayer" parent="."]
+anims/entry = SubResource( 9 )

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://addons/native_bullets/kits/basic_particle_kit.gdns" type="Script" id=1]
+[ext_resource path="res://examples/player/graze.png" type="Texture" id=2]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+
+[resource]
+script = ExtResource( 1 )
+texture = ExtResource( 2 )
+bullet_class_name = "Bullet"
+texture_width = 0.0
+material = SubResource( 1 )
+fade_time = 10.0
+collisions_enabled = false
+collision_layer = 0
+collision_mask = 0
+active_rect = Rect2( 0, 0, 0, 0 )
+bounce_rect = Rect2( 0, 0, 0, 0 )
+time_scale = 1.0
+data = {
+}

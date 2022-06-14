@@ -1,0 +1,546 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://fonts/Inter-Medium.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://examples/mainmenu.gd" type="Script" id=2]
+[ext_resource path="res://addons/native_bullets/bullets_environment.gd" type="Script" id=3]
+[ext_resource path="res://examples/glass.tscn" type="PackedScene" id=4]
+[ext_resource path="res://examples/ui/triangle.png" type="Texture" id=5]
+[ext_resource path="res://default/se/change.wav" type="AudioStream" id=6]
+[ext_resource path="res://default/se/se_cancel00.wav" type="AudioStream" id=7]
+[ext_resource path="res://fonts/Inter-Regular.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://fonts/SourceCodePro-Semibold.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://examples/ui/healthbar.tres" type="StyleBox" id=10]
+
+[sub_resource type="DynamicFont" id=1]
+size = 96
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 64
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=74]
+size = 96
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=75]
+size = 48
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="Shader" id=37]
+code = "shader_type canvas_item;
+
+uniform vec4 left_color : hint_color;
+uniform vec4 right_color : hint_color; 
+
+uniform float progress = 0.0;
+
+void fragment() {
+	vec4 c = COLOR;
+	if (c.a > .55) {
+		c.rgb = left_color.rgb + (right_color.rgb - left_color.rgb) * UV.x * progress;
+	}
+	COLOR = c;
+}"
+
+[sub_resource type="ShaderMaterial" id=77]
+shader = SubResource( 37 )
+shader_param/left_color = Color( 0, 1, 0.905882, 1 )
+shader_param/right_color = Color( 0.239216, 0.870588, 0.203922, 1 )
+shader_param/progress = 1.0
+
+[sub_resource type="StyleBoxFlat" id=81]
+bg_color = Color( 1, 1, 1, 0.376471 )
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color( 0, 0, 0, 0.501961 )
+shadow_size = 16
+anti_aliasing_size = 1.0
+
+[sub_resource type="StyleBoxFlat" id=82]
+bg_color = Color( 0, 0, 0, 0 )
+draw_center = false
+shadow_size = 1
+
+[sub_resource type="DynamicFont" id=20]
+size = 24
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 9 )
+
+[sub_resource type="Theme" id=83]
+default_font = SubResource( 20 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = SubResource( 81 )
+ProgressBar/styles/fg = ExtResource( 10 )
+RichTextLabel/styles/normal = SubResource( 82 )
+
+[sub_resource type="DynamicFont" id=78]
+size = 36
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 8 )
+
+[sub_resource type="ShaderMaterial" id=79]
+shader = SubResource( 37 )
+shader_param/left_color = Color( 0.776471, 0.0745098, 1, 1 )
+shader_param/right_color = Color( 0.247059, 0.0901961, 1, 1 )
+shader_param/progress = 1.0
+
+[sub_resource type="ShaderMaterial" id=93]
+shader = SubResource( 37 )
+shader_param/left_color = Color( 1, 0, 0.141176, 1 )
+shader_param/right_color = Color( 1, 0.0901961, 0.901961, 1 )
+shader_param/progress = 1.0
+
+[sub_resource type="DynamicFont" id=94]
+size = 32
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[node name="Control" type="Control"]
+pause_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -960.0
+margin_top = -540.0
+margin_right = 960.0
+margin_bottom = 540.0
+script = ExtResource( 2 )
+
+[node name="Main" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="Main"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = 83.0
+margin_right = 1797.0
+margin_bottom = 529.0
+custom_fonts/font = SubResource( 1 )
+text = "touhou 
+but i'm too lazy to made a title screen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="start" type="Label" parent="Main"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 865.0
+margin_top = 577.0
+margin_right = 1015.0
+margin_bottom = 655.0
+custom_fonts/font = SubResource( 2 )
+text = "Start"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="settings" type="Label" parent="Main"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 812.5
+margin_top = 673.0
+margin_right = 1067.5
+margin_bottom = 751.0
+custom_fonts/font = SubResource( 2 )
+text = "Settings"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="exit" type="Label" parent="Main"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 883.0
+margin_top = 769.0
+margin_right = 997.0
+margin_bottom = 847.0
+custom_fonts/font = SubResource( 2 )
+text = "Exit"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Charcter" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="Charcter"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = 83.0
+margin_right = 1797.0
+margin_bottom = 529.0
+custom_fonts/font = SubResource( 1 )
+text = "Character"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="settings" type="Label" parent="Charcter"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 812.5
+margin_top = 481.0
+margin_right = 1067.5
+margin_bottom = 559.0
+custom_fonts/font = SubResource( 2 )
+text = "Reimu"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="start" type="Label" parent="Charcter"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 838.0
+margin_top = 577.0
+margin_right = 1042.0
+margin_bottom = 655.0
+custom_fonts/font = SubResource( 2 )
+text = "Marisa"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="exit" type="Label" parent="Charcter"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 867.0
+margin_top = 769.0
+margin_right = 1017.0
+margin_bottom = 847.0
+custom_fonts/font = SubResource( 2 )
+text = "Back"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SettingsMenu" type="Control" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_top = -128.0
+margin_bottom = -128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="SettingsMenu"]
+margin_left = -190.0
+margin_top = 192.0
+margin_right = 191.0
+margin_bottom = 309.0
+custom_fonts/font = SubResource( 74 )
+text = "Settings"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Windowed" type="Label" parent="SettingsMenu"]
+margin_left = -538.0
+margin_top = 340.0
+margin_right = -293.0
+margin_bottom = 399.0
+rect_pivot_offset = Vector2( 245, -116 )
+custom_fonts/font = SubResource( 75 )
+text = "Windowed"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fullscreen" type="Label" parent="SettingsMenu"]
+modulate = Color( 0.658824, 0.658824, 0.658824, 1 )
+margin_left = -538.0
+margin_top = 404.0
+margin_right = -301.0
+margin_bottom = 463.0
+custom_fonts/font = SubResource( 75 )
+text = "Fullscreen"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Music" type="Label" parent="SettingsMenu"]
+margin_left = -538.0
+margin_top = 516.0
+margin_right = -401.0
+margin_bottom = 575.0
+custom_fonts/font = SubResource( 75 )
+text = "Music"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SFX" type="Label" parent="SettingsMenu"]
+margin_left = -538.0
+margin_top = 580.0
+margin_right = -447.0
+margin_bottom = 639.0
+custom_fonts/font = SubResource( 75 )
+text = "SFX"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2d" type="Label" parent="SettingsMenu"]
+modulate = Color( 0.658824, 0.658824, 0.658824, 1 )
+margin_left = -538.0
+margin_top = 692.0
+margin_right = -471.0
+margin_bottom = 751.0
+custom_fonts/font = SubResource( 75 )
+text = "2D Backgrounds"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="3d" type="Label" parent="SettingsMenu"]
+margin_left = -538.0
+margin_top = 756.0
+margin_right = -158.0
+margin_bottom = 815.0
+custom_fonts/font = SubResource( 75 )
+text = "3D Backgrounds"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BGscale" type="Label" parent="SettingsMenu"]
+margin_left = -538.0
+margin_top = 820.0
+margin_right = -471.0
+margin_bottom = 879.0
+custom_fonts/font = SubResource( 75 )
+text = "Quality"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="streamer" type="Label" parent="SettingsMenu"]
+modulate = Color( 0.658824, 0.658824, 0.658824, 1 )
+margin_left = -538.0
+margin_top = 916.0
+margin_right = -376.0
+margin_bottom = 975.0
+custom_fonts/font = SubResource( 75 )
+text = "Opaque Window (Streamer Mode)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="transparent" type="Label" parent="SettingsMenu"]
+margin_left = -538.0
+margin_top = 980.0
+margin_right = -257.0
+margin_bottom = 1039.0
+custom_fonts/font = SubResource( 75 )
+text = "Transparent Window"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Label" parent="SettingsMenu"]
+margin_left = -538.0
+margin_top = 1076.0
+margin_right = -426.0
+margin_bottom = 1135.0
+custom_fonts/font = SubResource( 75 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicLevel" type="ProgressBar" parent="SettingsMenu"]
+show_behind_parent = true
+material = SubResource( 77 )
+margin_left = -312.0
+margin_top = 522.0
+margin_right = 288.0
+margin_bottom = 570.0
+theme = SubResource( 83 )
+step = 0.0
+value = 100.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="value" type="Label" parent="SettingsMenu/MusicLevel"]
+margin_left = 494.0
+margin_right = 595.0
+margin_bottom = 48.0
+custom_fonts/font = SubResource( 78 )
+text = "100%"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SFXLevel" type="ProgressBar" parent="SettingsMenu"]
+show_behind_parent = true
+material = SubResource( 79 )
+margin_left = -312.0
+margin_top = 586.0
+margin_right = 288.0
+margin_bottom = 634.0
+theme = SubResource( 83 )
+step = 0.0
+value = 100.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="value" type="Label" parent="SettingsMenu/SFXLevel"]
+margin_left = -46.0
+margin_right = 55.0
+margin_bottom = 48.0
+custom_fonts/font = SubResource( 78 )
+text = "0%"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BGLevel" type="ProgressBar" parent="SettingsMenu"]
+show_behind_parent = true
+material = SubResource( 93 )
+margin_left = -312.0
+margin_top = 826.0
+margin_right = 288.0
+margin_bottom = 874.0
+theme = SubResource( 83 )
+step = 0.0
+value = 100.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="value" type="Label" parent="SettingsMenu/BGLevel"]
+margin_left = -23.0
+margin_right = 78.0
+margin_bottom = 48.0
+custom_fonts/font = SubResource( 78 )
+text = "20%"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="selection" type="TextureRect" parent="."]
+margin_left = 362.0
+margin_top = 338.0
+margin_right = 618.0
+margin_bottom = 594.0
+rect_scale = Vector2( 0.2, 0.25 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="selection2" type="TextureRect" parent="selection"]
+margin_left = 2000.0
+margin_right = 2256.0
+margin_bottom = 256.0
+rect_scale = Vector2( -1, 1 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="BulletsEnvironment" type="Node" parent="Node2D"]
+script = ExtResource( 3 )
+bullet_types_amount = 0
+
+[node name="glass" parent="." instance=ExtResource( 4 )]
+visible = false
+modulate = Color( 0.827451, 0.886275, 1, 1 )
+
+[node name="change" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -10.0
+bus = "SFX"
+
+[node name="select" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -10.0
+bus = "SFX"
+
+[node name="Label" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -39.0
+margin_right = 188.0
+custom_fonts/font = SubResource( 94 )
+text = "Pickled Cow"
+__meta__ = {
+"_edit_use_anchors_": false
+}

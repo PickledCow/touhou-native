@@ -71,18 +71,7 @@ class BasicItemsPool : public AbstractBulletsPool<BasicItemKit, Bullet> {
 
 	bool _process_bullet(Bullet* bullet, float delta) {
         Vector2 last_pos = bullet->position;
-        if (bullet->magnet_target_id) {
-            if (bullet->fade_timer) {
-                bullet->fade_timer = 0.0f;
-                bullet->transform = bullet->transform.rotated(-bullet->transform.get_rotation());
-            }
-            Node2D *node = bullet->magnet_target;
-            godot_int instance_id = bullet->magnet_target_id;
-            if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id(instance_id))) {
-                float angle = ((Vector2)node->get_position()).angle_to_point(bullet->position);
-                bullet->position += Vector2(kit->magnet_strength * delta, 0.0f).rotated(angle);
-            }
-        } else if (bullet->fade_timer) {
+        if (bullet->fade_timer) {
             bullet->fade_timer -= delta;
             bullet->position += bullet->speed * bullet->direction * delta;
             if (delta == 1) {
@@ -97,6 +86,17 @@ class BasicItemsPool : public AbstractBulletsPool<BasicItemKit, Bullet> {
             }
             xform.set_origin(bullet->position);
             bullet->transform = xform;
+        } else if (bullet->magnet_target_id) {
+            if (bullet->fade_timer) {
+                bullet->fade_timer = 0.0f;
+                bullet->transform = bullet->transform.rotated(-bullet->transform.get_rotation());
+            }
+            Node2D *node = bullet->magnet_target;
+            godot_int instance_id = bullet->magnet_target_id;
+            if (core_1_1_api->godot_is_instance_valid(core_1_2_api->godot_instance_from_id(instance_id))) {
+                float angle = ((Vector2)node->get_position()).angle_to_point(bullet->position);
+                bullet->position += Vector2(kit->magnet_strength * delta, 0.0f).rotated(angle);
+            }
         } else {
             bullet->position += kit->gravity * delta;
         }

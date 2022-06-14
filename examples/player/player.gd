@@ -1,11 +1,14 @@
 extends Area2D
+class_name Player
 
 export(Resource) var player_bullet_kit
 export(Resource) var player_bullet_kit_add
 export(Resource) var bullet_clear_kit
 export(Resource) var item_text_kit
+export(Resource) var graze_partlcle_kit
 
-export var pid := 1
+onready var pid : int = DefSys.player_id
+
 
 # Movement
 export(float, 0, 1000) var speed = 500.0
@@ -18,6 +21,7 @@ var vertical_priority = 0
 
 # States
 var is_focused := false
+var auto_poc := false
 
 # Vitals
 var lives := 6
@@ -25,14 +29,14 @@ var hit := false
 var dead := false
 var invincible_time := 180.0
 var invincible_timer := 0.0
+var game_over_timer := 120
 
 # Bullet clear
 var clear_time := 42.0
 var clear_timer := 0.0
-var clear_radius := 1000.0
+var clear_radius := 700.0
 
 # Animation
-signal hit(health)
 var anim_timer := 0.0
 var anim_time := 0.1
 var anim_frame := 0
@@ -50,25 +54,11 @@ onready var hitbox_anim = $focusanimation
 # Shooting
 enum PLAYER_BULLET_INDEX { REIMU_MAIN, REIMU_HOMING, MARISA_MAIN, MARISA_MISSILE }
 var player_bullets = [ PoolRealArray([0, 0, 192, 192, 144, 0.25, 47, 1, 0, 0, 0, 0, 0, 0, 0]),
-						PoolRealArray(),
+						PoolRealArray([128, 192, 128, 128, 96, 0.375, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
 						PoolRealArray([0, 192, 128, 128, 96, 0.375, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
 						PoolRealArray([128, 0, 192, 192, 128, 0.25, 52, 2, 0, 0, 0, 0, 0, 0, 0]) 
 ]
-#source x (integer) # (16+8*(c/4))
-#source y (integer) # (24+2*(c%4))
-#source width (integer)
-#source height (integer)
-#bullet size [0, inf)
-#hitbox ratio [0, 1]
-#Sprite offset y (integer)
-#anim frame, 1 for no animation (integer)
-#spin
-#layer
-#rgb
-#g
-#b
-#damage type
-#damage amount
+var custom_bullet := preload("res://examples/player/homing.tscn")
 
 var option_prev_pos = [Vector2(), Vector2(), Vector2(), Vector2()]
 
@@ -94,12 +84,7 @@ class Shooter:
 	var speed = 50
 	var accel = 0
 	var max_speed = 0
-	
-	var radial_homing = false
-	var lateral_homing = false
-	
-	var stationary_piercing = false
-	var laser_animated = false
+	var homing_strength = 0.0
 	
 	var sprite
 	var kit
@@ -108,6 +93,8 @@ class Shooter:
 	
 var shoot_sfx = ["playershoot", "playermissile"]
 
+# Data
+var names = ["Reimu", "Marisa"]
 
 func _ready():
 	var tex = load("res://examples/player/p"+str(pid)+"/pl.png")
@@ -131,7 +118,11 @@ func _ready():
 	for shooter_data in shot_data["shooters"]["focused"]:
 		var shooter = create_shooter(shooter_data)
 		shooters_focus.append(shooter)
-		
+	
+	speed = 10.0 if pid == 1 else 9.0
+	
+	call_deferred("after_ready")
+	
 func create_shooter(shooter_data):
 	var shooter = Shooter.new()
 	shooter.fire_rate = shooter_data["fire_rate"]
@@ -145,8 +136,14 @@ func create_shooter(shooter_data):
 	shooter.kit = player_bullet_kit if !shooter_data["additive"] else player_bullet_kit_add
 	shooter.accel = shooter_data["accel"]
 	shooter.max_speed = shooter_data["max_speed"]
+	shooter.homing_strength = shooter_data["homing_strength"]
 	shooter.sfx = shooter_data["sfx"]
 	return shooter
+
+func after_ready():
+	DefSys.health_bar.set_name(names[pid])
+	DefSys.health_bar.set_player_face(pid)
+
 
 
 func _process(delta):
@@ -217,7 +214,7 @@ func move():
 	position.x = clamp(position.x, 24, 1000 - 24)
 	position.y = clamp(position.y, 60, 1000 - 30)
 	
-	get_node("itempoc/CollisionShape2D").disabled = position.y > 300
+	get_node("itempoc/CollisionShape2D").disabled = position.y > 400 && !auto_poc
 
 #var t = 0
 
@@ -234,42 +231,59 @@ func shoot():
 			s.fire_timer -= 1
 			if s.fire_timer <= 0:
 				s.fire_timer = s.fire_rate
+				DefSys.sfx.play(shoot_sfx[s.sfx])
 				var option_pos = option_positions_unfocus[s.option] * (1 - option_interp) + option_positions_focus[s.option] * option_interp
 				var p = position + s.offset + option_pos
-				var bullet = Bullets.create_shot_a2(s.kit, p, s.speed, s.angle, s.accel, s.max_speed, player_bullets[s.sprite], false)
-				Bullets.set_bullet_properties(bullet, {"damage": s.damage})
-				DefSys.sfx.play(shoot_sfx[s.sfx])
+				var bullet_data = player_bullets[s.sprite]
+				if s.homing_strength == 0.0:
+					var bullet = Bullets.create_shot_a2(s.kit, p, s.speed, s.angle, s.accel, s.max_speed, bullet_data, false)
+					Bullets.set_bullet_properties(bullet, {"damage": s.damage})
+				else:
+					var bullet = Bullets.create_shot_a1(s.kit, p, 0.0, s.angle, bullet_data, false)
+					Bullets.set_bullet_properties(bullet, {"damage": s.damage})
+					var cb = custom_bullet.instance()
+					cb.position = p
+					cb.rotation = s.angle
+					cb.bullet = bullet
+					cb.speed = s.speed
+					cb.homing_strength = s.homing_strength
+					DefSys.playfield.add_child(cb)
 
 func _physics_process(_delta):
 	remove_bullets(bullets_to_remove)
 	bullets_to_remove.clear()
 	
-	
-	move()
-	
-	if is_focused && option_interp < 1.0:
-		option_interp += option_travel_speed
-		if option_interp > 1.0:
-			option_interp = 1.0
-	elif !is_focused && option_interp > 0.0:
-		option_interp -= option_travel_speed
-		if option_interp < 0.0:
-			option_interp = 0.0
-	for i in 4:
-		option_sprites[i].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
-	
-	shoot()
-	
+	if lives >= 0:
+		move()
+		
+		if is_focused && option_interp < 1.0:
+			option_interp += option_travel_speed
+			if option_interp > 1.0:
+				option_interp = 1.0
+		elif !is_focused && option_interp > 0.0:
+			option_interp -= option_travel_speed
+			if option_interp < 0.0:
+				option_interp = 0.0
+		for i in 4:
+			option_sprites[i].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+		
+		shoot()
+		
 	if hit && invincible_timer <= 0.0:
-		DefSys.sfx.death.play()
+		DefSys.spell_bonus = false
+		DefSys.sfx.play("death")
+		DefSys.boss_bar.fail_spell()
 		bullet_clear_box.monitoring = true
 		lives -= 1
 		if lives == 2 || lives == 0:
-			DefSys.sfx.lowhealth.play()
-		emit_signal("hit", lives)
+			DefSys.sfx.play("lowhealth")
+		#emit_signal("hit", lives)
+		DefSys.health_bar.animate_face(true, lives)
 		invincible_timer = invincible_time
 		DefSys.warp_effect.warp(position, true)
 		clear_timer = clear_time
+		if lives < 0:
+			hide()
 	if invincible_timer > 0.0:
 		invincible_timer -= 1.0
 	if clear_timer > 0.0:
@@ -279,7 +293,11 @@ func _physics_process(_delta):
 			bullet_clear_box.monitoring = false
 			bullet_clear_box_shape.shape.radius = 0.0
 	hit = false
-	
+	if lives < 0:
+		game_over_timer -= 1
+	if game_over_timer == 0:
+		DefSys.pause_menu.game_over()
+		game_over_timer = -1
 
 func create_bullet_clear(bullet_id):
 	var p = Bullets.get_property(bullet_id, "position")
@@ -297,7 +315,27 @@ func _on_area_shape_entered(area_id, _area, area_shape, _local_shape):
 		call_deferred("remove_bullet", bullet_id)
 
 func _on_itemcollection_area_shape_entered(area_id, _area, area_shape, _local_shape):
+	DefSys.sfx.play("item")
 	var bullet_id = Bullets.get_bullet_from_shape(area_id, area_shape)
+	match Bullets.get_property(bullet_id, "damage_type"):
+		DefSys.ITEM_TYPE.POINT:
+# warning-ignore:integer_division
+			var max_value = DefSys.piv + (DefSys.graze / 10) * 10
+			var p = Bullets.get_property(bullet_id, "position")
+			var value = max_value
+			if !Bullets.get_property(bullet_id, "fading"):
+				value *= min(1.0, 1.0 - (min(p.y, position.y) - 350.0) / 1300.0)
+			DefSys.score += value
+			var c = Color(value, 0, 1 if value == max_value else 0, 0)
+			Bullets.create_particle(item_text_kit, p, 16, c, Vector2(0, -0.1), true)
+		DefSys.ITEM_TYPE.PIV:
+			DefSys.piv += 10
+		DefSys.ITEM_TYPE.LIFE:
+			lives += 1
+			if lives > 6: lives = 6
+			DefSys.health_bar.animate_face(false, lives)
+			DefSys.sfx.play("extend")
+			
 	call_deferred("remove_item", bullet_id)
 
 func _on_itempoc_area_shape_entered(area_id, _area, area_shape, _local_shape):
@@ -314,22 +352,15 @@ func remove_bullet(bullet_id):
 	Bullets.delete(bullet_id)
 
 func remove_item(bullet_id):
-	if Bullets.get_property(bullet_id, "damage_type") == 0:
-		var max_value = 10000
-		var p = Bullets.get_property(bullet_id, "position")
-		var value = max_value
-		if !Bullets.get_property(bullet_id, "fading"):
-			value *= min(1.0, 1.0 - (min(p.y, position.y) - 350.0) / 1300.0)
-		var c = Color(value, 0, 1 if value == max_value else 0, 0)
-		Bullets.create_particle(item_text_kit, p, 16, c, Vector2(0, -0.1), true)
-		
 	Bullets.delete(bullet_id)
 
 
 func _on_grazebox_area_shape_entered(area_id, _area, area_shape, _local_shape):
 	var bullet_id = Bullets.get_bullet_from_shape(area_id, area_shape)
 	Bullets.set_property(bullet_id, "grazed", true)
-	
+	DefSys.graze += 1
+	DefSys.sfx.play("graze")
+	Bullets.create_particle(graze_partlcle_kit, position, rand_range(12,18), Color(1.0, 1.0, 1.0, 1.0), Vector2(rand_range(0.3, 0.6), 0.0).rotated(randf()*TAU), false)
 
 func _on_itembox_area_shape_entered(area_id, _area, area_shape, _local_shape):
 	var bullet_id = Bullets.get_bullet_from_shape(area_id, area_shape)

@@ -54,6 +54,7 @@ anim_offset_random = 1.0
 material = SubResource( 1 )
 amount = 128
 lifetime = 0.5
+visibility_rect = Rect2( -2048, -2048, 4096, 4096 )
 local_coords = false
 process_material = SubResource( 6 )
 texture = ExtResource( 2 )
@@ -62,6 +63,7 @@ texture = ExtResource( 2 )
 material = SubResource( 1 )
 z_index = 2
 amount = 36
+visibility_rect = Rect2( -2048, -2048, 4096, 4096 )
 local_coords = false
 draw_order = 1
 process_material = SubResource( 6 )
@@ -69,5 +71,7 @@ texture = ExtResource( 2 )
 
 [node name="spark" parent="." instance=ExtResource( 1 )]
 visible = false
+visibility_rect = Rect2( -2048, -2048, 4096, 4096 )
 
 [node name="suck" parent="." instance=ExtResource( 3 )]
+visibility_rect = Rect2( -2048, -2048, 4096, 4096 )

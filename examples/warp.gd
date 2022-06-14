@@ -10,5 +10,4 @@ func _ready():
 
 func warp(position : Vector2, is_player : bool):
 	material.set_shader_param("centre", position / DefSys.playfield_size)
-	if is_player:
-		AnimPlayer.play("player")
+	AnimPlayer.play("player" if is_player else "boss")

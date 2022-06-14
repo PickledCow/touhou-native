@@ -1,0 +1,18 @@
+[remap]
+
+importer="hterrain_packed_texture_importer"
+type="StreamTexture"
+path.s3tc="res://.import/bg_slot0_albedo_bump.packed_tex-46818738140f342ab7ba01f476013c9f.s3tc.stex"
+path.etc2="res://.import/bg_slot0_albedo_bump.packed_tex-46818738140f342ab7ba01f476013c9f.etc2.stex"
+
+[deps]
+
+source_file="res://examples/bg/bg_slot0_albedo_bump.packed_tex"
+dest_files=[ "res://.import/bg_slot0_albedo_bump.packed_tex-46818738140f342ab7ba01f476013c9f.s3tc.stex", "res://.import/bg_slot0_albedo_bump.packed_tex-46818738140f342ab7ba01f476013c9f.etc2.stex" ]
+
+[params]
+
+compress/mode=2
+flags/repeat=1
+flags/filter=true
+flags/mipmaps=true

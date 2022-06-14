@@ -3,13 +3,15 @@ extends Control
 export var player_path : NodePath
 onready var player = get_node(player_path)
 
-onready var healthbar = $healthbar
-onready var healthbar_percent = $healthbar/percent
-onready var face = $face
-onready var face_low = $facelow
-onready var face_hurt = $facehurt
+onready var healthbar := $healthbar
+onready var healthbar_percent := $healthbar/percent
+onready var face := $face
+onready var face_low := $facelow
+onready var face_hurt := $facehurt
+onready var player_name := $name
 
-onready var face_animation = $faceanimator
+onready var face_animation := $faceanimator
+
 
 var health := 6
 
@@ -17,6 +19,7 @@ var t := 0.0
 
 func _ready():
 	update_healthbar(health)
+	DefSys.health_bar = self
 
 func _process(delta):
 	health = player.lives
@@ -27,15 +30,22 @@ func _process(delta):
 	face_hurt.modulate = Color(1.0, 1.0, 1.0, 1.0/dk) * (dk if health <= 2 else 1.0)
 	
 
-func _on_Player_hit(hp):
-	if hp > 2:
-		face_animation.play("hurt")
-	elif hp == 2:
-		face_animation.play("hurt_into_low")
-	elif hp >= 0:
-		face_animation.play("hurt_low")
+
+func animate_face(hurt: bool, hp: int):
+	if hurt:
+		if hp > 2:
+			face_animation.play("hurt")
+		elif hp == 2:
+			face_animation.play("hurt_into_low")
+		elif hp >= 0:
+			face_animation.play("hurt_low")
+		else:
+			face_animation.play("hurt_dead")
 	else:
-		face_animation.play("hurt_dead")
+		if hp > 2:
+			face_animation.play("heal")
+		else:
+			face_animation.play("heal_low")
 
 
 func _on_healthbar_value_changed(value):
@@ -48,3 +58,11 @@ func update_healthbar(value):
 	healthbar_percent.text = str(health) + "/6"
 	healthbar_percent.visible = health >= 0
 	
+func set_name(name: String):
+	player_name.text = name
+
+func set_player_face(pid: int):
+	$face.region_rect.position.x = 192*pid
+	$facehurt.region_rect.position.x = 192*pid
+	$facelow.region_rect.position.x = 192*pid
+	$facedead.region_rect.position.x = 192*pid

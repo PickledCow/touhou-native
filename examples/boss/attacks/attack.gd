@@ -19,7 +19,7 @@ export var no_bg = false
 
 export var scb = 1000000
 
-export var bg_flag = 0
+export var bg_flag = -1
 
 var t_raw = 0
 

@@ -9,26 +9,19 @@ var size_before_fullscreen := Vector2(1280, 720)
 var position_before_fullscreen : Vector2
 
 func _ready():
-	Engine.target_fps = 60
-	get_tree().get_root().set_transparent_background(true)
-	OS.window_per_pixel_transparency_enabled = true
+	
 	thread = Thread.new()
 	mutex = Mutex.new()
 	
-	# fancy titlebar
-	if !OS.window_borderless || !DefSys.borderlessed:
-		DefSys.borderlessed = true
-		OS.window_borderless = true
-		OS.window_borderless = false
 	#toggle_fullscreen()
-	
+	DefSys.reset()
 
-func _process(delta):
-	if Input.is_action_just_pressed("debug1"):
-		toggle_fullscreen()
+#func _process(_delta):
+	#if Input.is_action_just_pressed("debug1"):
+	#	toggle_fullscreen()
 		#snap(get_viewport())
-	if Input.is_action_just_pressed("debug5"):
-		get_tree().reload_current_scene()
+	#if Input.is_action_just_pressed("debug5"):
+	#	get_tree().reload_current_scene()
 
 func toggle_fullscreen():
 	fullscreen = !fullscreen

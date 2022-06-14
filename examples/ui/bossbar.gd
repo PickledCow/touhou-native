@@ -15,6 +15,7 @@ onready var spell_box := $spellclip/spell
 onready var spell_box_anim_player := $spellclip/spell/AnimationPlayer
 onready var spell_name := $spellclip/spell/name
 onready var spell_bonus := $spellclip/spell/bonus
+onready var spell_bonus_icon := $spellclip/spell/pointicon
 
 var health := 0.0
 var max_health := 1.0
@@ -58,16 +59,23 @@ func _process(delta):
 		icon.position.y = -64.0 * icon_fade_out
 		icon.modulate.a = 1.0 - icon_fade_out
 		icon.z_index = -1 if (icon_fade_out) > 0.9 else 0
+	
 
 func entry_anim():
 	anim_player.play("show")
 
 func fill_healthbar():
 	anim_player.play("fill")
+	
+func hide_healthbar():
+	anim_player.play("hide")
+	
+func spell_result(success: bool):
+	$spellresultplayer.play("capture" if success else "failed")
 
 func update_healthbar(value):
 	healthbar.material.set_shader_param("progress", value*0.01)
-	healthbar_percent.rect_position.x = 56 + value * 0.01 * healthbar.rect_size.x
+	healthbar_percent.rect_position.x = 24 + value * 0.01 * healthbar.rect_size.x
 	var percent : String
 	if !anim_player.is_playing():
 		percent = str(ceil(100.0 * clamp(health / max_health, 0.0, 1.0))) + "%"
@@ -95,13 +103,20 @@ func remove_phase_icon(index: int):
 	icon_being_removed = index
 
 func set_timer(t: int):
+# warning-ignore:integer_division
+# warning-ignore:integer_division
 	timer.bbcode_text = ("[center]%02d[b].%02d" % [t / 60, (t % 60) * 100 / 60]).replace('0', 'O')
 
 func declare_spell(name: String, bonus: int):
 	spell_box.visible = true
 	spell_name.bbcode_text = "[right]" + name
-	spell_bonus.text = str(bonus).replace('0', 'O')
+	spell_bonus.text = str(bonus).replace('0', 'O') + "  "
 	spell_box_anim_player.play("spawn")
+	spell_bonus_icon.visible = true
+
+func fail_spell():
+	spell_bonus.text = "FAILED"
+	spell_bonus_icon.visible = false
 	
 func end_spell():
 	spell_box.visible = false

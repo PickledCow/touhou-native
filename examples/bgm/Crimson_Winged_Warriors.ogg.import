@@ -12,4 +12,4 @@ dest_files=[ "res://.import/Crimson_Winged_Warriors.ogg-dd7e5dc3fd1df87bc556959d
 [params]
 
 loop=true
-loop_offset=0
+loop_offset=6.095

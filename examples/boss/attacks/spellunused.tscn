@@ -1,0 +1,80 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://examples/boss/attacks/spell2.gd" type="Script" id=1]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=3]
+[ext_resource path="res://examples/boss/mace.png" type="Texture" id=4]
+[ext_resource path="res://kits/bullet_clear_kit.tres" type="Resource" id=5]
+[ext_resource path="res://examples/boss/Chinaball.PNG" type="Texture" id=6]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 64.0
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 43.0
+
+[node name="spell2" type="Node2D"]
+script = ExtResource( 1 )
+attack_type = 2
+attack_name = "Call of Servants"
+attack_time = 27000
+galacta_start_pos = Vector2( 500, 500 )
+health = 45000
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 3 )
+bullet_clear_kit = ExtResource( 5 )
+
+[node name="maceknight" type="Area2D" parent="."]
+position = Vector2( -186, -26 )
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="Sprite" type="Sprite" parent="maceknight"]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="maceknight"]
+shape = SubResource( 1 )
+
+[node name="hitbox" type="Area2D" parent="maceknight"]
+position = Vector2( 0, 8 )
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="maceknight/hitbox"]
+shape = SubResource( 2 )
+
+[node name="meiling" type="Area2D" parent="."]
+position = Vector2( 1189, 26 )
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="Sprite" type="Sprite" parent="meiling"]
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="meiling"]
+shape = SubResource( 1 )
+
+[node name="hitbox" type="Area2D" parent="meiling"]
+position = Vector2( 0, 8 )
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="meiling/hitbox"]
+shape = SubResource( 2 )
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+margin_right = 1000.0
+margin_bottom = 1000.0
+border_width = 4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="area_shape_entered" from="maceknight" to="." method="_on_maceknight_area_shape_entered"]
+[connection signal="area_shape_entered" from="meiling" to="." method="_on_meiling_area_shape_entered"]
