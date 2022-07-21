@@ -1,0 +1,118 @@
+{
+    "option_pos": {
+        "unfocused": [
+            {
+                "x": -64,
+                "y": 60
+            },
+            {
+                "x": 64,
+                "y": 60
+            },
+            {
+                "x": -28,
+                "y": 96
+            },
+            {
+                "x": 28,
+                "y": 96
+            }
+        ],
+        "focused": [
+            {
+                "x": 12,
+                "y": -52
+            },
+            {
+                "x": 0,
+                "y": -64
+            },
+            {
+                "x": 0,
+                "y": -40
+            },
+            {
+                "x": -12,
+                "y": -52
+            }
+        ]
+    },
+    "shooters": {
+        "unfocused": [
+            
+            {
+                "fire_rate": 4,
+                "start_delay": 0,
+                "damage": 6,
+                "option": 1,
+                "offset_x": 0,
+                "offset_y": -32,
+                "angle": -1.97079637051,
+                "angle_spread": 0.1,
+                "speed": 18,
+                "sprite": 4,
+                "additive": false,
+                "accel": 0,
+                "max_speed": 0,
+                "homing_strength": 0.03,
+                "sfx": 0
+            },
+            {
+                "fire_rate": 4,
+                "start_delay": 0,
+                "damage": 6,
+                "option": 2,
+                "offset_x": 0,
+                "offset_y": -32,
+                "angle": -1.17079637051,
+                "angle_spread": 0.1,
+                "speed": 18,
+                "sprite": 4,
+                "additive": false,
+                "accel": 0,
+                "max_speed": 0,
+                "homing_strength": 0.03,
+                "sfx": 0
+            },
+            {
+                "fire_rate": 4,
+                "start_delay": 3,
+                "damage": 6,
+                "option": 3,
+                "offset_x": 0,
+                "offset_y": -32,
+                "angle": -1.77079637051,
+                "angle_spread": 0.1,
+                "speed": 18,
+                "sprite": 4,
+                "additive": false,
+                "accel": 0,
+                "max_speed": 0,
+                "homing_strength": 0.03,
+                "sfx": 0
+            },
+            {
+                "fire_rate": 4,
+                "start_delay": 3,
+                "damage": 6,
+                "option": 4,
+                "offset_x": 0,
+                "offset_y": -32,
+                "angle": -1.37079637051,
+                "angle_spread": 0.1,
+                "speed": 18,
+                "sprite": 4,
+                "additive": false,
+                "accel": 0,
+                "max_speed": 0,
+                "homing_strength": 0.03,
+                "sfx": 0
+            }
+
+
+        ],
+        
+        "focused": []
+    }
+
+}

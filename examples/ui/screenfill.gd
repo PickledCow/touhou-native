@@ -1,7 +1,7 @@
 extends Sprite
 
 func _ready():
-	visible = !DefSys.transluscent
+	#visible = !DefSys.transluscent
 	get_tree().get_root().connect("size_changed", self, "resize")
 	resize()
 

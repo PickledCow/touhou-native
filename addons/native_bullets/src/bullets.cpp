@@ -14,6 +14,7 @@
 
 using namespace godot;
 
+const bool DEBUG = 1;
 
 void Bullets::_register_methods() {
 	register_method("_physics_process", &Bullets::_physics_process);
@@ -106,6 +107,7 @@ void Bullets::_init() {
 }
 
 void Bullets::_physics_process(float delta) {
+	if (DEBUG) Godot::print("pp");
 	if(Engine::get_singleton()->is_editor_hint()) {
 		return;
 	
@@ -135,6 +137,7 @@ void Bullets::_physics_process(float delta) {
 }
 
 void Bullets::_clear_rids() {
+	if (DEBUG) Godot::print("clear_rid");
 	for(int32_t i = 0; i < shared_areas.size(); i++) {
 		Physics2DServer::get_singleton()->area_clear_shapes(shared_areas[i]);
 		Physics2DServer::get_singleton()->free_rid(shared_areas[i]);
@@ -142,6 +145,7 @@ void Bullets::_clear_rids() {
 }
 
 int32_t Bullets::_get_pool_index(int32_t set_index, int32_t bullet_index) {
+	if (DEBUG) Godot::print("getindex");
 	if(bullet_index >= 0 && set_index >= 0 && set_index < pool_sets.size() && bullet_index < pool_sets[set_index].bullets_amount) {
 		int32_t pool_threshold = pool_sets[set_index].pools[0].size;
 		int32_t pool_index = 0;
@@ -287,6 +291,7 @@ Node* Bullets::get_bullets_environment() {
 }
 
 bool Bullets::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
+	if (DEBUG) Godot::print("spawn_bullet");
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -303,6 +308,7 @@ bool Bullets::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
 }
 
 Variant Bullets::obtain_bullet(Ref<BulletKit> kit) {
+	if (DEBUG) Godot::print("get_bullet");
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -323,6 +329,7 @@ Variant Bullets::obtain_bullet(Ref<BulletKit> kit) {
 }
 
 bool Bullets::release_bullet(Variant id) {
+	if (DEBUG) Godot::print("release_bullet");
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 	bool result = false;
 

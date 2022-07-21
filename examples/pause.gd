@@ -55,7 +55,7 @@ func set_fullscreen(fs: bool) -> void:
 			OS.window_position = DefSys.position_before_fullscreen
 
 func _notification(what):
-	if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT && !is_game_over_menu:
+	if false && (what == MainLoop.NOTIFICATION_WM_FOCUS_OUT && !is_game_over_menu):
 		if !get_tree().paused:
 			get_tree().paused = true
 			selection = 0

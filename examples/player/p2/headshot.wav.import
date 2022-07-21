@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/headshot.wav-5f919d0b8cf138238f08c348ccc72229.sample"
+
+[deps]
+
+source_file="res://examples/player/p2/headshot.wav"
+dest_files=[ "res://.import/headshot.wav-5f919d0b8cf138238f08c348ccc72229.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Hitsound_beepo.wav-a3f76ef11e959660eec57b635134c502.sample"
+
+[deps]
+
+source_file="res://examples/player/p2/Hitsound_beepo.wav"
+dest_files=[ "res://.import/Hitsound_beepo.wav-a3f76ef11e959660eec57b635134c502.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

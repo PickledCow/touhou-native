@@ -14,8 +14,8 @@ var is_3d := true
 var transluscent := true
 
 # Global data
-enum PLAYER_ID { REIMU, MARISA }
-var player_id := 0
+enum PLAYER_ID { REIMU, MARISA, SNIPER, ENGINEER }
+var player_id: int = PLAYER_ID.MARISA
 
 var spell_bonus := true
 var score := 0
@@ -31,6 +31,7 @@ var hacky_common_data := 0
 
 var item_data := []
 var bullet_data := []
+var null_bullet_data
 
 const playfield_size := Vector2(1000, 1000)
 
@@ -62,7 +63,7 @@ enum BULLET_TYPE {	STRAIGHT_LASER, ARROWHEAD, BALL_OUTLINE, BALL, RICE, KUNAI, I
 					NOTE, # 35
 }
 
-const BULLET_SIZES := [  0.3, 0.3, 0.3, 0.3, 0.25, 2.5, 0.3, 0.28, 0.25, 0.25, 0.3, 0.2,
+const BULLET_SIZES := [  0.3, 0.3, 0.3, 0.3, 0.25, 0.25, 0.3, 0.28, 0.25, 0.25, 0.3, 0.2,
 						 0.2, 0.15, 0.2, 0.3,
 						 0.3, 0.4, 0.2, 0.1, 0.2,
 						 0.25,
@@ -135,6 +136,11 @@ const DIVINE_RGB := [
 
 func generate_bullet_data():
 	# Generate Bullet Data 
+	
+	# Null
+	null_bullet_data = PoolRealArray()
+	null_bullet_data.resize(15)
+	null_bullet_data[7] = 1
 	
 	# Small bullets
 	for i in BULLET_TYPE.POPCORN:

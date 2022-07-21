@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/activereload.wav-6c350c38bc05850cd637b6bdadd3c18b.sample"
+
+[deps]
+
+source_file="res://examples/player/p2/activereload.wav"
+dest_files=[ "res://.import/activereload.wav-6c350c38bc05850cd637b6bdadd3c18b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

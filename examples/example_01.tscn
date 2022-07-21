@@ -1,14 +1,14 @@
-[gd_scene load_steps=181 format=2]
+[gd_scene load_steps=158 format=2]
 
 [ext_resource path="res://examples/ui/healthface.png" type="Texture" id=1]
 [ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
 [ext_resource path="res://addons/native_bullets/bullets_environment.gd" type="Script" id=3]
-[ext_resource path="res://examples/boss/galacta.png" type="Texture" id=4]
+[ext_resource path="res://default/se/se_powerup.wav" type="AudioStream" id=4]
 [ext_resource path="res://examples/Enemy.gd" type="Script" id=5]
 [ext_resource path="res://dummy.png" type="Texture" id=6]
 [ext_resource path="res://examples/FPS.gd" type="Script" id=7]
 [ext_resource path="res://default/se/blast.wav" type="AudioStream" id=8]
-[ext_resource path="res://examples/boss/starglow.png" type="Texture" id=9]
+[ext_resource path="res://examples/player/p2/headshot.wav" type="AudioStream" id=9]
 [ext_resource path="res://examples/scripts/bullets_counter.gd" type="Script" id=10]
 [ext_resource path="res://examples/example_01.gd" type="Script" id=11]
 [ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=12]
@@ -33,7 +33,6 @@
 [ext_resource path="res://examples/ui/healthbar_theme.tres" type="Theme" id=32]
 [ext_resource path="res://fonts/SourceCodePro-Semibold.ttf" type="DynamicFontData" id=33]
 [ext_resource path="res://examples/ui/bossbar.gd" type="Script" id=34]
-[ext_resource path="res://examples/background.gd" type="Script" id=35]
 [ext_resource path="res://examples/bgm/Crimson_Winged_Warriors.ogg" type="AudioStream" id=36]
 [ext_resource path="res://default/se/shoot1.wav" type="AudioStream" id=37]
 [ext_resource path="res://default/se/shoot2.wav" type="AudioStream" id=38]
@@ -47,7 +46,6 @@
 [ext_resource path="res://examples/warp.gd" type="Script" id=46]
 [ext_resource path="res://examples/ui/sweat.png" type="Texture" id=47]
 [ext_resource path="res://examples/ui/spells.png" type="Texture" id=48]
-[ext_resource path="res://examples/boss/cosmicflame.tscn" type="PackedScene" id=49]
 [ext_resource path="res://default/se/charge2.wav" type="AudioStream" id=50]
 [ext_resource path="res://default/se/charge1.wav" type="AudioStream" id=51]
 [ext_resource path="res://default/se/explode.wav" type="AudioStream" id=52]
@@ -73,458 +71,10 @@
 [ext_resource path="res://examples/ui/healthbar.tres" type="StyleBox" id=72]
 [ext_resource path="res://default/se/cardget.wav" type="AudioStream" id=73]
 [ext_resource path="res://default/se/wind.wav" type="AudioStream" id=74]
-[ext_resource path="res://examples/boss/star.png" type="Texture" id=75]
-[ext_resource path="res://examples/boss/anotherdimension.png" type="Texture" id=76]
-[ext_resource path="res://examples/bg/sdm.png" type="Texture" id=77]
 [ext_resource path="res://kits/graze_particle_kit.tres" type="Resource" id=78]
 [ext_resource path="res://examples/bgm/game_over.ogg" type="AudioStream" id=79]
 [ext_resource path="res://default/se/se_extend.wav" type="AudioStream" id=80]
 [ext_resource path="res://examples/ui/heal.png" type="Texture" id=81]
-[ext_resource path="res://examples/bg/2dbg.tscn" type="PackedScene" id=82]
-
-[sub_resource type="World" id=10]
-
-[sub_resource type="Shader" id=14]
-code = "shader_type canvas_item;
-
-uniform float rotate : hint_range(0.0, 6.28318530718);
-
-float gamma_expansion(float value) {
-	/*
-	if (value <= 0.0) {
-		return (value / 3294.6);
-	}
-	*/
-	return pow((value + 14.025) / 269.025, 2.4);
-}
-
-vec3 xyz_from_rgb(vec3 rgb) {
-	vec3 srgb = rgb * 255.0;
-	vec3 xyz = vec3(0.0, 0.0, 0.0);
-	
-	vec3 linear_rgb = vec3(0.0, 0.0, 0.0);
-	linear_rgb.r = gamma_expansion(srgb.r);
-	linear_rgb.g = gamma_expansion(srgb.g);
-	linear_rgb.b = gamma_expansion(srgb.b);
-	
-	xyz.x = linear_rgb.r*0.4124108464885388   + linear_rgb.g*0.3575845678529519  + linear_rgb.b*0.18045380393360833;
-	xyz.y = linear_rgb.r*0.21264934272065283  + linear_rgb.g*0.7151691357059038  + linear_rgb.b*0.07218152157344333;
-	xyz.z = linear_rgb.r*0.019331758429150258 + linear_rgb.g*0.11919485595098397 + linear_rgb.b*0.9503900340503373;
-	
-	return xyz;
-}
-
-float v2f(float v) {
-	const float EPSILON = 16.0 / 24389.0;
-	const float KAPPA = 24389.0 / 27.0;
-	if (v > EPSILON) {
-		return pow(v, 1.0 / 3.0);
-	}
-	return (KAPPA * v + 16.0) / 116.0;
-}
-
-vec3 lab_from_xyz(vec3 xyz) {
-	vec3 lab = vec3(0.0, 0.0, 0.0);
-	
-	vec3 f = vec3(0.0, 0.0, 0.0);
-	f.x = v2f(xyz.x / 0.9504492182750991);
-	f.y = v2f(xyz.y);
-	f.z = v2f(xyz.z / 1.0889166484304715);
-	
-	lab.x = 116.0 * f.y - 16.0;
-	lab.y = 500.0 * (f.x - f.y);
-	lab.z = 200.0 * (f.y - f.z);
-	
-	return lab;
-}
-
-
-float f_inv(float v) {
-	const float CBRT_EPSILON = 6.0 / 29.0;
-	const float KAPPA = 24389.0 / 27.0;
-	if (v > CBRT_EPSILON) {
-		return v * v * v;
-	}
-	return (v * 116.0 - 16.0) / KAPPA;
-	
-}
-
-vec3 xyz_from_lab(vec3 lab) {
-	const float KAPPA = 24389.0 / 27.0;
-	vec3 xyz = vec3(0.0, 0.0, 0.0);
-	
-	vec3 f = vec3(0.0, 0.0, 0.0);
-	
-	f.y = (lab.x + 16.0) / 116.0;
-	f.x = (lab.y / 500.0) + f.y;
-	f.z = f.y - (lab.z / 200.0);
-	
-	xyz.x = f_inv(f.x) * 0.9504492182750991;
-	if (lab.x > 8.0) {
-		xyz.y = f.y * f.y * f.y;
-	} else {
-		xyz.y = lab.x / KAPPA;
-	}
-	xyz.z = f_inv(f.z) * 1.0889166484304715;
-	
-	return xyz;
-}
-
-float gammea_compression(float linear) {
-	float v = 0.0;
-	
-	if (linear <= 0.00313066844250060782371) {
-		v = 3294.6 * linear;
-	} else {
-		v = 269.025 * pow(linear, 5.0 / 12.0) - 14.025;
-	}
-	
-	v /= 255.0;
-	
-	return v;
-}
-
-vec3 rgb_from_xyz(vec3 xyz) {
-	vec3 rgb = vec3(0.0, 0.0, 0.0);
-	
-	rgb.r = xyz.x* 3.240812398895283    - xyz.y*1.5373084456298136  - xyz.z*0.4985865229069666;
-    rgb.g = xyz.x*-0.9692430170086407   + xyz.y*1.8759663029085742  + xyz.z*0.04155503085668564;
-    rgb.b = xyz.x* 0.055638398436112804 - xyz.y*0.20400746093241362 + xyz.z*1.0571295702861434;
-	
-	rgb.r = gammea_compression(rgb.r);
-	rgb.g = gammea_compression(rgb.g);
-	rgb.b = gammea_compression(rgb.b);
-	
-	return rgb;
-}
-
-void fragment() {
-	vec3 c = texture(SCREEN_TEXTURE, SCREEN_UV).rgb;
-	vec3 xyz = xyz_from_rgb(c);
-	vec3 lab = lab_from_xyz(xyz);
-	float rot_cos = cos(-rotate);
-	float rot_sin = sin(-rotate);
-	vec2 ab = lab.yz;
-	lab.y = rot_cos * ab.x + rot_sin * ab.y;
-	lab.z = -rot_sin * ab.x + rot_cos * ab.y;
-	xyz = xyz_from_lab(lab);
-	c = rgb_from_xyz(xyz);
-	
-	COLOR.rgb = c;
-	
-}"
-
-[sub_resource type="ShaderMaterial" id=15]
-shader = SubResource( 14 )
-shader_param/rotate = 0.0
-
-[sub_resource type="Shader" id=86]
-code = "shader_type canvas_item;
-
-uniform float suck = 0.0;
-uniform float degree = 0.75;
-
-void fragment() {
-	vec2 uv = (SCREEN_UV - vec2(0.5)) * 2.0 * degree;
-	float dist = sqrt(uv.x * uv.x + uv.y * uv.y);
-	uv.x = (uv.x * pow(dist, -suck) / degree) * 0.5 + 0.5;
-	uv.y = (uv.y * pow(dist, -suck) / degree) * 0.5 + 0.5;
-	vec4 c = texture(SCREEN_TEXTURE, uv);
-	c.rgb *= float(uv.x >= 0.0 && uv.x <= 1.0 && uv.y >= 0.0 && uv.y <= 1.0);
-	COLOR = c;
-}"
-
-[sub_resource type="ShaderMaterial" id=87]
-shader = SubResource( 86 )
-shader_param/suck = 0.0
-shader_param/degree = 0.666
-
-[sub_resource type="CanvasItemMaterial" id=85]
-blend_mode = 1
-
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-
-uniform sampler2D starry;
-uniform vec2 direction;
-uniform float speed;
-
-void fragment() {
-	vec4 c = texture(starry, SCREEN_UV * vec2(SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x, 1.0) + direction * speed * TIME);
-	c.a = texture(TEXTURE, UV).a;
-	COLOR = c;
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/direction = Vector2( -1, -0.5 )
-shader_param/speed = 0.075
-shader_param/starry = ExtResource( 76 )
-
-[sub_resource type="Animation" id=92]
-resource_name = "fade"
-length = 8.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("flash:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 1, 7 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("../playfield/music:volume_db")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 1, 2.5, 4, 5.5, 6.3, 6.7, 7 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ 0.0, -2.8, -6.5, -13.5, -23.0, -29.0, -80.0 ]
-}
-
-[sub_resource type="Animation" id=50]
-resource_name = "flash"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/path = NodePath("flash:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-
-[sub_resource type="Animation" id=90]
-resource_name = "leave"
-tracks/0/type = "value"
-tracks/0/path = NodePath("BG/Viewport/over/space:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0.1, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ true, false ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("BG/Viewport/over/space:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0.1, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("BG/Viewport/over/sdm:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-
-[sub_resource type="Animation" id=16]
-resource_name = "spell"
-tracks/0/type = "bezier"
-tracks/0/path = NodePath("BG/Viewport/spriteover/huerotate:material:shader_param/rotate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1.5, -0.5, 0, 0.25, 0 ),
-"times": PoolRealArray( 0.1, 1 )
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("BG/Viewport/spriteover/huerotate:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-
-[sub_resource type="Animation" id=71]
-resource_name = "spell2"
-tracks/0/type = "bezier"
-tracks/0/path = NodePath("BG/Viewport/spriteover/huerotate:material:shader_param/rotate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 3.6, -0.5, 0, 0.25, 0 ),
-"times": PoolRealArray( 0.1, 1 )
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("BG/Viewport/spriteover/huerotate:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-
-[sub_resource type="Animation" id=89]
-resource_name = "suck"
-length = 3.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("BG/Viewport/spriteover/suck:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.8 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-tracks/1/type = "bezier"
-tracks/1/path = NodePath("BG/Viewport/spriteover/suck:material:shader_param/suck")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.7, 0.00500017, 0.999876, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0.8, 1.9 )
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("BG/Viewport/over/space:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 2.5, 3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("BG/Viewport/over/space:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 2.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("BG/Viewport/spriteover/star:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0, 0.1, 3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/5/type = "bezier"
-tracks/5/path = NodePath("BG/Viewport/spriteover/star:scale:x")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.1, 0, 1, -0.3, 0.5, 0.25, 0 ),
-"times": PoolRealArray( 0.1, 0.5 )
-}
-tracks/6/type = "bezier"
-tracks/6/path = NodePath("BG/Viewport/spriteover/star:scale:y")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.1, 0, 1, -0.3, 0.5, 0.25, 0 ),
-"times": PoolRealArray( 0.1, 0.5 )
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("BG/Viewport/spriteover/glowoutline:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0, 0.1, 3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/8/type = "bezier"
-tracks/8/path = NodePath("BG/Viewport/spriteover/glowoutline:scale:x")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.1, 0, 1, -0.3, 0.5, 0.25, 0 ),
-"times": PoolRealArray( 0.1, 0.5 )
-}
-tracks/9/type = "bezier"
-tracks/9/path = NodePath("BG/Viewport/spriteover/glowoutline:scale:y")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.1, 0, 1, -0.3, 0.5, 0.25, 0 ),
-"times": PoolRealArray( 0.1, 0.5 )
-}
-tracks/10/type = "value"
-tracks/10/path = NodePath("BG/Viewport/spriteover/glowoutline:modulate")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/keys = {
-"times": PoolRealArray( 0, 2.5, 3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-
-[sub_resource type="CircleShape2D" id=8]
-radius = 64.0
-
-[sub_resource type="CircleShape2D" id=70]
-radius = 36.0
 
 [sub_resource type="Shader" id=12]
 code = "shader_type canvas_item;
@@ -571,6 +121,12 @@ shader_param/speed = 1.0
 shader_param/distort = 0.5
 shader_param/colour = Vector3( 0.2, -0.1, -0.05 )
 
+[sub_resource type="CircleShape2D" id=8]
+radius = 64.0
+
+[sub_resource type="CircleShape2D" id=70]
+radius = 36.0
+
 [sub_resource type="CircleShape2D" id=51]
 radius = 1000.0
 
@@ -578,24 +134,12 @@ radius = 1000.0
 resource_name = "darken"
 length = 0.5
 tracks/0/type = "value"
-tracks/0/path = NodePath("galacta/Sprite:modulate")
+tracks/0/path = NodePath("Sprite:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0.5, 0.5, 0.5, 1 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("remilia/Sprite:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
@@ -719,27 +263,6 @@ tracks/2/keys = {
 
 [sub_resource type="Theme" id=11]
 
-[sub_resource type="Shader" id=52]
-code = "shader_type canvas_item;
-
-void fragment() {
-	if (COLOR.a == 1.0) {
-		COLOR.b += max(1.0 - UV.y, 0.0) * 0.25;
-	}
-}"
-
-[sub_resource type="ShaderMaterial" id=53]
-shader = SubResource( 52 )
-
-[sub_resource type="StyleBoxFlat" id=54]
-bg_color = Color( 1, 0.266667, 0.627451, 1 )
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-shadow_color = Color( 0, 0, 0, 0.501961 )
-shadow_size = 6
-
 [sub_resource type="Shader" id=56]
 code = "shader_type canvas_item;
 
@@ -755,10 +278,10 @@ shader = SubResource( 56 )
 
 [sub_resource type="StyleBoxFlat" id=55]
 bg_color = Color( 0.917647, 0.0627451, 0.0627451, 1 )
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 shadow_color = Color( 0, 0, 0, 0.501961 )
 shadow_size = 6
 
@@ -2150,9 +1673,6 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 script = ExtResource( 11 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="gameport" type="ReferenceRect" parent="."]
 margin_left = -500.0
@@ -2171,103 +1691,11 @@ script = ExtResource( 54 )
 
 [node name="background" type="Node2D" parent="gameport/root"]
 z_index = -20
-script = ExtResource( 35 )
 
-[node name="void" type="Sprite" parent="gameport/root/background"]
-self_modulate = Color( 0, 0, 0, 1 )
-scale = Vector2( 1000, 1000 )
-z_index = -20
-texture = ExtResource( 6 )
-centered = false
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="BG" type="ViewportContainer" parent="gameport/root/background"]
-margin_left = -32.0
-margin_top = -32.0
-margin_right = 1032.0
-margin_bottom = 1032.0
-rect_clip_content = true
-__meta__ = {
-"_edit_lock_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Viewport" type="Viewport" parent="gameport/root/background/BG"]
-size = Vector2( 1064, 1064 )
-own_world = true
-world = SubResource( 10 )
-handle_input_locally = false
-fxaa = true
-render_target_update_mode = 3
-
-[node name="2dbg" parent="gameport/root/background/BG/Viewport" instance=ExtResource( 82 )]
-
-[node name="spriteover" type="Node2D" parent="gameport/root/background/BG/Viewport"]
-
-[node name="huerotate" type="Sprite" parent="gameport/root/background/BG/Viewport/spriteover"]
-visible = false
-material = SubResource( 15 )
-scale = Vector2( 1064, 1064 )
-texture = ExtResource( 6 )
-centered = false
-
-[node name="suck" type="Sprite" parent="gameport/root/background/BG/Viewport/spriteover"]
-visible = false
-material = SubResource( 87 )
-scale = Vector2( 1064, 1064 )
-texture = ExtResource( 6 )
-centered = false
-
-[node name="glowoutline" type="Sprite" parent="gameport/root/background/BG/Viewport/spriteover"]
-visible = false
-material = SubResource( 85 )
-position = Vector2( 532, 500 )
-scale = Vector2( 1e-05, 1e-05 )
-texture = ExtResource( 9 )
-
-[node name="star" type="Sprite" parent="gameport/root/background/BG/Viewport/spriteover"]
-visible = false
-material = SubResource( 2 )
-position = Vector2( 532, 500 )
-scale = Vector2( 1e-05, 1e-05 )
-texture = ExtResource( 75 )
-
-[node name="over" type="Control" parent="gameport/root/background/BG/Viewport"]
-
-[node name="sdm" type="TextureRect" parent="gameport/root/background/BG/Viewport/over"]
-visible = false
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1044.0
-margin_bottom = 1044.0
-texture = ExtResource( 77 )
-
-[node name="space" type="ColorRect" parent="gameport/root/background/BG/Viewport/over"]
-visible = false
-modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 2 )
-margin_right = 1064.0
-margin_bottom = 1064.0
-
-[node name="flash" type="Sprite" parent="gameport/root/background"]
-modulate = Color( 0, 0, 0, 0 )
-scale = Vector2( 1000, 1000 )
-z_index = 20
-texture = ExtResource( 6 )
-centered = false
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="gameport/root/background"]
-anims/fade = SubResource( 92 )
-anims/flash = SubResource( 50 )
-anims/leave = SubResource( 90 )
-anims/spell = SubResource( 16 )
-anims/spell2 = SubResource( 71 )
-anims/suck = SubResource( 89 )
+[node name="ColorRect" type="ColorRect" parent="gameport/root/background"]
+margin_right = 1000.0
+margin_bottom = 1000.0
+color = Color( 0.0941176, 0.219608, 0.313726, 1 )
 
 [node name="playfield" type="Node2D" parent="gameport/root"]
 
@@ -2302,7 +1730,11 @@ bullet_type_7/bullet_kit = ExtResource( 78 )
 bullet_type_7/pool_size = 100
 bullet_type_7/z_index = 10
 
-[node name="Enemy" type="Node2D" parent="gameport/root/playfield"]
+[node name="Enemy" type="Area2D" parent="gameport/root/playfield"]
+position = Vector2( 500, 250 )
+collision_layer = 0
+collision_mask = 8
+monitorable = false
 script = ExtResource( 5 )
 bullet_kit = ExtResource( 2 )
 bullet_kit_add = ExtResource( 12 )
@@ -2310,46 +1742,9 @@ bullet_clear_kit = ExtResource( 13 )
 item_kit = ExtResource( 14 )
 player_path = NodePath("../Player")
 
-[node name="galacta" type="Area2D" parent="gameport/root/playfield/Enemy"]
-position = Vector2( 1761, -40 )
-collision_layer = 0
-collision_mask = 8
-monitorable = false
-
-[node name="cosmicflame" parent="gameport/root/playfield/Enemy/galacta" instance=ExtResource( 49 )]
-z_index = -1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Enemy/galacta"]
-shape = SubResource( 8 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Sprite" type="Sprite" parent="gameport/root/playfield/Enemy/galacta"]
-scale = Vector2( 0.25, 0.25 )
-z_index = 1
-texture = ExtResource( 4 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="hitbox" type="Area2D" parent="gameport/root/playfield/Enemy/galacta"]
-collision_layer = 4
-collision_mask = 0
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Enemy/galacta/hitbox"]
-z_index = 5
-shape = SubResource( 70 )
-
-[node name="remilia" type="Area2D" parent="gameport/root/playfield/Enemy"]
-position = Vector2( 1500, -500 )
-collision_layer = 0
-collision_mask = 8
-monitorable = false
-
-[node name="wave" type="Sprite" parent="gameport/root/playfield/Enemy/remilia"]
+[node name="wave" type="Sprite" parent="gameport/root/playfield/Enemy"]
 material = SubResource( 13 )
+position = Vector2( 1500, -500 )
 scale = Vector2( 512, 512 )
 z_index = -13
 texture = ExtResource( 6 )
@@ -2357,13 +1752,13 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Enemy/remilia"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Enemy"]
 shape = SubResource( 8 )
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Sprite" type="Sprite" parent="gameport/root/playfield/Enemy/remilia"]
+[node name="Sprite" type="Sprite" parent="gameport/root/playfield/Enemy"]
 scale = Vector2( 0.2, 0.2 )
 z_index = 1
 texture = ExtResource( 22 )
@@ -2371,17 +1766,16 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="hitbox" type="Area2D" parent="gameport/root/playfield/Enemy/remilia"]
+[node name="hitbox" type="Area2D" parent="gameport/root/playfield/Enemy"]
 collision_layer = 4
 collision_mask = 0
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Enemy/remilia/hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Enemy/hitbox"]
 z_index = 5
 shape = SubResource( 70 )
 
 [node name="BulletClear" type="Area2D" parent="gameport/root/playfield/Enemy"]
-position = Vector2( 500, 500 )
 collision_layer = 0
 collision_mask = 2
 monitorable = false
@@ -2395,9 +1789,11 @@ anims/darken = SubResource( 67 )
 
 [node name="Player" parent="gameport/root/playfield" instance=ExtResource( 16 )]
 position = Vector2( 500, 850 )
+enemy_path = NodePath("../Enemy")
 
 [node name="music" type="AudioStreamPlayer" parent="gameport/root/playfield"]
 stream = ExtResource( 36 )
+volume_db = -80.0
 bus = "Music"
 
 [node name="UI" type="TextureRect" parent="."]
@@ -2491,35 +1887,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="markers" type="Control" parent="UI/high/bottom"]
-margin_left = 460.0
-margin_right = 460.0
-script = ExtResource( 57 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="galacta" type="Panel" parent="UI/high/bottom/markers"]
-material = SubResource( 53 )
-margin_left = 916.0
-margin_top = 12.0
-margin_right = 980.0
-margin_bottom = 20.0
-custom_styles/panel = SubResource( 54 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="remilia" type="Panel" parent="UI/high/bottom/markers"]
+[node name="marker" type="Panel" parent="UI/high/bottom"]
 material = SubResource( 57 )
-margin_left = 916.0
-margin_top = 24.0
-margin_right = 980.0
-margin_bottom = 32.0
+margin_left = 460.0
+margin_top = 12.0
+margin_right = 532.0
+margin_bottom = 28.0
 custom_styles/panel = SubResource( 55 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource( 57 )
 
 [node name="rightbar" type="Control" parent="UI/high"]
 margin_left = 1690.0
@@ -2682,9 +2057,6 @@ margin_bottom = 118.0
 custom_fonts/font = SubResource( 44 )
 text = "Reimu"
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="healthbar" type="ProgressBar" parent="UI/high/rightbar/healthbar"]
 show_behind_parent = true
@@ -2724,6 +2096,7 @@ anims/hurt_low = SubResource( 6 )
 
 [node name="heal" type="Particles2D" parent="UI/high/rightbar/healthbar"]
 position = Vector2( 64, 64 )
+emitting = false
 amount = 15
 one_shot = true
 explosiveness = 0.75
@@ -3585,6 +2958,11 @@ stream = ExtResource( 80 )
 volume_db = -5.0
 bus = "SFX"
 
+[node name="powerup" type="AudioStreamPlayer" parent="sfx"]
+stream = ExtResource( 4 )
+volume_db = -15.0
+bus = "SFX"
+
 [node name="lowhealth" type="AudioStreamPlayer" parent="sfx"]
 stream = ExtResource( 45 )
 volume_db = -10.0
@@ -3692,9 +3070,12 @@ bus = "SFX"
 stream = ExtResource( 64 )
 bus = "SFX"
 
-[connection signal="animation_finished" from="gameport/root/background/AnimationPlayer" to="gameport/root/background" method="_on_AnimationPlayer_animation_finished"]
-[connection signal="area_shape_entered" from="gameport/root/playfield/Enemy/galacta" to="gameport/root/playfield/Enemy" method="_on_area_shape_entered"]
-[connection signal="area_shape_entered" from="gameport/root/playfield/Enemy/remilia" to="gameport/root/playfield/Enemy" method="_on_area_shape_entered"]
+[node name="crit" type="AudioStreamPlayer" parent="sfx"]
+stream = ExtResource( 9 )
+volume_db = -5.0
+bus = "SFX"
+
+[connection signal="area_shape_entered" from="gameport/root/playfield/Enemy" to="gameport/root/playfield/Enemy" method="_on_Enemy_area_shape_entered"]
 [connection signal="area_shape_entered" from="gameport/root/playfield/Enemy/BulletClear" to="gameport/root/playfield/Enemy" method="_on_BulletClear_area_shape_entered"]
 [connection signal="value_changed" from="UI/high/rightbar/healthbar/healthbar" to="UI/high/rightbar/healthbar" method="_on_healthbar_value_changed"]
 [connection signal="value_changed" from="UI/high/topbar/bossbar" to="UI/high/topbar" method="_on_bossbar_value_changed"]

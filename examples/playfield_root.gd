@@ -40,3 +40,4 @@ func _process(delta):
 			position = origin
 		else:
 			position = origin + Vector2(screen_shake_intensity * randf(), 0.0).rotated(randf()*TAU)
+
