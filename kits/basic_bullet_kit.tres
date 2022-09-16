@@ -1,8 +1,11 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://addons/native_bullets/kits/basic_bullet_kit.gdns" type="Script" id=1]
 [ext_resource path="res://kits/basic_bullet_material.tres" type="Material" id=2]
 [ext_resource path="res://default/bullets/bullet.png" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 0.5
 
 [resource]
 script = ExtResource( 1 )
@@ -14,8 +17,9 @@ fade_time = 8.0
 collisions_enabled = true
 collision_layer = 2
 collision_mask = 0
-active_rect = Rect2( 0, 0, 0, 0 )
-bounce_rect = Rect2( 0, 0, 0, 0 )
+collision_shape = SubResource( 1 )
+active_rect = Rect2( -64, -64, 1128, 1128 )
+bounce_rect = Rect2( 0, 0, 1000, 1000 )
 time_scale = 1.0
 data = {
 }

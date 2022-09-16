@@ -107,7 +107,6 @@ void Bullets::_init() {
 }
 
 void Bullets::_physics_process(float delta) {
-	if (DEBUG) Godot::print("pp");
 	if(Engine::get_singleton()->is_editor_hint()) {
 		return;
 	
@@ -137,7 +136,6 @@ void Bullets::_physics_process(float delta) {
 }
 
 void Bullets::_clear_rids() {
-	if (DEBUG) Godot::print("clear_rid");
 	for(int32_t i = 0; i < shared_areas.size(); i++) {
 		Physics2DServer::get_singleton()->area_clear_shapes(shared_areas[i]);
 		Physics2DServer::get_singleton()->free_rid(shared_areas[i]);
@@ -159,6 +157,7 @@ int32_t Bullets::_get_pool_index(int32_t set_index, int32_t bullet_index) {
 		}
 	}
 	return -1;
+	if (DEBUG) Godot::print("gotindex");
 }
 
 void Bullets::mount(Node* bullets_environment) {
@@ -291,7 +290,6 @@ Node* Bullets::get_bullets_environment() {
 }
 
 bool Bullets::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
-	if (DEBUG) Godot::print("spawn_bullet");
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -308,7 +306,6 @@ bool Bullets::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
 }
 
 Variant Bullets::obtain_bullet(Ref<BulletKit> kit) {
-	if (DEBUG) Godot::print("get_bullet");
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -329,7 +326,6 @@ Variant Bullets::obtain_bullet(Ref<BulletKit> kit) {
 }
 
 bool Bullets::release_bullet(Variant id) {
-	if (DEBUG) Godot::print("release_bullet");
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 	bool result = false;
 
