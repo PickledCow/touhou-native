@@ -11,15 +11,16 @@
 script = ExtResource( 1 )
 texture = ExtResource( 3 )
 bullet_class_name = "Bullet"
+texture_width = 0.0
 material = ExtResource( 2 )
+fade_time = 8.0
 collisions_enabled = true
 collision_layer = 1
 collision_mask = 1
 collision_shape = SubResource( 1 )
-use_viewport_as_active_rect = false
 active_rect = Rect2( 364, -56, 1192, 1192 )
-rotate = false
-unique_modulate_component = 0
+bounce_rect = Rect2( 0, 0, 0, 0 )
+time_scale = 1.0
 data = {
 "hit_scene": ExtResource( 4 )
 }

@@ -45,7 +45,7 @@ onready var bullet_clear := $BulletClear
 var bullet_clear_radius := 0.0
 
 var attack_prefabs := [
-						preload("res://examples/boss/attacks/non1.tscn"), 
+						preload("res://examples/boss/attacks/spell1.tscn"), 
 ]
 var attacks := []
 var current_attack : Attack
