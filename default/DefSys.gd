@@ -9,12 +9,17 @@ var playfield_root
 var playfield
 var pause_menu
 
+var difficulty = 3
+
+var boss_position := Vector2()
+var player_position := Vector2()
+
 var is_3d := true
 
 var transluscent := true
 
 # Global data
-enum PLAYER_ID { REIMU, MARISA, SNIPER, ENGINEER }
+enum PLAYER_ID { REIMU, MARISA, MEGUMU, NITORI , REISEN, KOISHI, ALICE}
 var player_id: int = PLAYER_ID.MARISA
 
 var spell_bonus := true
@@ -26,6 +31,8 @@ var music_percent := 50.0
 var sfx_percent := 40.0
 
 var bg_scale := 80
+
+var bgm_flag := 0
 
 var hacky_common_data := 0
 
@@ -63,7 +70,7 @@ enum BULLET_TYPE {	STRAIGHT_LASER, ARROWHEAD, BALL_OUTLINE, BALL, RICE, KUNAI, I
 					NOTE, # 35
 }
 
-const BULLET_SIZES := [  0.3, 0.3, 0.3, 0.3, 0.25, 0.25, 0.3, 0.28, 0.25, 0.25, 0.3, 0.2,
+const BULLET_SIZES := [  0.3, 0.1, 0.3, 0.3, 0.25, 0.25, 0.3, 0.28, 0.25, 0.25, 0.3, 0.2,
 						 0.2, 0.15, 0.2, 0.3,
 						 0.3, 0.4, 0.2, 0.1, 0.2,
 						 0.25,
@@ -154,7 +161,7 @@ func generate_bullet_data():
 			data[3] = 64				# source height (integer)
 			data[4] = 32.0				# bullet size [0, inf)
 			data[5] = BULLET_SIZES[i] 	# hitbox ratio [0, 1]
-			data[6] = 0					# Sprite offset y (integer)
+			data[6] = -12 if i == BULLET_TYPE.ARROWHEAD else 0	# Sprite offset y (integer)
 			data[7] = 1					# anim frame, 1 for no animation (integer)
 			data[8] = 0					# spin
 			data[9] = LAYERS.SMALL_BULLETS # layer
@@ -415,3 +422,9 @@ func change_volume(change: float, is_music: bool):
 	else:
 		sfx_percent = clamp(sfx_percent + change, 0, 100)
 		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear2db(sfx_percent * 0.01))
+
+
+func _physics_process(delta):
+	for i in 4:
+		if Input.is_action_just_pressed("debug" + str(i+1)):
+			difficulty = i

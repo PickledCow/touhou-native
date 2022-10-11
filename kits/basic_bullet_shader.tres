@@ -13,7 +13,7 @@ float fade(float x) {
 }
 
 void vertex() {
-	VERTEX.y += floor(abs(MODULATE.b)) / floor(MODULATE.g);
+	VERTEX.y += floor((MODULATE.b)) / floor(MODULATE.g);
 	VERTEX *= fade(1.0 - fract(max(0.0, MODULATE.b)));
 }
 

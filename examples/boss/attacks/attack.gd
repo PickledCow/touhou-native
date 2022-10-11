@@ -18,16 +18,19 @@ export var no_bg = false
 
 export var scb = 1000000
 
-export var bg_flag = -1
+export var bg_flag = 0
+export var bgm_flag = 0
 
 var t_raw = 0
 
-var difficulty = 0
 var root: Node2D
 var parent: Node2D
 
 
 func attack_init():
+	pass
+	
+func attack_end():
 	pass
 
 func _ready():

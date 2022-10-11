@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://examples/player/player.gd" type="Script" id=1]
 [ext_resource path="res://examples/player/p1/pl.png" type="Texture" id=2]
@@ -13,6 +13,10 @@
 [ext_resource path="res://examples/player/p2/shootfail.wav" type="AudioStream" id=11]
 [ext_resource path="res://examples/player/p2/activereload.wav" type="AudioStream" id=12]
 [ext_resource path="res://examples/player/p3/Turret.tscn" type="PackedScene" id=13]
+[ext_resource path="res://examples/player/p5/knife.png" type="Texture" id=14]
+[ext_resource path="res://default/se/stab.wav" type="AudioStream" id=15]
+[ext_resource path="res://default/se/charge1.wav" type="AudioStream" id=16]
+[ext_resource path="res://examples/player/p6/launch.wav" type="AudioStream" id=17]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 3.0
@@ -131,6 +135,64 @@ colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1 )
 [sub_resource type="GradientTexture" id=10]
 gradient = SubResource( 9 )
 width = 128
+
+[sub_resource type="Animation" id=11]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Knife:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "main"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Knife:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="CircleShape2D" id=13]
+radius = 96.0
 
 [node name="Player" type="Area2D"]
 collision_mask = 2
@@ -273,12 +335,23 @@ texture = ExtResource( 9 )
 
 [node name="Gunshot" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
-volume_db = -20.0
+volume_db = -15.0
 bus = "SFX"
 
 [node name="Failshot" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
 volume_db = -10.0
+bus = "SFX"
+
+[node name="Launch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 17 )
+volume_db = -3.0
+bus = "SFX"
+
+[node name="Charge" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+volume_db = -5.0
+pitch_scale = 1.5
 bus = "SFX"
 
 [node name="ActiveReload" type="AudioStreamPlayer" parent="."]
@@ -294,9 +367,16 @@ margin_right = 66.0
 margin_bottom = -64.0
 color = Color( 0, 0, 0, 1 )
 
-[node name="ColorRect" type="ColorRect" parent="Bar"]
+[node name="ActiveReload" type="ColorRect" parent="Bar"]
+visible = false
 margin_left = 66.0
 margin_right = 98.0
+margin_bottom = 12.0
+color = Color( 1, 0.266667, 0.266667, 1 )
+
+[node name="Minimum" type="ColorRect" parent="Bar"]
+visible = false
+margin_right = 26.0
 margin_bottom = 12.0
 color = Color( 1, 0.266667, 0.266667, 1 )
 
@@ -309,6 +389,31 @@ rect_scale = Vector2( 1, 8 )
 max_value = 1.0
 step = 0.0
 texture_progress = SubResource( 10 )
+
+[node name="Knife" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, 96 )
+scale = Vector2( 0.5, 0.5 )
+z_index = 20
+texture = ExtResource( 14 )
+
+[node name="StabAnimation" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 11 )
+anims/main = SubResource( 12 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
+volume_db = -5.0
+bus = "SFX"
+
+[node name="KnifeCheck" type="Area2D" parent="."]
+position = Vector2( 0, 96 )
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KnifeCheck"]
+shape = SubResource( 13 )
 
 [connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
 [connection signal="area_shape_entered" from="grazebox" to="." method="_on_grazebox_area_shape_entered"]

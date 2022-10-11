@@ -143,7 +143,7 @@ void Bullets::_clear_rids() {
 }
 
 int32_t Bullets::_get_pool_index(int32_t set_index, int32_t bullet_index) {
-	if (DEBUG) Godot::print("getindex");
+	if (DEBUG) Godot::print("gpi");
 	if(bullet_index >= 0 && set_index >= 0 && set_index < pool_sets.size() && bullet_index < pool_sets[set_index].bullets_amount) {
 		int32_t pool_threshold = pool_sets[set_index].pools[0].size;
 		int32_t pool_index = 0;
@@ -156,8 +156,8 @@ int32_t Bullets::_get_pool_index(int32_t set_index, int32_t bullet_index) {
 			return pool_index;
 		}
 	}
+	if (DEBUG) Godot::print("gpif");
 	return -1;
-	if (DEBUG) Godot::print("gotindex");
 }
 
 void Bullets::mount(Node* bullets_environment) {
@@ -395,6 +395,7 @@ int32_t Bullets::get_total_active_bullets() {
 }
 
 bool Bullets::is_bullet_existing(RID area_rid, int32_t shape_index) {
+	//if (DEBUG) Godot::print("ise");
 	if(!areas_to_pool_set_indices.has(area_rid)) {
 		return false;
 	}
@@ -407,6 +408,7 @@ bool Bullets::is_bullet_existing(RID area_rid, int32_t shape_index) {
 }
 
 Variant Bullets::get_bullet_from_shape(RID area_rid, int32_t shape_index) {
+	//if (DEBUG) Godot::print("gbfs");
 	if(!areas_to_pool_set_indices.has(area_rid)) {
 		return invalid_id;
 	}
@@ -425,6 +427,7 @@ Variant Bullets::get_bullet_from_shape(RID area_rid, int32_t shape_index) {
 }
 
 Ref<BulletKit> Bullets::get_kit_from_bullet(Variant id) {
+	//if (DEBUG) Godot::print("gkfb");
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
 	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
@@ -435,6 +438,7 @@ Ref<BulletKit> Bullets::get_kit_from_bullet(Variant id) {
 }
 
 void Bullets::set_bullet_property(Variant id, String property, Variant value) {
+	//if (DEBUG) Godot::print("sbp");
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
 	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
@@ -445,6 +449,7 @@ void Bullets::set_bullet_property(Variant id, String property, Variant value) {
 
 
 Variant Bullets::get_bullet_property(Variant id, String property) {
+	//if (DEBUG) Godot::print("gbp");
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
 	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
@@ -456,9 +461,12 @@ Variant Bullets::get_bullet_property(Variant id, String property) {
 
 
 Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, PoolRealArray bullet_data, bool fade_in) {
+	//if (DEBUG) Godot::print("csa1");
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
+		
+		//if (DEBUG) Godot::print("idc");
 
 		if(pool->get_available_bullets() > 0) {
 			available_bullets -= 1;
@@ -469,9 +477,11 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 			to_return.set(0, bullet_id.index);
 			to_return.set(1, bullet_id.cycle);
 			to_return.set(2, bullet_id.set);
+			//if (DEBUG) Godot::print("ob");
 
 			int32_t pool_index = _get_pool_index(bullet_id.set, bullet_id.index);
 
+			//if (DEBUG) Godot::print("gpi");
 			Transform2D xform = Transform2D(0.0f, Vector2(0.0f, 0.0f)).scaled(bullet_data[4] * Vector2(1.0f, 1.0f)).rotated(angle + 1.57079632679f);
 			xform.set_origin(pos);
 			pool_sets[bullet_id.set].pools[pool_index].pool->set_bullet_property(bullet_id, "transform", xform);
@@ -513,6 +523,7 @@ Variant Bullets::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 
 
 Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, float angle, float accel, float max_speed, PoolRealArray bullet_data, bool fade_in) {
+	if (DEBUG) Godot::print("csa2");
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -570,6 +581,7 @@ Variant Bullets::create_shot_a2(Ref<BulletKit> kit, Vector2 pos, float speed, fl
 
 
 Variant Bullets::create_item(Ref<BulletKit> kit, PoolRealArray item_data, Vector2 pos, float speed, float angle, float spin) {
+	if (DEBUG) Godot::print("ci");
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();
@@ -622,6 +634,7 @@ Variant Bullets::create_item(Ref<BulletKit> kit, PoolRealArray item_data, Vector
 
 
 Variant Bullets::create_pattern_a1(Ref<BulletKit> kit, int mode, Vector2 pos, float r1, float speed1, float angle, int density, float spread, PoolRealArray bullet_data, bool fade_in) {
+	if (DEBUG) Godot::print("cpa1s");
 	Array bullets = Array();
 	switch (mode) {
 		case 0: { // ring
@@ -701,6 +714,7 @@ Variant Bullets::create_pattern_a1(Ref<BulletKit> kit, int mode, Vector2 pos, fl
 		default:
 			break;
 	}
+	if (DEBUG) Godot::print("cpa1f");
 	return bullets;
 }
 
@@ -890,6 +904,7 @@ Variant Bullets::create_pattern_a2(Ref<BulletKit> kit, int mode, Vector2 pos, fl
 
 
 void Bullets::set_bullet_properties(Variant id, Dictionary properties) {
+	//if (DEBUG) Godot::print("sbps");
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
 	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
@@ -903,6 +918,7 @@ void Bullets::set_bullet_properties(Variant id, Dictionary properties) {
 }
 
 void Bullets::set_bullet_properties_bulk(Array bullets, Dictionary properties) {
+	//if (DEBUG) Godot::print("sbpsb");
 	for (int i = 0; i < bullets.size(); i++) {
 		PoolIntArray bullet_id = bullets[i].operator PoolIntArray();
 
@@ -919,6 +935,7 @@ void Bullets::set_bullet_properties_bulk(Array bullets, Dictionary properties) {
 
 
 void Bullets::set_magnet_target(Variant id, Node2D *target) {
+	//if (DEBUG) Godot::print("smt");
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
 	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
@@ -929,6 +946,7 @@ void Bullets::set_magnet_target(Variant id, Node2D *target) {
 }
 
 void Bullets::add_pattern(Variant id, int32_t trigger, int32_t time, Dictionary properties) {
+	//if (DEBUG) Godot::print("ap");
 	PoolIntArray bullet_id = id.operator PoolIntArray();
 
 	int32_t pool_index = _get_pool_index(bullet_id[2], bullet_id[0]);
@@ -1208,6 +1226,7 @@ bool Bullets::is_deleted(Variant id) {
 }
 
 void Bullets::create_particle(Ref<BulletKit> kit, Vector2 pos, float size, Color color, Vector2 drift, bool upright) {
+	//if (DEBUG) Godot::print("cp");
 	if(available_bullets > 0 && kits_to_set_pool_indices.has(kit)) {
 		PoolIntArray set_pool_indices = kits_to_set_pool_indices[kit].operator PoolIntArray();
 		BulletsPool* pool = pool_sets[set_pool_indices[0]].pools[set_pool_indices[1]].pool.get();

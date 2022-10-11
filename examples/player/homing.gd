@@ -3,9 +3,11 @@ extends Node2D
 var bullet : PoolIntArray
 var speed := 0.0
 
-var homing_strength := 1.0
+var homing_strength := 3.0
 
 var target : Node2D
+
+var time := 0
 
 func _physics_process(_delta):
 	if !target:
@@ -37,3 +39,6 @@ func _physics_process(_delta):
 		Bullets.set_bullet_property(bullet, "position", position)
 		Bullets.set_bullet_property(bullet, "angle", rotation)
 	
+	time += 1	
+	if time >= 120:
+		homing_strength = 0

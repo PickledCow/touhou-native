@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://examples/boss/attacks/non3.gd" type="Script" id=1]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=3]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=4]
+
+[node name="non3" type="Node2D"]
+rotation = 0.000877632
+z_index = 1
+script = ExtResource( 1 )
+attack_time = 18000
+health = 10000
+scb = 0
+bullet_kit = ExtResource( 4 )
+bullet_kit_add = ExtResource( 3 )

@@ -4,26 +4,41 @@ export(Resource) var bullet_kit
 export(Resource) var bullet_kit_add
 
 var a := PI*0.5
-var a2 := 0.0
-var a3 := PI * 0.4
+var sides := 5
+var r := 30.0
 var lr := 1
 
-var blue_knife : PoolRealArray
+
+var RATES = [12, 9, 7, 6]
+var DIV = [18, 30, 30, 36]
+
+var red_fireball : PoolRealArray
+var orange_fireball : PoolRealArray
 
 func attack_init():
-	blue_knife = DefSys.get_bullet_data(DefSys.BULLET_TYPE.KNIFE, DefSys.COLORS_LARGE.BLUE)
-	blue_knife[Constants.BULLET_DATA_STRUCTURE.SIZE] *= 1.5
-	blue_knife[Constants.BULLET_DATA_STRUCTURE.LAYER] = DefSys.LAYERS.LARGE_BULLETS + 1
+	red_fireball = DefSys.get_bullet_data(DefSys.BULLET_TYPE.FIREBALL, DefSys.COLORS_LARGE.RED)
+	orange_fireball = DefSys.get_bullet_data(DefSys.BULLET_TYPE.FIREBALL, DefSys.COLORS_LARGE.ORANGE)
 
 func attack(t):
 	if t >= 0:
-		if t % 3 == 0:
-			DefSys.sfx.play("shoot2")
-			var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN_ADV.CHEVRON, position, 64.0, 48.0, 5.5, 5.5, parent.player.position.angle_to_point(position) + a, 3, 1, 0.1, blue_knife, true)
-			Bullets.set_properties_bulk(bullets, { "bounce_count": 0, "bounce_surfaces": Constants.WALLS.DOME })
-			a += 2.39996322972865332
-		if t % 120 == 0:
-			set_dest(Vector2(500 - rand_range(0, 150) * lr, rand_range(350, 450)), 60)
+		if t % 210 == 0:
 			lr *= -1
+			a = -PI / 2 - lr * PI / 3
+			sides = 3
+			r = 30.0
+		if t % 210 < 170:
+			if (t % 210) % RATES[DefSys.difficulty] == 0:
+				DefSys.sfx.play("shoot2")
+				Bullets.create_pattern_a2(bullet_kit_add, Constants.PATTERN_ADV.RINGS, position + Vector2(r, 0).rotated(a), 0, 0, 5, 0.0, a, 2*sides, 1, 1, red_fireball, true)
 				
+				a += lr * PI / DIV[DefSys.difficulty]
+				sides += 1
+				r += 10.0
+				if t % 210 < 140 && (t % 210) % (RATES[DefSys.difficulty] * 2) == 0:
+					Bullets.create_pattern_a2(bullet_kit_add, Constants.PATTERN_ADV.RINGS, position + Vector2(r, 0).rotated(a), 0, 0, 6, 0.0, -a, 1.2*sides, 1, 1, orange_fireball, true)
 				
+					pass
+					#Bullets.create_pattern_a2(bullet_kit_add, Constants.PATTERN_ADV.RINGS, position + Vector2(r, 0).rotated(a), 0, 0, 6.0, 6.0, -a, 1 + (45 / sides), 1, sides, orange_fireball, true)
+		
+		if t % 210 == 170:
+			set_dest(Vector2(rand_range(max(300, position.x - 200), min(700, position.x + 200)), 300), 40)

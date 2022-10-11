@@ -10,7 +10,7 @@ export(Resource) var item_kit
 export(NodePath) var player_path
 onready var player: Player = get_node(player_path)
 
-var t := -100
+var t := -10000
 var t_global := 0
 var dw := 0.0
 var lr := 1.0
@@ -44,14 +44,20 @@ var item_data2: PoolRealArray
 onready var bullet_clear := $BulletClear
 var bullet_clear_radius := 0.0
 
-var attack_prefabs := [
+var attack_prefabs := [ 
+						preload("res://examples/boss/attacks/non1.tscn"), 
 						preload("res://examples/boss/attacks/spell1.tscn"), 
+						preload("res://examples/boss/attacks/non2.tscn"), 
+						preload("res://examples/boss/attacks/spell2.tscn"), 
+						preload("res://examples/boss/attacks/non3.tscn"),
 ]
 var attacks := []
 var current_attack : Attack
 var phase := 0
 
 func _ready():
+	
+	DefSys.bgm_flag = 0
 	
 	for attack in attack_prefabs:
 		attacks.append(attack.instance())
@@ -105,7 +111,8 @@ func _physics_process(_delta):
 		if attack_type != DefSys.ATTACK_TYPE.TIMEOUT:
 			#galacta.monitoring = true
 			#remilia.monitoring = true
-			monitorable = true
+			monitoring = true
+			$hitbox.monitorable = true
 			DefSys.boss_bar.max_health = health
 			if last_attack_type == DefSys.ATTACK_TYPE.TIMEOUT:
 				DefSys.boss_bar.healthbar_timeout(false)
@@ -113,7 +120,8 @@ func _physics_process(_delta):
 		else:
 			#galacta.monitoring = false
 			#remilia.monitoring = false
-			monitorable = false
+			monitoring = false
+			$hitbox.monitorable = false
 			DefSys.boss_bar.max_health = time_left
 			if last_attack_type != DefSys.ATTACK_TYPE.TIMEOUT:
 				DefSys.boss_bar.healthbar_timeout(true)
@@ -145,6 +153,8 @@ func _physics_process(_delta):
 		health = 1.0
 		time_left = 1
 		phase += 1
+		DefSys.bgm_flag = current_attack.bgm_flag
+		current_attack.attack_end()
 		current_attack.queue_free()
 		bullet_clear.monitoring = true
 		bullet_clear.get_child(0).shape.radius = 0.0
@@ -190,6 +200,8 @@ func _physics_process(_delta):
 	if travel_timer < travel_time:
 		travel_timer += 1.0
 		position = start_position + (target_position - start_position) * smooth_interp(min(1.0, travel_timer / travel_time))
+	
+	DefSys.boss_position = position
 	
 	t += 1
 	t_global += 1
