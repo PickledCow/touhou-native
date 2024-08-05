@@ -34,7 +34,11 @@ func _exit_tree():
 func reload():
 	_set_current(false)
 	_set_current(true)
+	
 
+func set_speed_scale(scale: float):
+	for kit in bullet_kits:
+		kit.time_scale = scale
 
 func _set_current(value):
 	if Engine.editor_hint:

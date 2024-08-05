@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Route209.ogg-8843cd87af2bbbcaf042fb84cb882a0b.oggstr"
+
+[deps]
+
+source_file="res://examples/bgm/Route209.ogg"
+dest_files=[ "res://.import/Route209.ogg-8843cd87af2bbbcaf042fb84cb882a0b.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

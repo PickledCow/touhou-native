@@ -6,8 +6,6 @@
 
 [node name="non2" type="Node2D"]
 script = ExtResource( 1 )
-galacta_start_pos = Vector2( 500, 375 )
-remilia_start_pos = Vector2( 500, 200 )
 health = 15000
 start_delay = 300
 scb = 3

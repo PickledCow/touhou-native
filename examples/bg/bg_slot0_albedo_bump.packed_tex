@@ -3,6 +3,6 @@
 	"resolution": 512,
 	"src": {
 		"a": "#ff888888",
-		"rgb": "res://examples/bg/lava.png"
+		"rgb": "res://examples/bg/terrain/grass.png"
 	}
 }

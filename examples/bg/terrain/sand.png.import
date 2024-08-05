@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/sand.png-a77897c726af877c7ba9710b8c14911a.image"
+
+[deps]
+
+source_file="res://examples/bg/terrain/sand.png"
+dest_files=[ "res://.import/sand.png-a77897c726af877c7ba9710b8c14911a.image" ]
+
+[params]
+

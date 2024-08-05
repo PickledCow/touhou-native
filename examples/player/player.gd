@@ -24,7 +24,7 @@ var is_focused := false
 var auto_poc := false
 
 # Vitals
-var lives := 6
+var lives := 10
 var hit := false
 var dead := false
 var invincible_time := 180.0
@@ -142,7 +142,7 @@ func create_shooter(shooter_data):
 
 func after_ready():
 	DefSys.health_bar.set_name(names[pid])
-	DefSys.health_bar.set_player_face(pid)
+	#DefSys.health_bar.set_player_face(pid)
 
 
 
@@ -184,7 +184,7 @@ func _process(delta):
 		option.rotation -= 2.0 * delta
 		if option.rotation <= 0.0: option.rotation += TAU
 
-func move():
+func move(delta):
 	velocity = Vector2()
 	
 	if Input.is_action_just_pressed("left"):
@@ -210,15 +210,15 @@ func move():
 	if(velocity.length() > 0):
 		velocity = velocity.normalized() * (focus_speed if is_focused else speed)
 	
-	position += velocity
+	position += velocity * delta * 60.0
 	position.x = clamp(position.x, 24, 1000 - 24)
-	position.y = clamp(position.y, 60, 1000 - 30)
+	position.y = clamp(position.y, 60, 1000 - 24)
 	
 	get_node("itempoc/CollisionShape2D").disabled = position.y > 400 && !auto_poc
 
 #var t = 0
 
-func shoot():
+func shoot(delta):
 	if Input.is_action_just_pressed("shoot"):
 		for s in shooters_focus:
 			s.fire_timer = s.fire_rate + s.start_delay
@@ -228,7 +228,7 @@ func shoot():
 	if Input.is_action_pressed("shoot"):
 		var shooters = shooters_focus if is_focused else shooters_unfocus
 		for s in shooters:
-			s.fire_timer -= 1
+			s.fire_timer -= 1 * delta * 60.0
 			if s.fire_timer <= 0:
 				s.fire_timer = s.fire_rate
 				DefSys.sfx.play(shoot_sfx[s.sfx])
@@ -249,25 +249,25 @@ func shoot():
 					cb.homing_strength = s.homing_strength
 					DefSys.playfield.add_child(cb)
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	remove_bullets(bullets_to_remove)
 	bullets_to_remove.clear()
 	
 	if lives >= 0:
-		move()
+		move(delta)
 		
 		if is_focused && option_interp < 1.0:
-			option_interp += option_travel_speed
+			option_interp += option_travel_speed * delta * 60.0
 			if option_interp > 1.0:
 				option_interp = 1.0
 		elif !is_focused && option_interp > 0.0:
-			option_interp -= option_travel_speed
+			option_interp -= option_travel_speed * delta * 60.0
 			if option_interp < 0.0:
 				option_interp = 0.0
 		for i in 4:
 			option_sprites[i].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
 		
-		shoot()
+		shoot(delta)
 		
 	if hit && invincible_timer <= 0.0:
 		DefSys.spell_bonus = false
@@ -275,29 +275,30 @@ func _physics_process(_delta):
 		DefSys.boss_bar.fail_spell()
 		bullet_clear_box.monitoring = true
 		lives -= 1
-		if lives == 2 || lives == 0:
+		if lives == 2:
 			DefSys.sfx.play("lowhealth")
 		#emit_signal("hit", lives)
-		DefSys.health_bar.animate_face(true, lives)
+		#DefSys.health_bar.animate_face(true, lives)
 		invincible_timer = invincible_time
 		DefSys.warp_effect.warp(position, true)
 		clear_timer = clear_time
-		if lives < 0:
-			hide()
+		if lives < 1:
+			lives = 1
+			#hide()
 	if invincible_timer > 0.0:
-		invincible_timer -= 1.0
+		invincible_timer -= 1.0 * delta * 60.0
 	if clear_timer > 0.0:
-		clear_timer -= 1.0
+		clear_timer -= 1.0 * delta * 60.0
 		bullet_clear_box_shape.shape.radius = clear_radius * (1.0 - clear_timer / clear_time)
 		if clear_timer <= 0.0:
 			bullet_clear_box.monitoring = false
 			bullet_clear_box_shape.shape.radius = 0.0
 	hit = false
 	if lives < 0:
-		game_over_timer -= 1
-	if game_over_timer == 0:
+		game_over_timer -= 1 * delta * 60.0
+	if game_over_timer <= 0:
 		DefSys.pause_menu.game_over()
-		game_over_timer = -1
+		game_over_timer = -1 * delta * 60.0
 
 func create_bullet_clear(bullet_id):
 	var p = Bullets.get_property(bullet_id, "position")
@@ -332,8 +333,8 @@ func _on_itemcollection_area_shape_entered(area_id, _area, area_shape, _local_sh
 			DefSys.piv += 10
 		DefSys.ITEM_TYPE.LIFE:
 			lives += 1
-			if lives > 6: lives = 6
-			DefSys.health_bar.animate_face(false, lives)
+			if lives > 10: lives = 10
+		#	DefSys.health_bar.animatze_face(false, lives)
 			DefSys.sfx.play("extend")
 			
 	call_deferred("remove_item", bullet_id)

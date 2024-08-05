@@ -3,102 +3,96 @@ extends "res://examples/boss/attacks/attack.gd"
 export(Resource) var bullet_kit
 export(Resource) var bullet_kit_add
 
-const wave_offsets := [60,		150, 	240,	300,	315,	330,	345,	415,	425,	435,	445,	455,	495,	501,	507,	513,	519,	525]
-onready var waves := [$wave0,	$wave1,	$wave0,	$wave2,	$wave6,	$wave3,	$wave4,	$wave5, $wave7,	$wave8,	$wave9,	$wave10,$wave11,$wave12,$wave13,$wave14,$wave15,$wave16]
-
 var a := PI*0.5
 var a2 := 0.0
 var a3 := PI * 0.4
 var lr := 1
+var alt_col := true
+var alt_col2 := false
 
-var red_bubble : PoolRealArray
-var blue_mentos : PoolRealArray
-var orange_knife : PoolRealArray
+var p : Vector2
+
+var grey_ball : PoolRealArray
+var white_ball : PoolRealArray
+var grey_snowball : PoolRealArray
 
 func attack_init():
-	red_bubble = DefSys.get_bullet_data(DefSys.BULLET_TYPE.BUBBLE, DefSys.COLORS_LARGE.RED)
+	grey_ball = DefSys.get_bullet_data(DefSys.BULLET_TYPE.BALL, DefSys.COLORS.GREY)
+	white_ball = DefSys.get_bullet_data(DefSys.BULLET_TYPE.BALL, DefSys.COLORS.WHITE)
+	grey_snowball = DefSys.get_bullet_data(DefSys.BULLET_TYPE.SNOWBALL, DefSys.COLORS.GREY)
 	
-	blue_mentos = DefSys.get_bullet_data(DefSys.BULLET_TYPE.MENTOS, DefSys.COLORS_LARGE.BLUE)
-	
-	orange_knife = DefSys.get_bullet_data(DefSys.BULLET_TYPE.KNIFE, DefSys.COLORS_LARGE.ORANGE)
-	orange_knife[Constants.BULLET_DATA_STRUCTURE.SIZE] *= 1.5
-	orange_knife[Constants.BULLET_DATA_STRUCTURE.LAYER] = DefSys.LAYERS.LARGE_BULLETS + 1
 
 func attack(t):
+	var CYCLE_TIME = 60*(5*2+7*2+1)
 	if t >= 0:
-		if t == 0:
-			parent.invincible = true
-			#parent.galacta.monitoring = false
-			#parent.remilia.monitoring = false
-			for wave in waves:
-				wave.hide()
-		if t <= 700:
-			for i in len(waves):
-				if t < wave_offsets[i] || t >= wave_offsets[i] + 180:
-					continue
-				var wave = waves[i]
-				var sprites = wave.get_node("sprites").get_children()
-				if t == wave_offsets[i]:
-					DefSys.sfx.play("charge2")
-					wave.show()
-					for l in sprites:
-						l.scale.x = 0.25
-				if t <= wave_offsets[i] + 8:
-					wave.modulate.a = (t - wave_offsets[i]) / 8.0
-				if t == wave_offsets[i] + 59:
-					for l in sprites:
-						l.get_node("strike").emitting = true
-						l.get_node("strike/spark").emitting = true
-				if t == wave_offsets[i] + 60:
-					DefSys.sfx.play("explode1")
-					wave.get_node("Area2D").monitorable = true
-					DefSys.playfield_root.shake_screen(24.0, 20.0 * pow(len(sprites), 0.33))
-					for l in sprites:
-						l.scale.x = 1.5
-				if t < wave_offsets[i] + 120:
-					if t % 4 == 0:
-						for l in sprites:
-							l.frame = (l.frame + randi()%3 + 1) % 4
-					if t >= wave_offsets[i] + 80:
-						wave.modulate.a = 1.0 - (t - (wave_offsets[i] + 80)) / 30.0
-				if t == wave_offsets[i] + 75:
-					wave.get_node("Area2D").monitorable = false
-				if t == wave_offsets[i] + 180:
-					wave.queue_free()
+		if false:
+			type2(t)
+		else:
+			if t % CYCLE_TIME < 60*5*2:
+				type1(t % CYCLE_TIME)
+			else:
+				type2(t % CYCLE_TIME - 60*(5*2 + 1))
+		
 					
-		if t == 600:
-			set_remilia_dest(Vector2(500.0, 250), 45)
-			set_galacta_dest(Vector2(500.0, 400), 45)
-			DefSys.boss_bar.max_health = parent.max_health
-			parent.health = parent.max_health
-			parent.time_left = attack_time
-			DefSys.boss_bar.entry_anim()
-		if t == 720:
-			parent.invincible = false
-			#parent.galacta.monitoring = true
-			#parent.remilia.monitoring = true
-		if t >= 645:
-			if t % 2 == 0:
-				DefSys.sfx.play("shoot1")
-				Bullets.create_shot_a1(bullet_kit_add, remilia_position, 5.5, a, red_bubble, true)
-				a += 2.39996322972865332
-			Bullets.create_shot_a1(bullet_kit, remilia_position + Vector2(96.0+3.0, 0.0).rotated(a2), 4.0, a2, blue_mentos, true)
-			a2 += 2.39996322972865332
-			#Bullets.create_shot_a1(bullet_kit, remilia_position + Vector2(96.0, 0.0).rotated(a2), 5.5, a2, blue_mentos, true)
-			#a2 += 2.39996322972865332
-			
-			if t % 16 == 0:
-				DefSys.sfx.play("shoot2")
-				#Bullets.create_shot_a1(bullet_kit, remilia_position, 5.0, a2, blue_mentos, true)
-				#var bullets = Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.ARC, galacta_position, 64.0, 5.5, a3, 5, 0.09, orange_knife, true)
-				var bullets = Bullets.create_pattern_a2(bullet_kit, Constants.PATTERN_ADV.CHEVRON, galacta_position, 72.0, 48.0, 5.5, 5.5, a3, 5, 1, 0.09, orange_knife, true)
-				Bullets.set_properties_bulk(bullets, { "bounce_count": 2, "bounce_surfaces": Constants.WALLS.DOME })
-				a3 -= 2.39996322972865332
-			
-			if t % 120 == 0:
-				set_galacta_dest(Vector2(500 - rand_range(0, 150) * lr, rand_range(350, 450)), 60)
-			if t % 120 == 60:
-				#et_remilia_dest(Vector2(500 - rand_range(0, 150) * lr, rand_range(200, 300)), 60)
-				lr *= -1
+
+func type1(u):
+	if u >= 0:
+		var CYCLE_TIME = 60 * 5
+		if u % 5 == 0:
+			var ACTIVE_TIME = 60 * 2
+			if u % CYCLE_TIME < ACTIVE_TIME:
+				#root.shoot1.play()
+				var DENSITY = 72
+				var shift = 45 if u >= CYCLE_TIME else 45
+				if u % CYCLE_TIME == 0:
+					a = randf()*TAU
+					lr *= -1
+					#print(p)
+				var r = (u % CYCLE_TIME) * 8
+				var d = (Vector2(500, 1000) - position).normalized().rotated(deg2rad(-lr*shift))
+			#	var f = 0.05 * lr
+				var s = 3.0 + 3.0 * (u % CYCLE_TIME) / ACTIVE_TIME
+				Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING, position + d*r, 0.0, s, a + TAU / DENSITY, DENSITY * 0.5, 0.0, white_ball, true)
+				Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING, position + d*r, 0.0, s, a, DENSITY * 0.5, 0.0, grey_ball, true)
+				a += lr * 0.4 #0.06
+		if u % CYCLE_TIME == 60 * 3:
+			pass
+			#var x = rand_range( max(1000.0*0.3, position.x - 200 * (position.x / 1000.0)), min(1000.0*0.7, position.x + 200 * (1 - position.x / 1000.0))  )
+			#var y = rand_range(0.25, 0.35) * 1000.0
+			#dest = Vector2(x, y)
+					
+
+func type2(u):
+	if u >= 0:
+		var CYCLE_TIME = 60 * 7
+		if u % 3 == 0:
+			var ACTIVE_TIME = 60 * 2
+			if u % CYCLE_TIME < ACTIVE_TIME:
+				#root.shoot1.play()
+				var DENSITY = 45
+				if u % CYCLE_TIME == 0:
+					lr *= -1
+					a = PI * (0.5 - 0.5 * lr)
+					a2 = PI * (0.5 - 0.5 * lr)
+					p = Vector2(500, 1000)
+					alt_col2 = !alt_col2
+				var r = (u % CYCLE_TIME) * 8
+				var d1 = (p - position).normalized().rotated(deg2rad(-45))
+				var d2 = (p - position).normalized().rotated(deg2rad(45))
+				var s = 3
 				
-				
+				if u % 6 == 0:
+					Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING,  position + d1*r, 0.0, s, a + TAU / DENSITY, DENSITY * 0.5, 0.0, white_ball if alt_col2 else white_ball if alt_col else grey_ball, true)
+					Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING,  position + d1*r, 0.0, s, a, DENSITY * 0.5, 0.0, grey_ball if alt_col2 else white_ball if !alt_col else grey_ball, true)
+					a +=  0.05 * lr + PI
+				elif u % 6 == 3:
+					Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING,  position + d2*r, 0.0, s, a2 + TAU / DENSITY, DENSITY * 0.5, 0.0, white_ball if !alt_col2 else white_ball if alt_col else grey_ball, true)
+					Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING,  position + d2*r, 0.0, s, a2, DENSITY * 0.5, 0.0, grey_ball if !alt_col2 else white_ball if !alt_col else grey_ball, true)
+					a2 += 0.05 * lr + PI
+					alt_col = !alt_col
+		if u % CYCLE_TIME == 60 * 3:
+			pass
+			#var x = rand_range( max(1000.0*0.3, position.x - 200 * (position.x / 000.0)), min(000.0*0.7, position.x + 200 * (1 - position.x / 000.0))  )
+			#var y = rand_range(0.25, 0.35) * 000.0
+			#dest = Vector2(x, y)
+

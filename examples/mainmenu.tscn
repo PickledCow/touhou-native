@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://fonts/Inter-Medium.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://examples/mainmenu.gd" type="Script" id=2]
@@ -10,13 +10,16 @@
 [ext_resource path="res://fonts/Inter-Regular.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://fonts/SourceCodePro-Semibold.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://examples/ui/healthbar.tres" type="StyleBox" id=10]
+[ext_resource path="res://fonts/KyoMadoka.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://fonts/Unown.ttf" type="DynamicFontData" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 size = 96
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
-font_data = ExtResource( 1 )
+extra_spacing_char = -5
+font_data = ExtResource( 11 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 64
@@ -24,7 +27,7 @@ outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 1 )
+font_data = ExtResource( 12 )
 
 [sub_resource type="DynamicFont" id=74]
 size = 96
@@ -64,6 +67,11 @@ shader_param/left_color = Color( 0, 1, 0.905882, 1 )
 shader_param/right_color = Color( 0.239216, 0.870588, 0.203922, 1 )
 shader_param/progress = 1.0
 
+[sub_resource type="DynamicFont" id=20]
+size = 24
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 9 )
+
 [sub_resource type="StyleBoxFlat" id=81]
 bg_color = Color( 1, 1, 1, 0.376471 )
 corner_radius_top_left = 24
@@ -79,14 +87,9 @@ bg_color = Color( 0, 0, 0, 0 )
 draw_center = false
 shadow_size = 1
 
-[sub_resource type="DynamicFont" id=20]
-size = 24
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 9 )
-
 [sub_resource type="Theme" id=83]
 default_font = SubResource( 20 )
-ProgressBar/fonts/font = null
+ProgressBar/fonts/font = SubResource( 20 )
 ProgressBar/styles/bg = SubResource( 81 )
 ProgressBar/styles/fg = ExtResource( 10 )
 RichTextLabel/styles/normal = SubResource( 82 )
@@ -149,9 +152,6 @@ text = "touhou
 but i'm too lazy to made a title screen"
 align = 1
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="start" type="Label" parent="Main"]
 anchor_left = 0.5
@@ -163,12 +163,9 @@ margin_top = 577.0
 margin_right = 1015.0
 margin_bottom = 655.0
 custom_fonts/font = SubResource( 2 )
-text = "Start"
+text = "divinejudgementoflight"
 align = 1
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="settings" type="Label" parent="Main"]
 anchor_left = 0.5

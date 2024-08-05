@@ -11,11 +11,13 @@ var pause_menu
 
 var is_3d := true
 
+var difficulty := 3
+
 var transluscent := true
 
 # Global data
 enum PLAYER_ID { REIMU, MARISA }
-var player_id := 0
+var player_id := 1
 
 var spell_bonus := true
 var score := 0
