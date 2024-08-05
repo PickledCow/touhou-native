@@ -1,11 +1,13 @@
 tool
 extends Control
 
-const Util = preload("../../util/util.gd")
+const HT_Util = preload("../../util/util.gd")
 const HTerrainData = preload("../../hterrain_data.gd")
 
-const MinimapShader = preload("./minimap_normal.shader")
-const WhiteTexture = preload("../icons/white.png")
+const HT_MinimapShader = preload("./minimap_normal.shader")
+# TODO Can't preload because it causes the plugin to fail loading if assets aren't imported
+#const HT_WhiteTexture = preload("../icons/white.png")
+const WHITE_TEXTURE_PATH = "res://addons/zylann.hterrain/tools/icons/white.png"
 
 const MODE_QUADTREE = 0
 const MODE_NORMAL = 1
@@ -20,7 +22,7 @@ var _camera_transform := Transform()
 
 
 func _ready():
-	if Util.is_in_edited_scene(self):
+	if HT_Util.is_in_edited_scene(self):
 		return
 	
 	_set_mode(_mode)
@@ -81,7 +83,7 @@ func _set_mode(mode: int):
 		_color_rect.hide()
 	else:
 		var mat = ShaderMaterial.new()
-		mat.shader = MinimapShader
+		mat.shader = HT_MinimapShader
 		_color_rect.material = mat
 		_color_rect.show()
 		_update_normal_material()
@@ -99,9 +101,11 @@ func _update_normal_material():
 	var normalmap = data.get_texture(HTerrainData.CHANNEL_NORMAL)
 	_set_if_changed(_color_rect.material, "u_normalmap", normalmap)
 
-	var globalmap = WhiteTexture
+	var globalmap : Texture
 	if data.has_texture(HTerrainData.CHANNEL_GLOBAL_ALBEDO, 0):
 		globalmap = data.get_texture(HTerrainData.CHANNEL_GLOBAL_ALBEDO)
+	if globalmap == null:
+		globalmap = load(WHITE_TEXTURE_PATH)
 	_set_if_changed(_color_rect.material, "u_globalmap", globalmap)
 
 

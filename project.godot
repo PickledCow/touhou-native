@@ -14,27 +14,27 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://examples/boss/attacks/attack.gd"
 }, {
-"base": "Resource",
+"base": "",
 "class": "BasicBulletKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/kits/basic_bullet_kit.gdns"
 }, {
-"base": "Resource",
+"base": "",
 "class": "BasicItemKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/kits/basic_item_kit.gdns"
 }, {
-"base": "Resource",
+"base": "",
 "class": "BasicParticleKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/kits/basic_particle_kit.gdns"
 }, {
-"base": "Resource",
+"base": "",
 "class": "BulletKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/bullet_kit.gdns"
 }, {
-"base": "Node2D",
+"base": "",
 "class": "Bullets",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/bullets.gdns"
@@ -136,7 +136,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/native_bullets/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/cloud/plugin.cfg", "res://addons/native_bullets/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg" )
 
 [gdnative]
 

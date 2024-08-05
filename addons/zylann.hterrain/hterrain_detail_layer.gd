@@ -12,11 +12,13 @@ extends Spatial
 # doesn't mean we want to scale grass blades (which is not a use case I know of).
 
 const HTerrainData = preload("./hterrain_data.gd")
-const DirectMultiMeshInstance = preload("./util/direct_multimesh_instance.gd")
-const DirectMeshInstance = preload("./util/direct_mesh_instance.gd")
-const Util = preload("./util/util.gd")
-const Logger = preload("./util/logger.gd")
-const DefaultMesh = preload("./models/grass_quad.obj")
+const HT_DirectMultiMeshInstance = preload("./util/direct_multimesh_instance.gd")
+const HT_DirectMeshInstance = preload("./util/direct_mesh_instance.gd")
+const HT_Util = preload("./util/util.gd")
+const HT_Logger = preload("./util/logger.gd")
+# TODO Can't preload because it causes the plugin to fail loading if assets aren't imported
+const DEFAULT_MESH_PATH = "res://addons/zylann.hterrain/models/grass_quad.obj"
+
 var HTerrain = load("res://addons/zylann.hterrain/hterrain.gd")
 
 const CHUNK_SIZE = 32
@@ -47,10 +49,12 @@ export(Texture) var texture : Texture setget set_texture, get_texture
 # How far detail meshes can be seen.
 # TODO Improve speed of _get_chunk_aabb() so we can increase the limit
 # See https://github.com/Zylann/godot_heightmap_plugin/issues/155
-export(float, 1.0, 500.0) var view_distance := 100.0 setget set_view_distance, get_view_distance
+export(float, 1.0, 500.0) \
+	var view_distance := 100.0 setget set_view_distance, get_view_distance
 
 # Custom shader to replace the default one.
-export(Shader) var custom_shader : Shader setget set_custom_shader, get_custom_shader
+export(Shader) \
+	var custom_shader : Shader setget set_custom_shader, get_custom_shader
 
 # Density modifier, to make more or less detail meshes appear overall.
 export(float, 0, 10) var density := 4.0 setget set_density, get_density
@@ -59,6 +63,10 @@ export(float, 0, 10) var density := 4.0 setget set_density, get_density
 # If not assigned, an internal quad mesh will be used.
 # I would have called it `mesh` but that's too broad and conflicts with local vars ._.
 export(Mesh) var instance_mesh : Mesh setget set_instance_mesh, get_instance_mesh
+
+# Exposes rendering layers, similar to `VisualInstance.layers`
+export(int, LAYERS_3D_RENDER) \
+	var render_layers := 1 setget set_render_layer_mask, get_render_layer_mask
 
 var _material: ShaderMaterial = null
 var _default_shader: Shader = null
@@ -73,7 +81,7 @@ var _ambient_wind_time := 0.0
 #var _auto_pick_index_on_enter_tree := Engine.editor_hint
 var _debug_wirecube_mesh: Mesh = null
 var _debug_cubes := []
-var _logger := Logger.get_for(self)
+var _logger := HT_Logger.get_for(self)
 
 
 func _init():
@@ -199,7 +207,7 @@ func set_layer_index(v: int):
 	layer_index = v
 	if is_inside_tree():
 		_update_material()
-		Util.update_configuration_warning(self, false)
+		HT_Util.update_configuration_warning(self, false)
 
 
 func get_layer_index() -> int:
@@ -248,9 +256,23 @@ func get_instance_mesh() -> Mesh:
 	return instance_mesh
 
 
+func set_render_layer_mask(mask: int):
+	render_layers = mask
+	for k in _chunks:
+		var chunk = _chunks[k]
+		chunk.set_layer_mask(mask)
+
+
+func get_render_layer_mask() -> int:
+	return render_layers
+
+
 func _get_used_mesh() -> Mesh:
 	if instance_mesh == null:
-		return DefaultMesh
+		var mesh = load(DEFAULT_MESH_PATH) as Mesh
+		if mesh == null:
+			_logger.error(str("Failed to load default mesh: ", DEFAULT_MESH_PATH))
+		return mesh
 	return instance_mesh
 
 
@@ -305,8 +327,10 @@ func _on_terrain_transform_changed(gt: Transform):
 	if terrain == null:
 		_logger.error("Detail layer is not child of a terrain!")
 		return
+	
+	var terrain_transform : Transform = terrain.get_internal_transform()
 
-	# Update AABBs, because scale might have changed
+	# Update AABBs and transforms, because scale might have changed
 	for k in _chunks:
 		var mmi = _chunks[k]
 		var aabb = _get_chunk_aabb(terrain, Vector3(k.x * CHUNK_SIZE, 0, k.y * CHUNK_SIZE))
@@ -314,6 +338,7 @@ func _on_terrain_transform_changed(gt: Transform):
 		aabb.position.x = 0
 		aabb.position.z = 0
 		mmi.set_aabb(aabb)
+		mmi.set_transform(_get_chunk_transform(terrain_transform, k.x, k.y))
 
 
 func process(delta: float, viewer_pos: Vector3):
@@ -331,7 +356,9 @@ func process(delta: float, viewer_pos: Vector3):
 			var mmi = _chunks[k]
 			mmi.set_multimesh(_multimesh)
 
-	var local_viewer_pos = viewer_pos - terrain.translation
+	# Detail layers are unaffected by ground map_scale
+	var terrain_transform_without_map_scale : Transform = terrain.get_internal_transform_unscaled()
+	var local_viewer_pos := terrain_transform_without_map_scale.affine_inverse() * viewer_pos
 
 	var viewer_cx = local_viewer_pos.x / CHUNK_SIZE
 	var viewer_cz = local_viewer_pos.z / CHUNK_SIZE
@@ -378,7 +405,7 @@ func process(delta: float, viewer_pos: Vector3):
 			var d = (aabb.position + 0.5 * aabb.size).distance_to(local_viewer_pos)
 
 			if d < view_distance:
-				_load_chunk(terrain, cx, cz, aabb)
+				_load_chunk(terrain_transform_without_map_scale, cx, cz, aabb)
 
 	var to_recycle = []
 
@@ -412,18 +439,22 @@ func _get_chunk_aabb(terrain, lpos: Vector3):
 	
 	var aabb = terrain_data.get_region_aabb(
 		origin_cells_x, origin_cells_z, size_cells_x, size_cells_z)
-		
+	
 	aabb.position = Vector3(lpos.x, lpos.y + aabb.position.y * terrain_scale.y, lpos.z)
 	aabb.size = Vector3(CHUNK_SIZE, aabb.size.y * terrain_scale.y, CHUNK_SIZE)
 	return aabb
 
 
-func _load_chunk(terrain, cx: int, cz: int, aabb: AABB):
-	var lpos = Vector3(cx, 0, cz) * CHUNK_SIZE
-	# Terrain scale is not used on purpose. Rotation is not supported.
-	var trans = Transform(Basis(), terrain.get_internal_transform().origin + lpos)
+func _get_chunk_transform(terrain_transform: Transform, cx: int, cz: int) -> Transform:
+	var lpos := Vector3(cx, 0, cz) * CHUNK_SIZE
+	# `terrain_transform` should be the terrain's internal transform, without `map_scale`.
+	var trans := Transform(
+		terrain_transform.basis,
+		terrain_transform.origin + terrain_transform.basis * lpos)
+	return trans
 
-	# Nullify XZ translation because that's done by transform already
+
+func _load_chunk(terrain_transform_without_map_scale: Transform, cx: int, cz: int, aabb: AABB):
 	aabb.position.x = 0
 	aabb.position.z = 0
 
@@ -432,13 +463,16 @@ func _load_chunk(terrain, cx: int, cz: int, aabb: AABB):
 		mmi = _multimesh_instance_pool[-1]
 		_multimesh_instance_pool.pop_back()
 	else:
-		mmi = DirectMultiMeshInstance.new()
-		mmi.set_world(terrain.get_world())
+		mmi = HT_DirectMultiMeshInstance.new()
+		mmi.set_world(get_world())
 		mmi.set_multimesh(_multimesh)
 
+	var trans := _get_chunk_transform(terrain_transform_without_map_scale, cx, cz)
+	
 	mmi.set_material_override(_material)
 	mmi.set_transform(trans)
 	mmi.set_aabb(aabb)
+	mmi.set_layer_mask(render_layers)
 	mmi.set_visible(visible)
 
 	_chunks[Vector2(cx, cz)] = mmi
@@ -473,8 +507,10 @@ func _update_material():
 		var gt = terrain.get_internal_transform()
 		it = gt.affine_inverse()
 		terrain_data = terrain.get_data()
-		# This is needed to properly transform normals if the terrain is scaled
-		normal_basis = gt.basis.inverse().transposed()
+		# This is needed to properly transform normals if the terrain is scaled.
+		# However we don't want to pick up rotation because it's already factored in the instance
+		#normal_basis = gt.basis.inverse().transposed()
+		normal_basis = Basis().scaled(terrain.map_scale).inverse().transposed()
 
 	var mat = _material
 
@@ -515,12 +551,12 @@ func _add_debug_cube(terrain, aabb: AABB):
 	var world = terrain.get_world()
 
 	if _debug_wirecube_mesh == null:
-		_debug_wirecube_mesh = Util.create_wirecube_mesh()
+		_debug_wirecube_mesh = HT_Util.create_wirecube_mesh()
 		var mat = SpatialMaterial.new()
 		mat.flags_unshaded = true
 		_debug_wirecube_mesh.surface_set_material(0, mat)
 
-	var debug_cube = DirectMeshInstance.new()
+	var debug_cube = HT_DirectMeshInstance.new()
 	debug_cube.set_mesh(_debug_wirecube_mesh)
 	debug_cube.set_world(world)
 	#aabb.position.y += 0.2*randf()

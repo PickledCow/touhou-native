@@ -1,16 +1,16 @@
 tool
 extends Spatial
 
-const QuadTreeLod = preload("./util/quad_tree_lod.gd")
-const Mesher = preload("./hterrain_mesher.gd")
-const Grid = preload("./util/grid.gd")
+const HT_NativeFactory = preload("./native/factory.gd")
+const HT_Mesher = preload("./hterrain_mesher.gd")
+const HT_Grid = preload("./util/grid.gd")
 const HTerrainData = preload("./hterrain_data.gd")
 const HTerrainChunk = preload("./hterrain_chunk.gd")
 const HTerrainChunkDebug = preload("./hterrain_chunk_debug.gd")
-const Util = preload("./util/util.gd")
+const HT_Util = preload("./util/util.gd")
 const HTerrainCollider = preload("./hterrain_collider.gd")
 const HTerrainTextureSet = preload("./hterrain_texture_set.gd")
-const Logger = preload("./util/logger.gd")
+const HT_Logger = preload("./util/logger.gd")
 
 const SHADER_CLASSIC4 = "Classic4"
 const SHADER_CLASSIC4_LITE = "Classic4Lite"
@@ -149,12 +149,16 @@ export(int, 2, 5) var lod_scale := 2.0 setget set_lod_scale, get_lod_scale
 # it would scale grass too and other environment objects.
 export var map_scale := Vector3(1, 1, 1) setget set_map_scale
 
+export var centered := false setget set_centered
+
 var _custom_shader : Shader = null
 var _custom_globalmap_shader : Shader = null
 var _shader_type := SHADER_CLASSIC4_LITE
 var _shader_uses_texture_array := false
 var _material := ShaderMaterial.new()
 var _material_params_need_update := false
+
+var _render_layer_mask := 1
 
 # Actual number of textures supported by the shader currently selected
 var _ground_texture_count_cache = 0
@@ -167,8 +171,8 @@ var _texture_set_migration_textures = null
 
 var _data: HTerrainData = null
 
-var _mesher := Mesher.new()
-var _lodder := QuadTreeLod.new()
+var _mesher := HT_Mesher.new()
+var _lodder = HT_NativeFactory.get_quad_tree_lod()
 var _viewer_pos_world := Vector3()
 
 # [lod][z][x] -> chunk
@@ -186,7 +190,7 @@ var _collision_mask := 1
 
 # Stats & debug
 var _updated_chunks := 0
-var _logger = Logger.get_for(self)
+var _logger = HT_Logger.get_for(self)
 
 # Editor-only
 var _normals_baker = null
@@ -277,7 +281,7 @@ func _get_property_list():
 			"hint": PROPERTY_HINT_LAYERS_3D_PHYSICS
 		},
 		{
-			"name": "Shader",
+			"name": "Rendering",
 			"type": TYPE_NIL,
 			"usage": PROPERTY_USAGE_GROUP
 		},
@@ -312,6 +316,12 @@ func _get_property_list():
 			# This triggers `ERROR: Cannot get class 'HTerrainTextureSet'`
 			# See https://github.com/godotengine/godot/pull/41264
 			#"hint_string": "HTerrainTextureSet"
+		},
+		{
+			"name": "render_layers",
+			"type": TYPE_INT,
+			"usage": PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE,
+			"hint": PROPERTY_HINT_LAYERS_3D_RENDER
 		}
 	]
 
@@ -368,6 +378,9 @@ func _get(key: String):
 
 	elif key == "collision_mask":
 		return _collision_mask
+
+	elif key == "render_layers":
+		return get_render_layer_mask()
 	
 
 func _set(key: String, value):
@@ -424,6 +437,9 @@ func _set(key: String, value):
 		if _collider != null:
 			_collider.set_collision_mask(value)
 
+	elif key == "render_layers":
+		return set_render_layer_mask(value)
+
 
 func get_texture_set() -> HTerrainTextureSet:
 	return _texture_set
@@ -447,7 +463,7 @@ func set_texture_set(new_set: HTerrainTextureSet):
 
 func _on_texture_set_changed():
 	_material_params_need_update = true
-	Util.update_configuration_warning(self, false)
+	HT_Util.update_configuration_warning(self, false)
 
 
 func get_shader_param(param_name: String):
@@ -456,6 +472,15 @@ func get_shader_param(param_name: String):
 
 func set_shader_param(param_name: String, v):
 	_material.set_shader_param(param_name, v)
+
+
+func set_render_layer_mask(mask: int):
+	_render_layer_mask = mask
+	_for_all_chunks(HT_SetRenderLayerMaskAction.new(mask))
+
+
+func get_render_layer_mask() -> int:
+	return _render_layer_mask
 
 
 func _set_data_directory(dirpath: String):
@@ -473,7 +498,7 @@ func _set_data_directory(dirpath: String):
 				# Create new
 				var d := HTerrainData.new()
 				d.resource_path = fpath
-				set_data(d)		
+				set_data(d)
 	else:
 		_logger.warn("Setting twice the same terrain directory??")
 
@@ -530,7 +555,7 @@ func get_chunk_size() -> int:
 func set_chunk_size(p_cs: int):
 	assert(typeof(p_cs) == TYPE_INT)
 	_logger.debug(str("Setting chunk size to ", p_cs))
-	var cs = Util.next_power_of_two(p_cs)
+	var cs = HT_Util.next_power_of_two(p_cs)
 	if cs < MIN_CHUNK_SIZE:
 		cs = MIN_CHUNK_SIZE
 	if cs > MAX_CHUNK_SIZE:
@@ -553,12 +578,37 @@ func set_map_scale(p_map_scale: Vector3):
 	_on_transform_changed()
 
 
+func set_centered(p_centered: bool):
+	if p_centered == centered:
+		return
+	centered = p_centered
+	_on_transform_changed()
+
+
 # Gets the global transform to apply to terrain geometry,
-# which is different from Spatial.global_transform gives
-# (that one must only have translation)
+# which is different from Spatial.global_transform gives.
+# global_transform must only have translation and rotation. Scale support is undefined.
 func get_internal_transform() -> Transform:
-	# Terrain can only be self-scaled and translated,
-	return Transform(Basis().scaled(map_scale), global_transform.origin)
+	var gt = global_transform
+	var it = Transform(gt.basis * Basis().scaled(map_scale), gt.origin)
+	if centered and _data != null:
+		var half_size = 0.5 * (_data.get_resolution() - 1.0)
+		it.origin += it.basis * (-Vector3(half_size, 0, half_size))
+	return it
+
+
+func get_internal_transform_unscaled():
+	var gt = global_transform
+	if centered and _data != null:
+		var half_size = 0.5 * (_data.get_resolution() - 1.0)
+		gt.origin += gt.basis * (-Vector3(half_size, 0, half_size))
+	return gt
+
+
+# Converts a world-space position into a map-space position.
+# Map space X and Z coordinates correspond to pixel coordinates of the heightmap.
+func world_to_map(world_pos: Vector3) -> Vector3:
+	return get_internal_transform().affine_inverse() * world_pos
 
 
 func _notification(what: int):
@@ -587,14 +637,14 @@ func _notification(what: int):
 						_texture_set.set_texture(slot_index, type, texs[type])
 				_texture_set_migration_textures = null
 
-			_for_all_chunks(EnterWorldAction.new(get_world()))
+			_for_all_chunks(HT_EnterWorldAction.new(get_world()))
 			if _collider != null:
 				_collider.set_world(get_world())
 				_collider.set_transform(get_internal_transform())
 
 		NOTIFICATION_EXIT_WORLD:
 			_logger.debug("Exit world")
-			_for_all_chunks(ExitWorldAction.new())
+			_for_all_chunks(HT_ExitWorldAction.new())
 			if _collider != null:
 				_collider.set_world(null)
 
@@ -603,7 +653,7 @@ func _notification(what: int):
 
 		NOTIFICATION_VISIBILITY_CHANGED:
 			_logger.debug("Visibility changed")
-			_for_all_chunks(VisibilityChangedAction.new(is_visible_in_tree()))
+			_for_all_chunks(HT_VisibilityChangedAction.new(is_visible_in_tree()))
 
 
 func _on_transform_changed():
@@ -616,7 +666,7 @@ func _on_transform_changed():
 
 	var gt = get_internal_transform()
 
-	_for_all_chunks(TransformChangedAction.new(gt))
+	_for_all_chunks(HT_TransformChangedAction.new(gt))
 
 	_material_params_need_update = true
 
@@ -649,7 +699,7 @@ func _clear_all_chunks():
 
 func _get_chunk_at(pos_x: int, pos_y: int, lod: int) -> HTerrainChunk:
 	if lod < len(_chunks):
-		return Grid.grid_get_or_default(_chunks[lod], pos_x, pos_y, null)
+		return HT_Grid.grid_get_or_default(_chunks[lod], pos_x, pos_y, null)
 	return null
 
 
@@ -711,7 +761,7 @@ func set_data(new_data: HTerrainData):
 
 	_material_params_need_update = true
 	
-	Util.update_configuration_warning(self, true)
+	HT_Util.update_configuration_warning(self, true)
 	
 	_logger.debug("Set data done")
 
@@ -747,7 +797,7 @@ func _reset_ground_chunks():
 
 	for lod in range(_lodder.get_lod_count()):
 		_logger.debug(str("Create grid for lod ", lod, ", ", csize_x, "x", csize_y))
-		var grid = Grid.create_grid(csize_x, csize_y)
+		var grid = HT_Grid.create_grid(csize_x, csize_y)
 		_chunks[lod] = grid
 		csize_x /= 2
 		csize_y /= 2
@@ -787,7 +837,7 @@ func _on_data_map_added(type: int, index: int):
 			layer.update_material()
 	else:
 		_material_params_need_update = true
-	Util.update_configuration_warning(self, true)
+	HT_Util.update_configuration_warning(self, true)
 
 
 func _on_data_map_removed(type: int, index: int):
@@ -799,7 +849,7 @@ func _on_data_map_removed(type: int, index: int):
 			layer.update_material()
 	else:
 		_material_params_need_update = true
-	Util.update_configuration_warning(self, true)
+	HT_Util.update_configuration_warning(self, true)
 
 
 func get_shader_type() -> String:
@@ -1087,7 +1137,6 @@ func _process(delta: float):
 	if not Engine.is_editor_hint():
 		# In editor, the camera is only accessible from an editor plugin
 		_update_viewer_position(null)
-	var viewer_pos := _viewer_pos_world
 
 	if has_data():
 		if _data.is_locked():
@@ -1096,9 +1145,10 @@ func _process(delta: float):
 
 		if _data.get_resolution() != 0:
 			var gt := get_internal_transform()
-			var local_viewer_pos := gt.affine_inverse() * viewer_pos
+			# Viewer position such that 1 unit == 1 pixel in the heightmap
+			var viewer_pos_heightmap_local := gt.affine_inverse() * _viewer_pos_world
 			#var time_before = OS.get_ticks_msec()
-			_lodder.update(local_viewer_pos)
+			_lodder.update(viewer_pos_heightmap_local)
 			#var time_elapsed = OS.get_ticks_msec() - time_before
 			#if Engine.get_frames_drawn() % 60 == 0:
 			#	_logger.debug(str("Lodder time: ", time_elapsed))
@@ -1107,7 +1157,7 @@ func _process(delta: float):
 			# Note: the detail system is not affected by map scale,
 			# so we have to send viewer position in world space
 			for layer in _detail_layers:
-				layer.process(delta, viewer_pos)
+				layer.process(delta, _viewer_pos_world)
 
 	_updated_chunks = 0
 
@@ -1117,7 +1167,7 @@ func _process(delta: float):
 	# chunk got joined or split requires them to create or revert seams
 	var precount = _pending_chunk_updates.size()
 	for i in range(precount):
-		var u: PendingChunkUpdate = _pending_chunk_updates[i]
+		var u: HT_PendingChunkUpdate = _pending_chunk_updates[i]
 
 		# In case the chunk got split
 		for d in 4:
@@ -1147,7 +1197,7 @@ func _process(delta: float):
 	# Update chunks
 	var lvisible := is_visible_in_tree()
 	for i in range(len(_pending_chunk_updates)):
-		var u: PendingChunkUpdate = _pending_chunk_updates[i]
+		var u: HT_PendingChunkUpdate = _pending_chunk_updates[i]
 		var chunk := _get_chunk_at(u.pos_x, u.pos_y, u.lod)
 		assert(chunk != null)
 		_update_chunk(chunk, u.lod, lvisible)
@@ -1157,7 +1207,7 @@ func _process(delta: float):
 
 	if _material_params_need_update:
 		_update_material_params()
-		Util.update_configuration_warning(self, false)
+		HT_Util.update_configuration_warning(self, false)
 		_material_params_need_update = false
 
 	# DEBUG
@@ -1211,7 +1261,7 @@ func _add_chunk_update(chunk: HTerrainChunk, pos_x: int, pos_y: int, lod: int):
 	assert(pos_x < len(_chunks[lod][pos_y]))
 
 	# No update pending for this chunk, create one
-	var u := PendingChunkUpdate.new()
+	var u := HT_PendingChunkUpdate.new()
 	u.pos_x = pos_x
 	u.pos_y = pos_y
 	u.lod = lod
@@ -1236,7 +1286,7 @@ func set_area_dirty(origin_in_cells_x: int, origin_in_cells_y: int, \
 	for lod in range(_lodder.get_lod_count()):
 		# Get grid and chunk size
 		var grid = _chunks[lod]
-		var s := _lodder.get_lod_size(lod)
+		var s : int = _lodder.get_lod_factor(lod)
 
 		# Convert rect into this lod's coordinates:
 		# Pick min and max (included), divide them, then add 1 to max so it's excluded again
@@ -1248,7 +1298,7 @@ func set_area_dirty(origin_in_cells_x: int, origin_in_cells_y: int, \
 		# Find which chunks are within
 		for cy in range(min_y, max_y):
 			for cx in range(min_x, max_x):
-				var chunk = Grid.grid_get_or_default(grid, cx, cy, null)
+				var chunk = HT_Grid.grid_get_or_default(grid, cx, cy, null)
 				if chunk != null and chunk.is_active():
 					_add_chunk_update(chunk, cx, cy, lod)
 
@@ -1261,7 +1311,7 @@ func _cb_make_chunk(cpos_x: int, cpos_y: int, lod: int):
 	if chunk == null:
 		# This is the first time this chunk is required at this lod, generate it
 		
-		var lod_factor := _lodder.get_lod_size(lod)
+		var lod_factor : int = _lodder.get_lod_factor(lod)
 		var origin_in_cells_x := cpos_x * _chunk_size * lod_factor
 		var origin_in_cells_y := cpos_y * _chunk_size * lod_factor
 		
@@ -1275,6 +1325,8 @@ func _cb_make_chunk(cpos_x: int, cpos_y: int, lod: int):
 		else:
 			chunk = HTerrainChunk.new(self, origin_in_cells_x, origin_in_cells_y, material)
 		chunk.parent_transform_changed(get_internal_transform())
+
+		chunk.set_render_layer_mask(_render_layer_mask)
 
 		var grid = _chunks[lod]
 		var row = grid[cpos_y]
@@ -1294,7 +1346,7 @@ func _cb_recycle_chunk(chunk: HTerrainChunk, cx: int, cy: int, lod: int):
 
 
 func _cb_get_vertical_bounds(cpos_x: int, cpos_y: int, lod: int):
-	var chunk_size := _chunk_size * _lodder.get_lod_size(lod)
+	var chunk_size : int = _chunk_size * _lodder.get_lod_factor(lod)
 	var origin_in_cells_x := cpos_x * chunk_size
 	var origin_in_cells_y := cpos_y * chunk_size
 	# This is a hack for speed,
@@ -1477,9 +1529,9 @@ func set_lookdev_enabled(enable: bool):
 	_lookdev_enabled = enable
 	_material_params_need_update = true
 	if _lookdev_enabled:
-		_for_all_chunks(SetMaterialAction.new(_get_lookdev_material()))
+		_for_all_chunks(HT_SetMaterialAction.new(_get_lookdev_material()))
 	else:
-		_for_all_chunks(SetMaterialAction.new(_material))
+		_for_all_chunks(HT_SetMaterialAction.new(_material))
 
 
 func set_lookdev_shader_param(param_name: String, value):
@@ -1498,13 +1550,13 @@ func _get_lookdev_material() -> ShaderMaterial:
 	return _lookdev_material
 
 
-class PendingChunkUpdate:
+class HT_PendingChunkUpdate:
 	var pos_x := 0
 	var pos_y := 0
 	var lod := 0
 
 
-class EnterWorldAction:
+class HT_EnterWorldAction:
 	var world : World = null
 	func _init(w):
 		world = w
@@ -1512,12 +1564,12 @@ class EnterWorldAction:
 		chunk.enter_world(world)
 
 
-class ExitWorldAction:
+class HT_ExitWorldAction:
 	func exec(chunk):
 		chunk.exit_world()
 
 
-class TransformChangedAction:
+class HT_TransformChangedAction:
 	var transform : Transform
 	func _init(t):
 		transform = t
@@ -1525,7 +1577,7 @@ class TransformChangedAction:
 		chunk.parent_transform_changed(transform)
 
 
-class VisibilityChangedAction:
+class HT_VisibilityChangedAction:
 	var visible := false
 	func _init(v):
 		visible = v
@@ -1533,16 +1585,23 @@ class VisibilityChangedAction:
 		chunk.set_visible(visible and chunk.is_active())
 
 
-#class DeleteChunkAction:
+#class HT_DeleteChunkAction:
 #	func exec(chunk):
 #		pass
 
 
-class SetMaterialAction:
+class HT_SetMaterialAction:
 	var material : Material = null
 	func _init(m):
 		material = m
 	func exec(chunk):
 		chunk.set_material(material)
 
+
+class HT_SetRenderLayerMaskAction:
+	var mask: int = 0
+	func _init(m: int):
+		mask = m
+	func exec(chunk):
+		chunk.set_render_layer_mask(mask)
 

@@ -12,7 +12,7 @@ const USAGE_ENUM = "enum"
 signal property_changed(key, value)
 
 # Used for most simple types
-class Editor:
+class HT_InspectorEditor:
 	var control = null
 	var getter = null
 	var setter = null
@@ -20,7 +20,7 @@ class Editor:
 
 
 # Used when the control cannot hold the actual value
-class ResourceEditor extends Editor:
+class HT_InspectorResourceEditor extends HT_InspectorEditor:
 	var value = null
 	var label = null
 	
@@ -32,7 +32,7 @@ class ResourceEditor extends Editor:
 		label.text = "null" if v == null else v.resource_path
 
 
-class VectorEditor extends Editor:
+class HT_InspectorVectorEditor extends HT_InspectorEditor:
 	signal value_changed(v)
 	
 	var value = Vector2()
@@ -312,7 +312,7 @@ func _make_editor(key: String, prop: Dictionary):
 				clear_button.connect("pressed", self, "_on_ask_clear_texture", [key])
 				editor.add_child(clear_button)
 				
-				ed = ResourceEditor.new()
+				ed = HT_InspectorResourceEditor.new()
 				ed.label = label
 				getter = funcref(ed, "get_value")
 				setter = funcref(ed, "set_value")
@@ -320,7 +320,7 @@ func _make_editor(key: String, prop: Dictionary):
 		TYPE_VECTOR2:
 			editor = HBoxContainer.new()
 
-			ed = VectorEditor.new()
+			ed = HT_InspectorVectorEditor.new()
 
 			var xlabel = Label.new()
 			xlabel.text = "x"
@@ -362,7 +362,7 @@ func _make_editor(key: String, prop: Dictionary):
 	
 	if ed == null:
 		# Default
-		ed = Editor.new()
+		ed = HT_InspectorEditor.new()
 	ed.control = editor
 	ed.getter = getter
 	ed.setter = setter
@@ -422,7 +422,8 @@ func _dummy_setter(v):
 
 
 func _on_ask_load_texture(key):
-	_open_file_dialog(["*.png ; PNG files"], "_on_texture_selected", [key], FileDialog.ACCESS_RESOURCES)
+	_open_file_dialog(["*.png ; PNG files"], "_on_texture_selected", [key], 
+		FileDialog.ACCESS_RESOURCES)
 
 
 func _open_file_dialog(filters, callback, binds, access):
@@ -430,7 +431,8 @@ func _open_file_dialog(filters, callback, binds, access):
 	_file_dialog.clear_filters()
 	for filter in filters:
 		_file_dialog.add_filter(filter)
-	_file_dialog.connect("popup_hide", self, "call_deferred", ["_on_file_dialog_close"], CONNECT_ONESHOT)
+	_file_dialog.connect("popup_hide", self, "call_deferred", ["_on_file_dialog_close"], 
+		CONNECT_ONESHOT)
 	_file_dialog.connect("file_selected", self, callback, binds)
 	_file_dialog.popup_centered_ratio(0.7)
 

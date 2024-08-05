@@ -5,51 +5,11 @@
 tool
 extends Node
 
-class Pass:
-	# Name of the pass, for debug purposes
-	var debug_name = ""
-	# The viewport will be cleared at this pass
-	var clear = false
-	# Which main texture should be drawn.
-	# If not set, a default texture will be drawn.
-	# Note that it won't matter if the shader disregards it,
-	# and will only serve to provide UVs, due to https://github.com/godotengine/godot/issues/7298.
-	var texture = null
-	# Which shader to use
-	var shader = null
-	# Parameters for the shader
-	var params = null
-	# How many pixels to pad the viewport on all edges, in case neighboring matters.
-	# Outputs won't have that padding, but can pick part of it in case output padding is used.
-	var padding = 0
-	# How many times this pass must be run
-	var iterations = 1
-	# If not empty, the viewport will be downloaded as an image before the next pass
-	var output = false
-	# Sent along the output
-	var metadata = null
-	# Used for tiled rendering, where each tile has the base resolution,
-	# in case the viewport cannot be made big enough to cover the final image,
-	# of if you are generating a pseudo-infinite terrain.
-	# TODO Have an API for this?
-	var tile_pos = Vector2()
-	
-	func duplicate():
-		var p = get_script().new()
-		p.debug_name = debug_name
-		p.clear = clear
-		p.texture = texture
-		p.shader = shader
-		p.params = params
-		p.padding = padding
-		p.iterations = iterations
-		p.output = output
-		p.metadata = metadata
-		p.tile_pos = tile_pos
-		return p
-
-
-const Util = preload("res://addons/zylann.hterrain/util/util.gd")
+const HT_Util = preload("res://addons/zylann.hterrain/util/util.gd")
+const HT_TextureGeneratorPass = preload("./texture_generator_pass.gd")
+const HT_Logger = preload("../../util/logger.gd")
+# TODO Can't preload because it causes the plugin to fail loading if assets aren't imported
+const DUMMY_TEXTURE_PATH = "res://addons/zylann.hterrain/tools/icons/empty.png"
 
 signal progress_reported(info)
 # Emitted when an output is generated.
@@ -62,7 +22,7 @@ var _resolution := Vector2(512, 512)
 var _output_padding := [0, 0, 0, 0]
 var _viewport : Viewport = null
 var _ci : TextureRect = null
-var _dummy_texture = load("res://addons/zylann.hterrain/tools/icons/empty.png")
+var _dummy_texture : Texture
 var _running := false
 var _rerun := false
 #var _tiles = PoolVector2Array([Vector2()])
@@ -72,6 +32,8 @@ var _running_pass_index := 0
 var _running_iteration := 0
 var _shader_material : ShaderMaterial = null
 #var _uv_offset = 0 # Offset de to padding
+
+var _logger = HT_Logger.get_for(self)
 
 
 func _ready():
@@ -84,6 +46,10 @@ func _ready():
 	_viewport.render_target_v_flip = true
 	_viewport.render_target_update_mode = Viewport.UPDATE_DISABLED
 	add_child(_viewport)
+	
+	_dummy_texture = load(DUMMY_TEXTURE_PATH)
+	if _dummy_texture == null:
+		_logger.error(str("Failed to load dummy texture ", DUMMY_TEXTURE_PATH))
 
 	_ci = TextureRect.new()
 	_ci.expand = true
@@ -103,7 +69,7 @@ func clear_passes():
 	_passes.clear()
 
 
-func add_pass(p: Pass):
+func add_pass(p: HT_TextureGeneratorPass):
 	assert(_passes.find(p) == -1)
 	assert(p.iterations > 0)
 	_passes.append(p)
@@ -223,7 +189,7 @@ func _process(delta: float):
 	# The viewport should render after the tree was processed
 
 
-func _setup_pass(p: Pass):
+func _setup_pass(p: HT_TextureGeneratorPass):
 	if p.texture != null:
 		_ci.texture = p.texture
 	else:

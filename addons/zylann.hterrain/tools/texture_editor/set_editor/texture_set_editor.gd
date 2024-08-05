@@ -2,14 +2,17 @@ tool
 extends Control
 
 const HTerrainTextureSet = preload("../../../hterrain_texture_set.gd")
-const EditorUtil = preload("../../util/editor_util.gd")
-const Util = preload("../../../util/util.gd")
+const HT_EditorUtil = preload("../../util/editor_util.gd")
+const HT_Util = preload("../../../util/util.gd")
+const HT_Logger = preload("../../../util/logger.gd")
 
-const ColorShader = preload("../display_color.shader")
-const ColorSliceShader = preload("../display_color_slice.shader")
-const AlphaShader = preload("../display_alpha.shader")
-const AlphaSliceShader = preload("../display_alpha_slice.shader")
-const EmptyTexture = preload("../../icons/empty.png")
+const HT_ColorShader = preload("../display_color.shader")
+const HT_ColorSliceShader = preload("../display_color_slice.shader")
+const HT_AlphaShader = preload("../display_alpha.shader")
+const HT_AlphaSliceShader = preload("../display_alpha_slice.shader")
+# TODO Can't preload because it causes the plugin to fail loading if assets aren't imported
+#const HT_EmptyTexture = preload("../../icons/empty.png")
+const EMPTY_TEXTURE_PATH = "res://addons/zylann.hterrain/tools/icons/empty.png"
 
 signal import_selected
 
@@ -35,9 +38,11 @@ var _load_texture_dialog : WindowDialog
 var _load_texture_array_dialog : WindowDialog
 var _load_texture_type := -1
 
+var _logger = HT_Logger.get_for(self)
+
 
 func _ready():
-	if Util.is_in_edited_scene(self):
+	if HT_Util.is_in_edited_scene(self):
 		return
 	for id in HTerrainTextureSet.MODE_COUNT:
 		var mode_name = HTerrainTextureSet.get_import_mode_name(id)
@@ -45,12 +50,12 @@ func _ready():
 
 
 func setup_dialogs(parent: Node):
-	var d = EditorUtil.create_open_texture_dialog()
+	var d = HT_EditorUtil.create_open_texture_dialog()
 	d.connect("file_selected", self, "_on_LoadTextureDialog_file_selected")
 	_load_texture_dialog = d
 	parent.add_child(d)
 
-	d = EditorUtil.create_open_texture_array_dialog()
+	d = HT_EditorUtil.create_open_texture_array_dialog()
 	d.connect("file_selected", self, "_on_LoadTextureArrayDialog_file_selected")
 	_load_texture_array_dialog = d
 	parent.add_child(d)
@@ -67,7 +72,7 @@ func setup_dialogs(parent: Node):
 
 
 func _notification(what: int):
-	if Util.is_in_edited_scene(self):
+	if HT_Util.is_in_edited_scene(self):
 		return
 	
 	if what == NOTIFICATION_EXIT_TREE:
@@ -173,10 +178,14 @@ func select_slot(slot_index: int):
 
 
 func _clear_previews():
-	_albedo_preview.texture = EmptyTexture
-	_bump_preview.texture = EmptyTexture
-	_normal_preview.texture = EmptyTexture
-	_roughness_preview.texture = EmptyTexture
+	var empty_texture = load(EMPTY_TEXTURE_PATH)
+	if empty_texture == null:
+		_logger.error("Failed to load empty texture ", EMPTY_TEXTURE_PATH)
+	
+	_albedo_preview.texture = empty_texture
+	_bump_preview.texture = empty_texture
+	_normal_preview.texture = empty_texture
+	_roughness_preview.texture = empty_texture
 	
 	_albedo_preview.hint_tooltip = _get_resource_path_or_empty(null)
 	_bump_preview.hint_tooltip = _get_resource_path_or_empty(null)
@@ -187,27 +196,31 @@ func _clear_previews():
 func _select_slot(slot_index: int):
 	assert(slot_index >= 0)
 	assert(slot_index < _texture_set.get_slots_count())
+
+	var empty_texture = load(EMPTY_TEXTURE_PATH)
+	if empty_texture == null:
+		_logger.error("Failed to load empty texture ", EMPTY_TEXTURE_PATH)
 	
 	if _texture_set.get_mode() == HTerrainTextureSet.MODE_TEXTURES:
 		var albedo_tex := \
 			_texture_set.get_texture(slot_index, HTerrainTextureSet.TYPE_ALBEDO_BUMP)
 		var normal_tex := \
 			_texture_set.get_texture(slot_index, HTerrainTextureSet.TYPE_NORMAL_ROUGHNESS)
-	
-		_albedo_preview.texture = albedo_tex if albedo_tex != null else EmptyTexture
-		_bump_preview.texture = albedo_tex if albedo_tex != null else EmptyTexture
-		_normal_preview.texture = normal_tex if normal_tex != null else EmptyTexture
-		_roughness_preview.texture = normal_tex if normal_tex != null else EmptyTexture
+
+		_albedo_preview.texture = albedo_tex if albedo_tex != null else empty_texture
+		_bump_preview.texture = albedo_tex if albedo_tex != null else empty_texture
+		_normal_preview.texture = normal_tex if normal_tex != null else empty_texture
+		_roughness_preview.texture = normal_tex if normal_tex != null else empty_texture
 		
 		_albedo_preview.hint_tooltip = _get_resource_path_or_empty(albedo_tex)
 		_bump_preview.hint_tooltip = _get_resource_path_or_empty(albedo_tex)
 		_normal_preview.hint_tooltip = _get_resource_path_or_empty(normal_tex)
 		_roughness_preview.hint_tooltip = _get_resource_path_or_empty(normal_tex)
 
-		_albedo_preview.material.shader = ColorShader
-		_bump_preview.material.shader = AlphaShader
-		_normal_preview.material.shader = ColorShader
-		_roughness_preview.material.shader = AlphaShader
+		_albedo_preview.material.shader = HT_ColorShader
+		_bump_preview.material.shader = HT_AlphaShader
+		_normal_preview.material.shader = HT_ColorShader
+		_roughness_preview.material.shader = HT_AlphaShader
 		
 		_albedo_preview.material.set_shader_param("u_texture_array", null)
 		_bump_preview.material.set_shader_param("u_texture_array", null)
@@ -218,20 +231,22 @@ func _select_slot(slot_index: int):
 		var albedo_tex := _texture_set.get_texture_array(HTerrainTextureSet.TYPE_ALBEDO_BUMP)
 		var normal_tex := _texture_set.get_texture_array(HTerrainTextureSet.TYPE_NORMAL_ROUGHNESS)
 	
-		_albedo_preview.texture = EmptyTexture
-		_bump_preview.texture = EmptyTexture
-		_normal_preview.texture = EmptyTexture
-		_roughness_preview.texture = EmptyTexture
+		_albedo_preview.texture = empty_texture
+		_bump_preview.texture = empty_texture
+		_normal_preview.texture = empty_texture
+		_roughness_preview.texture = empty_texture
 		
 		_albedo_preview.hint_tooltip = _get_resource_path_or_empty(albedo_tex)
 		_bump_preview.hint_tooltip = _get_resource_path_or_empty(albedo_tex)
 		_normal_preview.hint_tooltip = _get_resource_path_or_empty(normal_tex)
 		_roughness_preview.hint_tooltip = _get_resource_path_or_empty(normal_tex)
 		
-		_albedo_preview.material.shader = ColorSliceShader
-		_bump_preview.material.shader = AlphaSliceShader
-		_normal_preview.material.shader = ColorSliceShader if normal_tex != null else ColorShader
-		_roughness_preview.material.shader = AlphaSliceShader if normal_tex != null else AlphaShader
+		_albedo_preview.material.shader = HT_ColorSliceShader
+		_bump_preview.material.shader = HT_AlphaSliceShader
+		_normal_preview.material.shader = \
+			HT_ColorSliceShader if normal_tex != null else HT_ColorShader
+		_roughness_preview.material.shader = \
+			HT_AlphaSliceShader if normal_tex != null else HT_AlphaShader
 		
 		_albedo_preview.material.set_shader_param("u_texture_array", albedo_tex)
 		_bump_preview.material.set_shader_param("u_texture_array", albedo_tex)
@@ -347,17 +362,19 @@ func _set_texture_array_action(slot_index: int, texture_array: TextureArray, typ
 	# See https://github.com/godotengine/godot/issues/36895
 	if texture_array == null:
 		_undo_redo.add_do_method(_texture_set, "set_texture_array_null", type)
+		# Can't select a slot after this because there won't be any after the array is removed
 	else:
 		_undo_redo.add_do_method(_texture_set, "set_texture_array", type, texture_array)
-	_undo_redo.add_do_method(self, "_select_slot", slot_index)
+		_undo_redo.add_do_method(self, "_select_slot", slot_index)
 	
 	# TODO This branch only exists because of a flaw in UndoRedo
 	# See https://github.com/godotengine/godot/issues/36895
 	if prev_texture_array == null:
 		_undo_redo.add_undo_method(_texture_set, "set_texture_array_null", type)
+		# Can't select a slot after this because there won't be any after the array is removed
 	else:
 		_undo_redo.add_undo_method(_texture_set, "set_texture_array", type, prev_texture_array)
-	_undo_redo.add_undo_method(self, "_select_slot", slot_index)
+		_undo_redo.add_undo_method(self, "_select_slot", slot_index)
 	
 	_undo_redo.commit_action()
 
@@ -374,7 +391,11 @@ func _on_LoadTextureArrayDialog_file_selected(fpath: String):
 	assert(_texture_set.get_mode() == HTerrainTextureSet.MODE_TEXTURE_ARRAYS)
 	var texture_array = load(fpath)
 	assert(texture_array != null)
-	var slot_index : int = _slots_list.get_selected_items()[0]
+	# It's possible no slot exists at the moment,
+	# because there could be no texture array already set.
+	# The number of slots in the new array might also be different.
+	# So in this case we'll default to selecting the first slot.
+	var slot_index := 0
 	_set_texture_array_action(slot_index, texture_array, _load_texture_type)
 
 
