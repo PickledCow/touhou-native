@@ -14,27 +14,27 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://examples/boss/attacks/attack.gd"
 }, {
-"base": "",
+"base": "Resource",
 "class": "BasicBulletKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/kits/basic_bullet_kit.gdns"
 }, {
-"base": "",
+"base": "Resource",
 "class": "BasicItemKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/kits/basic_item_kit.gdns"
 }, {
-"base": "",
+"base": "Resource",
 "class": "BasicParticleKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/kits/basic_particle_kit.gdns"
 }, {
-"base": "",
+"base": "Resource",
 "class": "BulletKit",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/bullet_kit.gdns"
 }, {
-"base": "",
+"base": "Node2D",
 "class": "Bullets",
 "language": "NativeScript",
 "path": "res://addons/native_bullets/bullets.gdns"
@@ -132,7 +132,7 @@ window/size/test_width=1280
 window/size/test_height=720
 window/vsync/use_vsync=false
 window/stretch/mode="2d"
-window/stretch/aspect="expand"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 

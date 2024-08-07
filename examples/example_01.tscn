@@ -1,10 +1,9 @@
-[gd_scene load_steps=177 format=2]
+[gd_scene load_steps=172 format=2]
 
-[ext_resource path="res://examples/ui/healthface.png" type="Texture" id=1]
 [ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
 [ext_resource path="res://addons/native_bullets/bullets_environment.gd" type="Script" id=3]
 [ext_resource path="res://examples/boss/passby.png" type="Texture" id=4]
-[ext_resource path="res://examples/Enemy.gd" type="Script" id=5]
+[ext_resource path="res://examples/Boss.gd" type="Script" id=5]
 [ext_resource path="res://dummy.png" type="Texture" id=6]
 [ext_resource path="res://examples/FPS.gd" type="Script" id=7]
 [ext_resource path="res://default/se/blast.wav" type="AudioStream" id=8]
@@ -46,7 +45,6 @@
 [ext_resource path="res://default/se/player_death.wav" type="AudioStream" id=44]
 [ext_resource path="res://default/se/low_health.wav" type="AudioStream" id=45]
 [ext_resource path="res://examples/warp.gd" type="Script" id=46]
-[ext_resource path="res://examples/ui/sweat.png" type="Texture" id=47]
 [ext_resource path="res://examples/ui/spells.png" type="Texture" id=48]
 [ext_resource path="res://examples/boss/Midboss.gd" type="Script" id=49]
 [ext_resource path="res://default/se/charge2.wav" type="AudioStream" id=50]
@@ -1182,21 +1180,14 @@ corner_radius_bottom_left = 12
 shadow_color = Color( 0, 0, 0, 0.501961 )
 shadow_size = 6
 
-[sub_resource type="Gradient" id=47]
-offsets = PoolRealArray( 0, 0.209251, 0.511013, 1 )
-colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 0.784314, 1, 1, 1, 0.784314, 1, 1, 1, 0 )
-
-[sub_resource type="GradientTexture" id=48]
-gradient = SubResource( 47 )
-
-[sub_resource type="ParticlesMaterial" id=49]
-emission_shape = 1
-emission_sphere_radius = 24.0
-flag_disable_z = true
-gravity = Vector3( 0, 150, 0 )
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-color_ramp = SubResource( 48 )
+[sub_resource type="DynamicFont" id=44]
+size = 48
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 20 )
+fallback/0 = ExtResource( 33 )
 
 [sub_resource type="DynamicFont" id=108]
 size = 36
@@ -1215,15 +1206,6 @@ use_mipmaps = true
 use_filter = true
 extra_spacing_char = 3
 font_data = ExtResource( 86 )
-
-[sub_resource type="DynamicFont" id=44]
-size = 48
-outline_size = 3
-outline_color = Color( 0, 0, 0, 1 )
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 20 )
-fallback/0 = ExtResource( 33 )
 
 [sub_resource type="Gradient" id=97]
 offsets = PoolRealArray( 0.00220264, 0.687225, 0.995595 )
@@ -2643,13 +2625,13 @@ position = Vector2( 500, 850 )
 [node name="Music" type="Node" parent="gameport/root/playfield"]
 script = ExtResource( 89 )
 
+[node name="outside_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
+stream = ExtResource( 93 )
+bus = "Music"
+
 [node name="cave_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
 stream = ExtResource( 36 )
 volume_db = -10.0
-bus = "Music"
-
-[node name="outside_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
-stream = ExtResource( 93 )
 bus = "Music"
 
 [node name="midboss_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
@@ -2714,10 +2696,8 @@ anims/player = SubResource( 45 )
 anims/suck = SubResource( 88 )
 
 [node name="rim" type="TextureRect" parent="UI"]
-margin_left = 422.0
-margin_top = 2.0
-margin_right = 1498.0
-margin_bottom = 1078.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 texture = ExtResource( 23 )
 __meta__ = {
 "_edit_lock_": true,
@@ -2780,50 +2760,64 @@ custom_styles/panel = SubResource( 54 )
 [node name="leftbar" type="Control" parent="UI/high"]
 
 [node name="healthbar" type="Control" parent="UI/high/leftbar"]
-margin_top = 824.0
-margin_bottom = 824.0
-rect_scale = Vector2( 0.8, 0.8 )
+margin_top = 768.0
+margin_bottom = 768.0
+rect_scale = Vector2( 0.9, 0.9 )
 script = ExtResource( 19 )
 player_path = NodePath("../../../../gameport/root/playfield/Player")
 
-[node name="HpBorder" type="Sprite" parent="UI/high/leftbar/healthbar"]
-position = Vector2( 0, 64 )
+[node name="HpBorderShadow" type="Sprite" parent="UI/high/leftbar/healthbar"]
+modulate = Color( 0, 0, 0, 0.8 )
+position = Vector2( -474.684, -477.75 )
+scale = Vector2( 1.03766, 1 )
 texture = ExtResource( 83 )
 centered = false
+offset = Vector2( 456.25, 557.75 )
 
-[node name="face" type="Sprite" parent="UI/high/leftbar/healthbar"]
-visible = false
-position = Vector2( 64, 64 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 192, 192 )
+[node name="LvShadow" type="Label" parent="UI/high/leftbar/healthbar"]
+modulate = Color( 0, 0, 0, 0.8 )
+margin_left = 208.0
+margin_top = 8.0
+margin_right = 304.0
+margin_bottom = 86.0
+custom_colors/font_color = Color( 1, 0.654902, 0, 0 )
+custom_fonts/font = SubResource( 44 )
+text = "Lv."
+align = 2
+valign = 2
 
-[node name="facehurt" type="Sprite" parent="UI/high/leftbar/healthbar"]
-visible = false
-position = Vector2( 63.9999, 64 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 0, 192, 192, 192 )
+[node name="fem" type="TextureRect" parent="UI/high/leftbar/healthbar/LvShadow"]
+margin_left = -10.0
+margin_top = 29.25
+margin_right = 113.0
+margin_bottom = 209.25
+rect_scale = Vector2( 0.228, 0.228 )
+texture = ExtResource( 25 )
 
-[node name="facelow" type="Sprite" parent="UI/high/leftbar/healthbar"]
-visible = false
-position = Vector2( 64, 64 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 0, 384, 192, 192 )
+[node name="lvel num" type="Label" parent="UI/high/leftbar/healthbar/LvShadow"]
+margin_left = 96.0
+margin_right = 287.0
+margin_bottom = 78.0
+custom_colors/font_color = Color( 0, 0, 0, 0 )
+custom_fonts/font = SubResource( 44 )
+text = "100"
+valign = 2
 
-[node name="Particles2D" type="Particles2D" parent="UI/high/leftbar/healthbar/facelow"]
-position = Vector2( 0, -24 )
-amount = 4
-process_material = SubResource( 49 )
-texture = ExtResource( 47 )
+[node name="name" type="Label" parent="UI/high/leftbar/healthbar/LvShadow"]
+margin_left = -272.0
+margin_right = -16.0
+margin_bottom = 78.0
+custom_colors/font_color = Color( 0, 0, 0, 0 )
+custom_fonts/font = SubResource( 44 )
+text = "Marisa"
+align = 2
+valign = 2
 
-[node name="facedead" type="Sprite" parent="UI/high/leftbar/healthbar"]
-visible = false
-position = Vector2( 64, 64 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 0, 576, 192, 192 )
+[node name="HpBorder" type="Sprite" parent="UI/high/leftbar/healthbar"]
+position = Vector2( -456.25, -493.75 )
+texture = ExtResource( 83 )
+centered = false
+offset = Vector2( 456.25, 557.75 )
 
 [node name="HP" type="Label" parent="UI/high/leftbar/healthbar"]
 margin_left = 64.0
@@ -2907,7 +2901,7 @@ margin_left = -272.0
 margin_right = -16.0
 margin_bottom = 78.0
 custom_fonts/font = SubResource( 44 )
-text = "Sakuya"
+text = "Marisa"
 align = 2
 valign = 2
 

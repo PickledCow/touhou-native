@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=1]
 [ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=2]
@@ -6,14 +6,17 @@
 [ext_resource path="res://examples/bg/3dbg.gd" type="Script" id=4]
 [ext_resource path="res://examples/bg/mountain/data.hterrain" type="Resource" id=5]
 [ext_resource path="res://examples/bg/mountain/bg_slot0_albedo_bump.packed_tex" type="Texture" id=6]
-[ext_resource path="res://examples/bg/sky/panorama_image.png" type="Texture" id=7]
+[ext_resource path="res://slot0_albedo_bump.packed_tex" type="Texture" id=7]
 [ext_resource path="res://examples/bg/mountain/bg_slot1_albedo_bump.packed_tex" type="Texture" id=8]
-[ext_resource path="res://assets/maujoe.basic_water_material/materials/basic_water_material.material" type="Material" id=9]
+[ext_resource path="res://assets/maujoe.basic_water_material/textures/water_normal_2.png" type="Texture" id=9]
 [ext_resource path="res://examples/bg/mountain/bg_slot1_normal_roughness.packed_tex" type="Texture" id=10]
 [ext_resource path="res://examples/bg/bg_slot1_albedo_bump.packed_tex" type="Texture" id=11]
 [ext_resource path="res://examples/bg/bg_slot1_normal_roughness.packed_tex" type="Texture" id=12]
 [ext_resource path="res://examples/bg/bg_slot0_normal_roughness.packed_tex" type="Texture" id=13]
 [ext_resource path="res://examples/bg/bg_slot0_albedo_bump.packed_tex" type="Texture" id=14]
+[ext_resource path="res://examples/bg/terrain/rockymap.png" type="Texture" id=15]
+[ext_resource path="res://examples/bg/outsideskybox.tres" type="PanoramaSky" id=16]
+[ext_resource path="res://examples/bg/cave/data.hterrain" type="Resource" id=17]
 [ext_resource path="res://addons/native_bullets/bullets_environment.gd" type="Script" id=22]
 
 [sub_resource type="Resource" id=99]
@@ -26,15 +29,69 @@ script = ExtResource( 1 )
 mode = 0
 textures = [ [ ExtResource( 6 ), ExtResource( 8 ) ], [ null, ExtResource( 10 ) ] ]
 
+[sub_resource type="Shader" id=108]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.5.3.stable's SpatialMaterial.
+
+shader_type spatial;
+render_mode async_visible,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,vertex_lighting;
+uniform vec4 albedo : hint_color;
+uniform sampler2D texture_albedo : hint_albedo;
+uniform float specular;
+uniform float metallic;
+uniform float roughness;
+uniform float point_size : hint_range(0,128);
+uniform sampler2D texture_normal : hint_normal;
+uniform float normal_scale : hint_range(-16,16);
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+
+void vertex() {
+	ROUGHNESS=roughness;
+	UV=UV*uv1_scale.xy+uv1_offset.xy;
+}
+
+
+
+
+void fragment() {
+	vec2 base_uv = UV;
+	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	METALLIC = metallic;
+	ROUGHNESS = roughness;
+	SPECULAR = specular;
+	NORMALMAP = texture(texture_normal,base_uv).rgb;
+	NORMALMAP_DEPTH = normal_scale;
+	ALPHA = albedo.a * albedo_tex.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=109]
+shader = SubResource( 108 )
+shader_param/albedo = Color( 0.74902, 0.843137, 0.905882, 0.847059 )
+shader_param/specular = 1.5
+shader_param/metallic = 1.5
+shader_param/roughness = 0.0
+shader_param/point_size = 1.0
+shader_param/normal_scale = 0.15
+shader_param/uv1_scale = Vector3( 16, 48, 1 )
+shader_param/uv1_offset = Vector3( 0.106926, 0, 0 )
+shader_param/uv2_scale = Vector3( 1, 1, 1 )
+shader_param/uv2_offset = Vector3( 0, 0, 0 )
+shader_param/texture_normal = ExtResource( 9 )
+
 [sub_resource type="PlaneMesh" id=3]
-material = ExtResource( 9 )
+material = SubResource( 109 )
 size = Vector2( 16, 48 )
 
 [sub_resource type="Animation" id=4]
 resource_name = "uv_water"
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:mesh:material:uv1_offset")
+tracks/0/path = NodePath(".:mesh:material:shader_param/uv1_offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -46,22 +103,24 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 1, 0, 0 ) ]
 }
 
-[sub_resource type="PanoramaSky" id=106]
-panorama = ExtResource( 7 )
+[sub_resource type="Resource" id=106]
+script = ExtResource( 1 )
+mode = 0
+textures = [ [ ExtResource( 7 ) ], [ ExtResource( 15 ) ] ]
 
 [sub_resource type="Environment" id=96]
 background_mode = 2
-background_sky = SubResource( 106 )
+background_sky = ExtResource( 16 )
 background_sky_orientation = Basis( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107 )
-background_energy = 1.5
 ambient_light_color = Color( 0, 0.623529, 1, 1 )
 ambient_light_sky_contribution = 0.96
-fog_color = Color( 0.807843, 0.890196, 0.94902, 1 )
-fog_sun_color = Color( 1, 1, 1, 1 )
+fog_color = Color( 0, 0, 0, 1 )
 fog_depth_begin = 256.0
 fog_depth_end = 400.0
 fog_depth_curve = 1.18921
-dof_blur_far_distance = 8192.0
+dof_blur_far_distance = 60.0
+dof_blur_far_transition = 90.0
+dof_blur_far_amount = 0.15
 glow_bloom = 0.25
 
 [sub_resource type="Animation" id=100]
@@ -89,6 +148,263 @@ tracks/1/enabled = true
 tracks/1/keys = {
 "points": PoolRealArray( -60, -0.25, 0, 0.25, 0, -60, -0.25, 0, 1, 0, 15, -1, 0, 0.25, 0, 15, -0.25, 0, 1, 0, -80, -1, 0, 0.25, 0, -80, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 34, 38, 40, 44, 60, 64 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("WorldEnvironment:environment:background_sky")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 16 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("WorldEnvironment:environment:background_mode")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("WorldEnvironment:environment:ambient_light_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0.623529, 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("WorldEnvironment:environment:ambient_light_energy")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WorldEnvironment:environment:ambient_light_sky_contribution")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.96 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("WorldEnvironment:environment:fog_enabled")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("WorldEnvironment:environment:dof_blur_far_enabled")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Camera/OmniLight:light_energy")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Outside:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Inside:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=107]
+resource_name = "2"
+length = 80.0
+step = 1.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Camera:rotation_degrees:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -36, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Camera:rotation_degrees:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -90, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Camera:rotation_degrees:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("Camera:translation:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 334, -0.25, 0, 0.25, 0, 950, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 80 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("Camera:translation:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 30, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("Camera:translation:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 128, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WorldEnvironment:environment:background_mode")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("WorldEnvironment:environment:ambient_light_color")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("WorldEnvironment:environment:dof_blur_far_enabled")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Camera/OmniLight:light_energy")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 3, 7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, 0.3 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Outside:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Inside:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=97]
@@ -135,70 +451,155 @@ tracks/3/keys = {
 "points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0 )
 }
-
-[sub_resource type="Animation" id=98]
-resource_name = "rise"
-length = 4.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("WorldEnvironment:environment:background_sky:sky_horizon_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 4 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 0.596078, 0.243137, 1 ), Color( 0.807843, 0.890196, 0.94902, 1 ) ]
+tracks/4/type = "value"
+tracks/4/path = NodePath("WorldEnvironment:environment:background_sky")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 16 ) ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("WorldEnvironment:environment:background_sky:sky_top_color")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 4 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 0.0196078, 0.14902, 0.239216, 1 ), Color( 0.47451, 0.752941, 0.94902, 1 ) ]
+tracks/5/type = "value"
+tracks/5/path = NodePath("WorldEnvironment:environment:background_mode")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2 ]
 }
-tracks/2/type = "value"
-tracks/2/path = NodePath("WorldEnvironment:environment:background_sky:ground_bottom_color")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 4 ),
-"transitions": PoolRealArray( 1, 1 ),
+tracks/6/type = "value"
+tracks/6/path = NodePath("Outside/Mountains/OmniLight:light_energy")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 0.0196078, 0.121569, 0.192157, 1 ), Color( 0.47451, 0.752941, 0.94902, 1 ) ]
+"values": [ 16.0 ]
 }
-tracks/3/type = "value"
-tracks/3/path = NodePath("WorldEnvironment:environment:background_sky:ground_horizon_color")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 4 ),
-"transitions": PoolRealArray( 1, 1 ),
+tracks/7/type = "value"
+tracks/7/path = NodePath("WorldEnvironment:environment:ambient_light_color")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 0.596078, 0.243137, 1 ), Color( 0.807843, 0.890196, 0.94902, 1 ) ]
+"values": [ Color( 0, 0.623529, 1, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("WorldEnvironment:environment:ambient_light_energy")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("WorldEnvironment:environment:ambient_light_sky_contribution")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.96 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("WorldEnvironment:environment:fog_enabled")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("WorldEnvironment:environment:dof_blur_far_enabled")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Camera/OmniLight:light_energy")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("Inside:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("Outside:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [node name="3dbg" type="Spatial"]
 script = ExtResource( 4 )
 
-[node name="HTerrain" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -150, 0, 14.637 )
+[node name="Outside" type="Spatial" parent="."]
+
+[node name="HTerrain" type="Spatial" parent="Outside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -150, 0, -128 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 ambient_wind = 0.02
 lod_scale = 2.0
-map_scale = Vector3( 1, 0.1, 0.5 )
+map_scale = Vector3( 1, 0.1, 1 )
 _terrain_data = ExtResource( 3 )
-chunk_size = 32
+chunk_size = 16
 collision_enabled = false
 collision_layer = 0
 collision_mask = 0
@@ -207,17 +608,20 @@ custom_shader = null
 custom_globalmap_shader = null
 texture_set = SubResource( 99 )
 render_layers = 1
-shader_params/u_ground_uv_scale_per_texture = Plane( 3, 3, 3, 3 )
+shader_params/u_ground_uv_scale_per_texture = Plane( 6, 3, 3, 3 )
 shader_params/u_depth_blending = true
 shader_params/u_triplanar = false
-shader_params/u_tile_reduction = Plane( 0, 0, 0, 0 )
+shader_params/u_tile_reduction = Plane( 1, 0, 0, 0 )
 shader_params/u_globalmap_blend_start = null
 shader_params/u_globalmap_blend_distance = null
 shader_params/u_colormap_opacity_per_texture = Plane( 1, 1, 1, 1 )
 
-[node name="Mountains" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 235.417, 0, -373.026 )
+[node name="Mountains" type="Spatial" parent="Outside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 237, 0, -373.026 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 lod_scale = 2.0
 map_scale = Vector3( 2, 1, 2 )
 _terrain_data = ExtResource( 5 )
@@ -238,7 +642,7 @@ shader_params/u_globalmap_blend_start = null
 shader_params/u_globalmap_blend_distance = null
 shader_params/u_colormap_opacity_per_texture = Plane( 1, 1, 1, 1 )
 
-[node name="OmniLight" type="OmniLight" parent="Mountains"]
+[node name="OmniLight" type="OmniLight" parent="Outside/Mountains"]
 transform = Transform( 0.776206, -0.0404867, 0.629178, -0.372515, 0.77567, 0.509478, -0.508662, -0.629838, 0.586998, 103.476, 5.38691, 494.706 )
 light_color = Color( 0.890196, 0.968627, 1, 1 )
 light_energy = 16.0
@@ -248,27 +652,63 @@ light_specular = 0.0
 omni_range = 52.433
 omni_attenuation = 10.1965
 
-[node name="Water" type="MeshInstance" parent="."]
+[node name="Water" type="MeshInstance" parent="Outside"]
 transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 8, 237.663, -1.23666, 128 )
 mesh = SubResource( 3 )
+skeleton = NodePath("../..")
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Water"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Outside/Water"]
 autoplay = "uv_water"
 playback_speed = 0.05
 anims/uv_water = SubResource( 4 )
+
+[node name="Inside" type="Spatial" parent="."]
+visible = false
+
+[node name="HTerrain" type="Spatial" parent="Inside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 350, 0, 0 )
+script = ExtResource( 2 )
+lod_scale = 2.0
+map_scale = Vector3( 2, 1, 2 )
+_terrain_data = ExtResource( 17 )
+chunk_size = 16
+collision_enabled = false
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource( 106 )
+render_layers = 1
+shader_params/u_ground_uv_scale_per_texture = Plane( 100, 20, 20, 20 )
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = false
+shader_params/u_tile_reduction = Plane( 1, 0, 0, 0 )
+shader_params/u_globalmap_blend_start = 0.0
+shader_params/u_globalmap_blend_distance = null
+shader_params/u_colormap_opacity_per_texture = Plane( 1, 1, 1, 1 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -4.37114e-08, 0.707107, -0.707107, 0, 0.707107, 0.707107, 1, 3.09086e-08, -3.09086e-08, 0, 4, 128 )
 current = true
 far = 900.0
 
+[node name="OmniLight" type="OmniLight" parent="Camera"]
+light_color = Color( 1, 0.917647, 0.72549, 1 )
+light_energy = 0.0
+omni_range = 128.0
+omni_attenuation = 1.62451
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 96 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/1 = SubResource( 100 )
+anims/2 = SubResource( 107 )
 anims/RESET = SubResource( 97 )
-anims/rise = SubResource( 98 )
 
 [node name="Node2D" type="Node2D" parent="."]
 
