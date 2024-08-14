@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/redfake.ogg-7953ee21a5d83a4eff1d0252617bcd19.oggstr"
+
+[deps]
+
+source_file="res://examples/bgm/redfake.ogg"
+dest_files=[ "res://.import/redfake.ogg-7953ee21a5d83a4eff1d0252617bcd19.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

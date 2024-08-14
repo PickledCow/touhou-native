@@ -1,5 +1,6 @@
-[gd_scene load_steps=172 format=2]
+[gd_scene load_steps=183 format=2]
 
+[ext_resource path="res://default/se/se_lgods3.wav" type="AudioStream" id=1]
 [ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
 [ext_resource path="res://addons/native_bullets/bullets_environment.gd" type="Script" id=3]
 [ext_resource path="res://examples/boss/passby.png" type="Texture" id=4]
@@ -45,6 +46,7 @@
 [ext_resource path="res://default/se/player_death.wav" type="AudioStream" id=44]
 [ext_resource path="res://default/se/low_health.wav" type="AudioStream" id=45]
 [ext_resource path="res://examples/warp.gd" type="Script" id=46]
+[ext_resource path="res://default/se/se_lgods1.wav" type="AudioStream" id=47]
 [ext_resource path="res://examples/ui/spells.png" type="Texture" id=48]
 [ext_resource path="res://examples/boss/Midboss.gd" type="Script" id=49]
 [ext_resource path="res://default/se/charge2.wav" type="AudioStream" id=50]
@@ -91,8 +93,9 @@
 [ext_resource path="res://examples/boss/MagicRing.gd" type="Script" id=91]
 [ext_resource path="res://examples/boss/magicring.png" type="Texture" id=92]
 [ext_resource path="res://examples/bgm/Route209.ogg" type="AudioStream" id=93]
-
-[sub_resource type="World" id=10]
+[ext_resource path="res://default/se/se_lgods2.wav" type="AudioStream" id=94]
+[ext_resource path="res://examples/ui/sign.png" type="Texture" id=95]
+[ext_resource path="res://examples/ui/LevelSigns.gd" type="Script" id=96]
 
 [sub_resource type="Animation" id=92]
 resource_name = "fade"
@@ -1157,6 +1160,66 @@ tracks/2/keys = {
 "values": [ Vector2( 0.5, 0.5 ) ]
 }
 
+[sub_resource type="Gradient" id=129]
+offsets = PoolRealArray( 0, 0.666, 1 )
+colors = PoolColorArray( 0.25, 0.25, 0.25, 1, 1, 1, 1, 1, 0.5, 0.5, 0.5, 1 )
+
+[sub_resource type="GradientTexture" id=130]
+gradient = SubResource( 129 )
+width = 32
+
+[sub_resource type="AtlasTexture" id=131]
+flags = 4
+atlas = ExtResource( 95 )
+region = Rect2( 0, 0, 1408, 256 )
+
+[sub_resource type="AtlasTexture" id=132]
+flags = 4
+atlas = ExtResource( 95 )
+region = Rect2( 0, 256, 1408, 256 )
+
+[sub_resource type="AtlasTexture" id=133]
+flags = 4
+atlas = ExtResource( 95 )
+region = Rect2( 0, 512, 1536, 256 )
+
+[sub_resource type="Animation" id=134]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:rect_position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 960, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:rect_position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -500, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=135]
+resource_name = "swipe"
+length = 5.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:rect_position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -500, -0.25, 0, 0, 0, 0, -1, 0, 0.25, 0, 0, -0.25, 0, 1, 0, -500, -0.25, 0, 0, 0 ),
+"times": PoolRealArray( 0, 1.5, 3.5, 5 )
+}
+
 [sub_resource type="Theme" id=11]
 
 [sub_resource type="Shader" id=52]
@@ -2165,6 +2228,7 @@ __meta__ = {
 }
 
 [node name="BG" type="ViewportContainer" parent="gameport/root/background"]
+visible = false
 margin_left = -32.0
 margin_top = -32.0
 margin_right = 1032.0
@@ -2178,13 +2242,12 @@ __meta__ = {
 [node name="Viewport" type="Viewport" parent="gameport/root/background/BG"]
 size = Vector2( 1064, 1064 )
 own_world = true
-world = SubResource( 10 )
 handle_input_locally = false
-hdr = false
-render_target_update_mode = 3
+debanding = true
+usage = 3
+render_target_update_mode = 0
 
 [node name="2dbg" parent="gameport/root/background/BG/Viewport" instance=ExtResource( 82 )]
-visible = false
 position = Vector2( 0, 0 )
 
 [node name="3dbg" parent="gameport/root/background/BG/Viewport" instance=ExtResource( 26 )]
@@ -2212,32 +2275,32 @@ anims/suck = SubResource( 89 )
 [node name="BulletsEnvironment" type="Node" parent="gameport/root/playfield"]
 script = ExtResource( 3 )
 bullet_kits = [ ExtResource( 2 ), ExtResource( 12 ), ExtResource( 14 ), ExtResource( 13 ), ExtResource( 15 ), ExtResource( 55 ), ExtResource( 56 ), ExtResource( 78 ) ]
-pools_sizes = [ 10000, 10000, 10000, 10000, 10000, 100, 100, 100 ]
-z_indices = [ 3, 1, 2, 9, 10, -11, -12, 10 ]
+pools_sizes = [ 4096, 4096, 2048, 4096, 2048, 128, 128, 128 ]
+z_indices = [ 3, 1, 2, 10, 10, -11, -12, 10 ]
 bullet_types_amount = 8
 bullet_type_0/bullet_kit = ExtResource( 2 )
-bullet_type_0/pool_size = 10000
+bullet_type_0/pool_size = 4096
 bullet_type_0/z_index = 3
 bullet_type_1/bullet_kit = ExtResource( 12 )
-bullet_type_1/pool_size = 10000
+bullet_type_1/pool_size = 4096
 bullet_type_1/z_index = 1
 bullet_type_2/bullet_kit = ExtResource( 14 )
-bullet_type_2/pool_size = 10000
+bullet_type_2/pool_size = 2048
 bullet_type_2/z_index = 2
 bullet_type_3/bullet_kit = ExtResource( 13 )
-bullet_type_3/pool_size = 10000
-bullet_type_3/z_index = 9
+bullet_type_3/pool_size = 4096
+bullet_type_3/z_index = 10
 bullet_type_4/bullet_kit = ExtResource( 15 )
-bullet_type_4/pool_size = 10000
+bullet_type_4/pool_size = 2048
 bullet_type_4/z_index = 10
 bullet_type_5/bullet_kit = ExtResource( 55 )
-bullet_type_5/pool_size = 100
+bullet_type_5/pool_size = 128
 bullet_type_5/z_index = -11
 bullet_type_6/bullet_kit = ExtResource( 56 )
-bullet_type_6/pool_size = 100
+bullet_type_6/pool_size = 128
 bullet_type_6/z_index = -12
 bullet_type_7/bullet_kit = ExtResource( 78 )
-bullet_type_7/pool_size = 100
+bullet_type_7/pool_size = 128
 bullet_type_7/z_index = 10
 
 [node name="Outside" type="Node2D" parent="gameport/root/playfield"]
@@ -2631,7 +2694,7 @@ bus = "Music"
 
 [node name="cave_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
 stream = ExtResource( 36 )
-volume_db = -10.0
+volume_db = -5.0
 bus = "Music"
 
 [node name="midboss_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
@@ -2694,6 +2757,57 @@ root_node = NodePath("../../../..")
 anims/boss = SubResource( 69 )
 anims/player = SubResource( 45 )
 anims/suck = SubResource( 88 )
+
+[node name="LevelSigns" type="Control" parent="UI"]
+margin_left = 960.0
+margin_top = -500.0
+margin_right = 960.0
+margin_bottom = -500.0
+script = ExtResource( 96 )
+
+[node name="LeftPole" type="TextureRect" parent="UI/LevelSigns"]
+margin_left = -266.0
+margin_right = -234.0
+margin_bottom = 1.0
+rect_scale = Vector2( 1, 256 )
+texture = SubResource( 130 )
+
+[node name="RightPole" type="TextureRect" parent="UI/LevelSigns"]
+margin_left = 234.0
+margin_right = 266.0
+margin_bottom = 1.0
+rect_scale = Vector2( 1, 256 )
+texture = SubResource( 130 )
+
+[node name="Route209" type="TextureRect" parent="UI/LevelSigns"]
+margin_left = -336.0
+margin_top = 250.0
+margin_right = 1072.0
+margin_bottom = 506.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = SubResource( 131 )
+
+[node name="MtCoronet" type="TextureRect" parent="UI/LevelSigns"]
+visible = false
+margin_left = -336.0
+margin_top = 250.0
+margin_right = 1072.0
+margin_bottom = 506.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = SubResource( 132 )
+
+[node name="SpearPillar" type="TextureRect" parent="UI/LevelSigns"]
+visible = false
+margin_left = -368.0
+margin_top = 250.0
+margin_right = 1168.0
+margin_bottom = 506.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = SubResource( 133 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/LevelSigns"]
+anims/RESET = SubResource( 134 )
+anims/swipe = SubResource( 135 )
 
 [node name="rim" type="TextureRect" parent="UI"]
 margin_right = 1920.0
@@ -3786,6 +3900,21 @@ bus = "SFX"
 
 [node name="timer2" type="AudioStreamPlayer" parent="sfx"]
 stream = ExtResource( 64 )
+bus = "SFX"
+
+[node name="note1" type="AudioStreamPlayer" parent="sfx"]
+stream = ExtResource( 47 )
+volume_db = -15.0
+bus = "SFX"
+
+[node name="note2" type="AudioStreamPlayer" parent="sfx"]
+stream = ExtResource( 94 )
+volume_db = -15.0
+bus = "SFX"
+
+[node name="note3" type="AudioStreamPlayer" parent="sfx"]
+stream = ExtResource( 1 )
+volume_db = -15.0
 bus = "SFX"
 
 [connection signal="animation_finished" from="gameport/root/background/AnimationPlayer" to="gameport/root/background" method="_on_AnimationPlayer_animation_finished"]

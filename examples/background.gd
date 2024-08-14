@@ -57,10 +57,11 @@ func spell(is_spell := true):
 				elif bg_phase == 2:
 					$AnimationPlayer.play_backwards("spell2")
 			
-func play_bg(id: int):
+func play_bg(id: int, t_start=0.0):
 	if id >= 0:
 		bg_phase = id
-		bg.play_anim(id)
+		bg.play_anim(id, t_start)
+		
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):

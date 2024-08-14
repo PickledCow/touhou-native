@@ -81,10 +81,10 @@ func after_ready():
 	var attack_types = []
 	for i in range(len(attacks) - 1, -1 if skip_opening else 0, -1):
 		attack_types.append(attacks[i].attack_type)
-	DefSys.boss_bar.set_phase_icons(attack_types)
+	#DefSys.boss_bar.set_phase_icons(attack_types)
 	
 	if skip_opening:
-		DefSys.boss_bar.entry_anim()
+	#	DefSys.boss_bar.entry_anim()
 		t = -120
 		#DefSys.boss_bar.remove_phase_icon(len(attacks) - phase - 1)
 		#phase = 1

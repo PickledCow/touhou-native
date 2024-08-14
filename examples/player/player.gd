@@ -229,8 +229,8 @@ func shoot(delta):
 		var shooters = shooters_focus if is_focused else shooters_unfocus
 		for s in shooters:
 			s.fire_timer -= 1 * delta * 60.0
-			if s.fire_timer <= 0:
-				s.fire_timer = s.fire_rate
+			while s.fire_timer <= 0:
+				s.fire_timer += s.fire_rate
 				DefSys.sfx.play(shoot_sfx[s.sfx])
 				var option_pos = option_positions_unfocus[s.option] * (1 - option_interp) + option_positions_focus[s.option] * option_interp
 				var p = position + s.offset + option_pos
@@ -307,6 +307,8 @@ func create_bullet_clear(bullet_id):
 	if !s: return
 	Bullets.create_particle(bullet_clear_kit, p, s*0.75, c, Vector2(), false)
 	Bullets.create_particle(bullet_clear_kit, p, -s*1.5, c, Vector2(), false)
+	#Bullets.create_particle(graze_partlcle_kit, position, rand_range(12,18), Color(1.0, 1.0, 1.0, 1.0), Vector2(rand_range(0.3, 0.6), 0.0).rotated(randf()*TAU), false)
+
 
 func _on_area_shape_entered(area_id, _area, area_shape, _local_shape):
 	if !hit:

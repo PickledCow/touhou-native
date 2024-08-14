@@ -9,22 +9,43 @@ var origin := Vector2()
 var music_started := false
 var music_start_frames := 1
 
+onready var level_signs = get_node("../../UI/LevelSigns")
+
+func show_sign(location):
+	level_signs.display_sign(location)
+
+
 # -1: Disabled
 # 0: Intro, 1: Outside, 2: Mt Coronet, 3: Lake Spirits
 # 4: Peak, 5: Dialogue, 6: Boss, 7: Surprise, 8: Arceus
 var debug_section = 1
+
 
 func _ready():
 	DefSys.playfield_root = self
 	DefSys.playfield = $playfield
 	origin = position
 	
+	$playfield/BulletsEnvironment.set_speed_scale(1.0)
+	Engine.time_scale = 1.0
+	$playfield/Music.set_speed(1.0)
+	
 	if debug_section != -1:
 		match debug_section:
 			1:
 				$playfield/Outside.start()
+			2:
+				#get_node("playfield/Music").play_music(2)
+				#get_node("background").play_bg(2)
+				$playfield/Outside.start()
 			3:
 				$playfield/Midboss.start()
+			4:
+				get_node("playfield/Music").play_music(4)
+				get_node("background").play_bg(4)
+				#$playfield/Midboss.start()
+			5:
+				$playfield/Boss.enable()
 	
 	
 	#call_deferred("after_ready", 15)
@@ -95,3 +116,12 @@ func _process(delta):
 			position = origin
 		else:
 			position = origin + Vector2(screen_shake_intensity * randf(), 0.0).rotated(randf()*TAU)
+	
+	debug_input()
+	#print(DefSys.difficulty)
+
+func debug_input():
+	for i in 5:
+		if Input.is_action_just_pressed("debug" + str(i + 1)):
+			DefSys.difficulty = i
+

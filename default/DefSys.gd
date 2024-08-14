@@ -11,9 +11,12 @@ var pause_menu
 
 var is_3d := true
 
-var difficulty := 3
+var difficulty := 0
 
 var transluscent := true
+
+var last_chatot_color := -1.0
+var last_chatot_color_2 := -1.0
 
 # Global data
 enum PLAYER_ID { REIMU, MARISA }
@@ -27,7 +30,7 @@ var graze := 0
 var music_percent := 50.0
 var sfx_percent := 40.0
 
-var bg_scale := 80
+var bg_scale := 50
 
 var hacky_common_data := 0
 
@@ -64,12 +67,20 @@ enum BULLET_TYPE {	STRAIGHT_LASER, ARROWHEAD, BALL_OUTLINE, BALL, RICE, KUNAI, I
 					NOTE, # 35
 }
 
-const BULLET_SIZES := [  0.3, 0.3, 0.3, 0.3, 0.25, 2.5, 0.3, 0.28, 0.25, 0.25, 0.3, 0.2,
-						 0.2, 0.15, 0.2, 0.3,
-						 0.3, 0.4, 0.2, 0.1, 0.2,
-						 0.25,
-						 0.4, 0.05, 0.025, 0.4, 0.2,
-						 0.25,
+const BULLET_SIZES := [ 0.3, 0.3, 0.3, 0.3, 0.25, 0.25, 0.3, 0.28, 0.25, 0.25, 0.3, 0.2,
+						0.2, 0.15, 0.2, 0.3,
+						0.3, 0.4, 0.2, 0.1, 0.2,
+						0.25,
+						0.4, 0.05, 0.025, 0.4, 0.2,
+						0.25,
+						0.0,
+						0.0,
+						0.35,
+						0.35,
+						0.25,
+						0.25,
+						0.15,
+						0.1
 ]
 
 enum LAYERS { BUBBLE, LARGE_BULLETS = 2, SMALL_BULLETS = 5, TINY_BULLETS = 8 }
@@ -134,6 +145,16 @@ const DIVINE_RGB := [
 	Vector3(0.8, 0.8, 0.25),	# Yellow dark
 	Vector3(0.66, 0.66, 0.66),	# Grey dark
 ]
+
+const NOTE_RGB := [
+	Vector3(0.9, 0.3, 0.3), # Red
+	Vector3(0.9, 0.3, 0.9),  # Purple
+	Vector3(0.3, 0.3, 0.9),  # Blue
+	Vector3(0.9, 0.9, 0.3),  # Yellow
+]
+	
+
+const WHITE_RGB := Vector3(0.85, 0.85, 0.85) # White
 
 func generate_bullet_data():
 	# Generate Bullet Data 
@@ -349,6 +370,154 @@ func generate_bullet_data():
 			array.append(data)
 		bullet_data.append(array)
 	
+	# Laser and Lightning (empty)
+	for i in 2:
+		bullet_data.append([])
+	
+	# Gear
+	
+	if true:
+		var array := []
+		var data := PoolRealArray()
+		data.resize(15)
+		data[0] = 1024		# source x (integer)
+		data[1] = 768 	# source y (integer)
+		data[2] = 256				# source width (integer)
+		data[3] = 256				# source height (integer)
+		data[4] = 128.0				# bullet size [0, inf)
+		data[5] = BULLET_SIZES[BULLET_TYPE.GEAR] # hitbox ratio [0, 1]
+		data[6] = 0					# Sprite offset y (integer)
+		data[7] = 1					# anim frame, 1 for no animation (integer)
+		data[8] = 0					# spin
+		data[9] = LAYERS.LARGE_BULLETS	# layer
+		data[10] = WHITE_RGB.x
+		data[11] = WHITE_RGB.y
+		data[12] = WHITE_RGB.z
+		data[13] = 0				# damage type
+		data[14] = 0				# damage amount
+		array.append(data)
+		bullet_data.append(array)
+	
+	# Saw
+	if true:
+		var array := []
+		for i in 3:
+			var data := PoolRealArray()
+			data.resize(15)
+			data[0] = 1280 + 256*i		# source x (integer)
+			data[1] = 768 	# source y (integer)
+			data[2] = 256				# source width (integer)
+			data[3] = 256				# source height (integer)
+			data[4] = 128.0				# bullet size [0, inf)
+			data[5] = BULLET_SIZES[BULLET_TYPE.SAW] # hitbox ratio [0, 1]
+			data[6] = 0					# Sprite offset y (integer)
+			data[7] = 1					# anim frame, 1 for no animation (integer)
+			data[8] = 0					# spin
+			data[9] = LAYERS.LARGE_BULLETS	# layer
+			data[10] = WHITE_RGB.x
+			data[11] = WHITE_RGB.y
+			data[12] = WHITE_RGB.z
+			data[13] = 0				# damage type
+			data[14] = 0				# damage amount
+			array.append(data)
+		bullet_data.append(array)
+	
+	
+	# Small gear
+	if true:
+		var array := []
+		var data := PoolRealArray()
+		data.resize(15)
+		data[0] = 1024		# source x (integer)
+		data[1] = 640 	# source y (integer)
+		data[2] = 128				# source width (integer)
+		data[3] = 128				# source height (integer)
+		data[4] = 64.0				# bullet size [0, inf)
+		data[5] = BULLET_SIZES[BULLET_TYPE.GEAR_SMALL] # hitbox ratio [0, 1]
+		data[6] = 0					# Sprite offset y (integer)
+		data[7] = 1					# anim frame, 1 for no animation (integer)
+		data[8] = 0					# spin
+		data[9] = LAYERS.SMALL_BULLETS	# layer
+		data[10] = WHITE_RGB.x
+		data[11] = WHITE_RGB.y
+		data[12] = WHITE_RGB.z
+		data[13] = 0				# damage type
+		data[14] = 0				# damage amount
+		array.append(data)
+		bullet_data.append(array)
+	
+	# Small saw
+	if true:
+		var array := []
+		for i in 3:
+			var data := PoolRealArray()
+			data.resize(15)
+			data[0] = 1152 + 128*i		# source x (integer)
+			data[1] = 640 	# source y (integer)
+			data[2] = 128				# source width (integer)
+			data[3] = 128				# source height (integer)
+			data[4] = 64.0				# bullet size [0, inf)
+			data[5] = BULLET_SIZES[BULLET_TYPE.SAW_SMALL] # hitbox ratio [0, 1]
+			data[6] = 0					# Sprite offset y (integer)
+			data[7] = 1					# anim frame, 1 for no animation (integer)
+			data[8] = 0					# spin
+			data[9] = LAYERS.SMALL_BULLETS	# layer
+			data[10] = WHITE_RGB.x
+			data[11] = WHITE_RGB.y
+			data[12] = WHITE_RGB.z
+			data[13] = 0				# damage type
+			data[14] = 0				# damage amount
+			array.append(data)
+		bullet_data.append(array)
+	
+	# Money
+	if true:
+		var array := []
+		var data := PoolRealArray()
+		data.resize(15)
+		data[0] = 1536		# source x (integer)
+		data[1] = 640 	# source y (integer)
+		data[2] = 128				# source width (integer)
+		data[3] = 128				# source height (integer)
+		data[4] = 64.0				# bullet size [0, inf)
+		data[5] = BULLET_SIZES[BULLET_TYPE.MONEY] # hitbox ratio [0, 1]
+		data[6] = 0					# Sprite offset y (integer)
+		data[7] = 1					# anim frame, 1 for no animation (integer)
+		data[8] = 0					# spin
+		data[9] = LAYERS.SMALL_BULLETS	# layer
+		data[10] = 0.3
+		data[11] = 0.9
+		data[12] = 0.3
+		data[13] = 0				# damage type
+		data[14] = 0				# damage amount
+		array.append(data)
+		bullet_data.append(array)
+	
+	# Note
+	var note_offsets := [ 	Vector2(0, 3584), Vector2(512, 3584), Vector2(0, 3712), Vector2(512, 3712) ]
+	if true: # Local scoping
+		var array := []
+		for j in 4:
+			var data := PoolRealArray()
+			data.resize(15)
+			data[0] = note_offsets[j].x # source x (integer)
+			data[1] = note_offsets[j].y # source y (integer)
+			data[2] = 128				# source width (integer)
+			data[3] = 128				# source height (integer)
+			data[4] = 64.0				# bullet size [0, inf)
+			data[5] = BULLET_SIZES[BULLET_TYPE.NOTE] # hitbox ratio [0, 1]
+			data[6] = 42					# Sprite offset y (integer)
+			data[7] = 4					# anim frame, 1 for no animation (integer)
+			data[8] = 0					# spin
+			data[9] = LAYERS.LARGE_BULLETS	# layer
+			data[10] = NOTE_RGB[j].x	# rgb
+			data[11] = NOTE_RGB[j].y
+			data[12] = NOTE_RGB[j].z
+			data[13] = 0				# damage type
+			data[14] = 0				# damage amount
+			
+			array.append(data)
+		bullet_data.append(array)
 	
 	
 	# Generate item data
