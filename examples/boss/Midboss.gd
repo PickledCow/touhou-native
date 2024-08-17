@@ -13,6 +13,7 @@ func start():
 	$choreographer.play("Intro")
 	started = true
 
+onready var books = [$Books/P]
 
 func _physics_process(delta):
 	if !started:
@@ -25,19 +26,24 @@ func _physics_process(delta):
 		stage_process(t_int, delta)
 	
 
-
+const UXIE_START := 984
+const MESPRIT_SETUP := 1890
 
 func stage_process(t, _delta):
-	# Books
-	if t == 870:
+	if t < UXIE_START:
+		if t == 870:
+			pass
+		elif t == 888:
+			pass
+		elif t == 918:
+			pass
+		elif t == 936:
+			pass
+		elif t == 966:
+			pass
+		elif t == 996:
+			pass
+	
+	elif t < MESPRIT_SETUP:
 		pass
-	elif t == 888:
-		pass
-	elif t == 918:
-		pass
-	elif t == 936:
-		pass
-	elif t == 966:
-		pass
-	elif t == 996:
-		pass
+	

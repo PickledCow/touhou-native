@@ -29,6 +29,9 @@ var icon_fade_out_rate := 3.0
 
 #var should_update_healthbar := false
 
+var self_fade_timer := 0.0
+var self_fade_time := 0.2
+
 func _ready():
 	DefSys.boss_bar = self
 	healthbar.hide()
@@ -60,7 +63,19 @@ func _process(delta):
 		icon.modulate.a = 1.0 - icon_fade_out
 		icon.z_index = -1 if (icon_fade_out) > 0.9 else 0
 	
-
+	var player_present = len($Area2D.get_overlapping_areas()) > 0
+	
+	if player_present and self_fade_timer < self_fade_time:
+		modulate.a = 1.0 - (self_fade_timer / self_fade_time) * 0.75
+		
+		self_fade_timer = clamp(self_fade_timer + delta, 0.0, self_fade_time)
+	
+	elif not player_present and self_fade_timer > 0.0:
+		modulate.a = 1.0 - (self_fade_timer / self_fade_time) * 0.75
+		
+		self_fade_timer = clamp(self_fade_timer - delta, 0.0, self_fade_time)
+	
+	
 func entry_anim():
 	anim_player.play("show")
 
@@ -123,6 +138,8 @@ func end_spell():
 
 func healthbar_timeout(timeout: bool):
 	if timeout:
-		healthbar_color.play("timeout")
+		pass
+		#healthbar_color.play("timeout")
 	else:
+		pass
 		healthbar_color.play_backwards("timeout")

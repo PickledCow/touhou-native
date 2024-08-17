@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://examples/boss/attacks/spell3.gd" type="Script" id=1]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=3]
+[ext_resource path="res://examples/boss/roar.tscn" type="PackedScene" id=4]
+
+[node name="spell3" type="Node2D"]
+script = ExtResource( 1 )
+attack_type = 3
+attack_name = "Temporal Rift \"Roar of Time\""
+attack_time = 2160
+start_pos = Vector2( 500, 500 )
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 3 )
+
+[node name="roar" parent="." instance=ExtResource( 4 )]
+
+[node name="roar2" parent="." instance=ExtResource( 4 )]

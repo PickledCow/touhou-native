@@ -13,7 +13,8 @@ onready var pid : int = DefSys.player_id
 # Movement
 export(float, 0, 1000) var speed = 500.0
 export(float, 0, 1000) var focus_speed = 200.0
-var velocity = Vector2()
+var velocity := Vector2()
+var external_velocity := Vector2()
 enum HORIZONTAL_PRIORITY { LEFT, RIGHT }
 var horizontal_priority = 0
 enum VERTICAL_PRIORITY { UP, DOWN }
@@ -30,6 +31,9 @@ var dead := false
 var invincible_time := 180.0
 var invincible_timer := 0.0
 var game_over_timer := 120
+
+var hidden_invincible_timer := 0.0
+var hidden_invincible_time := 120.0
 
 # Bullet clear
 var clear_time := 42.0
@@ -120,7 +124,7 @@ func _ready():
 		shooters_focus.append(shooter)
 	
 	speed = 10.0 if pid == 1 else 9.0
-	
+	DefSys.player = self
 	call_deferred("after_ready")
 	
 func create_shooter(shooter_data):
@@ -144,6 +148,9 @@ func after_ready():
 	DefSys.health_bar.set_name(names[pid])
 	#DefSys.health_bar.set_player_face(pid)
 
+
+func set_hidden_invincibility():
+	hidden_invincible_timer = hidden_invincible_time
 
 
 func _process(delta):
@@ -210,11 +217,17 @@ func move(delta):
 	if(velocity.length() > 0):
 		velocity = velocity.normalized() * (focus_speed if is_focused else speed)
 	
-	position += velocity * delta * 60.0
+	position += (velocity + external_velocity) * delta * 60.0
 	position.x = clamp(position.x, 24, 1000 - 24)
 	position.y = clamp(position.y, 60, 1000 - 24)
 	
 	get_node("itempoc/CollisionShape2D").disabled = position.y > 400 && !auto_poc
+	
+	#print(external_velocity)
+	
+	external_velocity += external_velocity * delta * -10.0
+	if external_velocity.length_squared() < 1.0:
+		external_velocity = Vector2(0,0)
 
 #var t = 0
 
@@ -269,7 +282,7 @@ func _physics_process(delta):
 		
 		shoot(delta)
 		
-	if hit && invincible_timer <= 0.0:
+	if hit && invincible_timer <= 0.0 and hidden_invincible_timer <= 0.0:
 		DefSys.spell_bonus = false
 		DefSys.sfx.play("death")
 		DefSys.boss_bar.fail_spell()
@@ -285,6 +298,8 @@ func _physics_process(delta):
 		if lives < 1:
 			lives = 1
 			#hide()
+	if hidden_invincible_timer > 0.0:
+		hidden_invincible_timer -= delta * 60.0
 	if invincible_timer > 0.0:
 		invincible_timer -= 1.0 * delta * 60.0
 	if clear_timer > 0.0:

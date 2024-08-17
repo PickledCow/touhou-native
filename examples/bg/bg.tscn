@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=2]
+[gd_scene load_steps=87 format=2]
 
 [ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=1]
 [ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=2]
@@ -209,7 +209,7 @@ uv1_scale = Vector3( 8, 4, 1 )
 albedo_color = Color( 1, 0.972549, 0.952941, 1 )
 roughness = 0.75
 
-[sub_resource type="ShaderMaterial" id=178]
+[sub_resource type="ShaderMaterial" id=244]
 render_priority = -113
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
@@ -218,14 +218,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.611
 shader_param/max_density = 6.0
 shader_param/altitude = 1500.0
-shader_param/color = Color( 0.027451, 0.00392157, 0.105882, 1 )
+shader_param/color = Color( 0.792157, 0.556863, 0.478431, 1 )
 shader_param/detail_noise = true
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=179]
+[sub_resource type="ShaderMaterial" id=245]
 render_priority = -114
-next_pass = SubResource( 178 )
+next_pass = SubResource( 244 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -233,14 +233,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.584317
 shader_param/max_density = 7.00061
 shader_param/altitude = 1512.8
-shader_param/color = Color( 0.0749629, 0.0554772, 0.14834, 1 )
+shader_param/color = Color( 0.818946, 0.613978, 0.545655, 1 )
 shader_param/detail_noise = true
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=180]
+[sub_resource type="ShaderMaterial" id=246]
 render_priority = -115
-next_pass = SubResource( 179 )
+next_pass = SubResource( 245 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -248,14 +248,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.558381
 shader_param/max_density = 7.9732
 shader_param/altitude = 1525.6
-shader_param/color = Color( 0.119198, 0.103477, 0.187869, 1 )
+shader_param/color = Color( 0.843887, 0.667155, 0.608244, 1 )
 shader_param/detail_noise = true
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=181]
+[sub_resource type="ShaderMaterial" id=247]
 render_priority = -116
-next_pass = SubResource( 180 )
+next_pass = SubResource( 246 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -263,14 +263,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.533919
 shader_param/max_density = 8.89052
 shader_param/altitude = 1538.4
-shader_param/color = Color( 0.160157, 0.147922, 0.22447, 1 )
+shader_param/color = Color( 0.86698, 0.716392, 0.666196, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=182]
+[sub_resource type="ShaderMaterial" id=248]
 render_priority = -117
-next_pass = SubResource( 181 )
+next_pass = SubResource( 247 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -278,14 +278,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.511616
 shader_param/max_density = 9.72689
 shader_param/altitude = 1551.2
-shader_param/color = Color( 0.197839, 0.188811, 0.258144, 1 )
+shader_param/color = Color( 0.888227, 0.761691, 0.719512, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=183]
+[sub_resource type="ShaderMaterial" id=249]
 render_priority = -118
-next_pass = SubResource( 182 )
+next_pass = SubResource( 248 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -293,14 +293,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.492097
 shader_param/max_density = 10.4589
 shader_param/altitude = 1564.0
-shader_param/color = Color( 0.232244, 0.226144, 0.288889, 1 )
+shader_param/color = Color( 0.907625, 0.80305, 0.768192, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=184]
+[sub_resource type="ShaderMaterial" id=250]
 render_priority = -119
-next_pass = SubResource( 183 )
+next_pass = SubResource( 249 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -308,14 +308,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.475908
 shader_param/max_density = 11.066
 shader_param/altitude = 1576.8
-shader_param/color = Color( 0.263372, 0.259922, 0.316706, 1 )
+shader_param/color = Color( 0.925177, 0.840471, 0.812235, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=185]
+[sub_resource type="ShaderMaterial" id=251]
 render_priority = -120
-next_pass = SubResource( 184 )
+next_pass = SubResource( 250 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -323,14 +323,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.463502
 shader_param/max_density = 11.5312
 shader_param/altitude = 1589.6
-shader_param/color = Color( 0.291224, 0.290144, 0.341595, 1 )
+shader_param/color = Color( 0.94088, 0.873952, 0.851643, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=186]
+[sub_resource type="ShaderMaterial" id=252]
 render_priority = -121
-next_pass = SubResource( 185 )
+next_pass = SubResource( 251 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -338,14 +338,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.455227
 shader_param/max_density = 11.8415
 shader_param/altitude = 1602.4
-shader_param/color = Color( 0.315799, 0.316811, 0.363555, 1 )
+shader_param/color = Color( 0.954736, 0.903495, 0.886414, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=187]
+[sub_resource type="ShaderMaterial" id=253]
 render_priority = -122
-next_pass = SubResource( 186 )
+next_pass = SubResource( 252 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -353,14 +353,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.451316
 shader_param/max_density = 11.9882
 shader_param/altitude = 1615.2
-shader_param/color = Color( 0.337098, 0.339922, 0.382588, 1 )
+shader_param/color = Color( 0.966745, 0.929098, 0.916549, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=188]
+[sub_resource type="ShaderMaterial" id=254]
 render_priority = -123
-next_pass = SubResource( 187 )
+next_pass = SubResource( 253 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -368,14 +368,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.451876
 shader_param/max_density = 11.9671
 shader_param/altitude = 1628.0
-shader_param/color = Color( 0.355119, 0.359478, 0.398693, 1 )
+shader_param/color = Color( 0.976906, 0.950763, 0.942048, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=189]
+[sub_resource type="ShaderMaterial" id=255]
 render_priority = -124
-next_pass = SubResource( 188 )
+next_pass = SubResource( 254 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -383,14 +383,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.456894
 shader_param/max_density = 11.779
 shader_param/altitude = 1640.8
-shader_param/color = Color( 0.369865, 0.375478, 0.411869, 1 )
+shader_param/color = Color( 0.98522, 0.968488, 0.962911, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=190]
+[sub_resource type="ShaderMaterial" id=256]
 render_priority = -125
-next_pass = SubResource( 189 )
+next_pass = SubResource( 255 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -398,14 +398,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.466228
 shader_param/max_density = 11.429
 shader_param/altitude = 1653.6
-shader_param/color = Color( 0.381333, 0.387922, 0.422118, 1 )
+shader_param/color = Color( 0.991686, 0.982274, 0.979137, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=191]
+[sub_resource type="ShaderMaterial" id=257]
 render_priority = -126
-next_pass = SubResource( 190 )
+next_pass = SubResource( 256 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -413,14 +413,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.479616
 shader_param/max_density = 10.9269
 shader_param/altitude = 1666.4
-shader_param/color = Color( 0.389525, 0.396811, 0.429438, 1 )
+shader_param/color = Color( 0.996305, 0.992122, 0.990728, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=192]
+[sub_resource type="ShaderMaterial" id=258]
 render_priority = -127
-next_pass = SubResource( 191 )
+next_pass = SubResource( 257 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -428,14 +428,14 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.496684
 shader_param/max_density = 10.2868
 shader_param/altitude = 1679.2
-shader_param/color = Color( 0.39444, 0.402144, 0.43383, 1 )
+shader_param/color = Color( 0.999076, 0.998031, 0.997682, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=193]
+[sub_resource type="ShaderMaterial" id=259]
 render_priority = -128
-next_pass = SubResource( 192 )
+next_pass = SubResource( 258 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -443,12 +443,12 @@ shader_param/transform_speed = Vector2( 0, 1e-05 )
 shader_param/min_density = 0.516954
 shader_param/max_density = 9.52671
 shader_param/altitude = 1692.0
-shader_param/color = Color( 0.396078, 0.403922, 0.435294, 1 )
+shader_param/color = Color( 1, 1, 1, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=194]
+[sub_resource type="ShaderMaterial" id=260]
 render_priority = -113
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
@@ -462,9 +462,9 @@ shader_param/detail_noise = true
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=195]
+[sub_resource type="ShaderMaterial" id=261]
 render_priority = -114
-next_pass = SubResource( 194 )
+next_pass = SubResource( 260 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -477,9 +477,9 @@ shader_param/detail_noise = true
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=196]
+[sub_resource type="ShaderMaterial" id=262]
 render_priority = -115
-next_pass = SubResource( 195 )
+next_pass = SubResource( 261 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -492,9 +492,9 @@ shader_param/detail_noise = true
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=197]
+[sub_resource type="ShaderMaterial" id=263]
 render_priority = -116
-next_pass = SubResource( 196 )
+next_pass = SubResource( 262 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -507,9 +507,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=198]
+[sub_resource type="ShaderMaterial" id=264]
 render_priority = -117
-next_pass = SubResource( 197 )
+next_pass = SubResource( 263 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -522,9 +522,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=199]
+[sub_resource type="ShaderMaterial" id=265]
 render_priority = -118
-next_pass = SubResource( 198 )
+next_pass = SubResource( 264 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -537,9 +537,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=200]
+[sub_resource type="ShaderMaterial" id=266]
 render_priority = -119
-next_pass = SubResource( 199 )
+next_pass = SubResource( 265 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -552,9 +552,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=201]
+[sub_resource type="ShaderMaterial" id=267]
 render_priority = -120
-next_pass = SubResource( 200 )
+next_pass = SubResource( 266 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -567,9 +567,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=202]
+[sub_resource type="ShaderMaterial" id=268]
 render_priority = -121
-next_pass = SubResource( 201 )
+next_pass = SubResource( 267 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -582,9 +582,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=203]
+[sub_resource type="ShaderMaterial" id=269]
 render_priority = -122
-next_pass = SubResource( 202 )
+next_pass = SubResource( 268 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -597,9 +597,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=204]
+[sub_resource type="ShaderMaterial" id=270]
 render_priority = -123
-next_pass = SubResource( 203 )
+next_pass = SubResource( 269 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -612,9 +612,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=205]
+[sub_resource type="ShaderMaterial" id=271]
 render_priority = -124
-next_pass = SubResource( 204 )
+next_pass = SubResource( 270 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -627,9 +627,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=206]
+[sub_resource type="ShaderMaterial" id=272]
 render_priority = -125
-next_pass = SubResource( 205 )
+next_pass = SubResource( 271 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -642,9 +642,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=207]
+[sub_resource type="ShaderMaterial" id=273]
 render_priority = -126
-next_pass = SubResource( 206 )
+next_pass = SubResource( 272 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -657,9 +657,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=208]
+[sub_resource type="ShaderMaterial" id=274]
 render_priority = -127
-next_pass = SubResource( 207 )
+next_pass = SubResource( 273 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -672,9 +672,9 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=209]
+[sub_resource type="ShaderMaterial" id=275]
 render_priority = -128
-next_pass = SubResource( 208 )
+next_pass = SubResource( 274 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -1097,13 +1097,522 @@ tracks/13/keys = {
 "update": 1,
 "values": [ true ]
 }
+tracks/14/type = "value"
+tracks/14/path = NodePath("Camera/OmniLight:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("Camera/WaterLight:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
-[sub_resource type="Animation" id=121]
+[sub_resource type="Animation" id=210]
 resource_name = "3"
-length = 90.0
+length = 80.0
+step = 1.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Camera:rotation_degrees:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -40, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Camera:rotation_degrees:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -90, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Camera:rotation_degrees:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("Camera:translation:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 950, -0.857124, -0.694458, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("Camera:translation:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 32, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("Camera:translation:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 128, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WorldEnvironment:environment:background_mode")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("WorldEnvironment:environment:ambient_light_color")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("WorldEnvironment:environment:dof_blur_far_enabled")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Camera/OmniLight:light_energy")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.367 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Outside:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Inside:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Mount:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("WorldEnvironment:environment:ssao_enabled")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("Camera/OmniLight:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("Camera/WaterLight:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=124]
 resource_name = "4"
+length = 12.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Camera:translation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -500, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Camera:translation:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 30, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Camera:translation:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 140, -0.25, 0, 0, 0, 128, -5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 12 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("Camera:rotation_degrees:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( -24, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("Camera:rotation_degrees:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("Camera:rotation_degrees:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WorldEnvironment:environment:background_mode")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("WorldEnvironment:environment:background_energy")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("WorldEnvironment:environment:ambient_light_color")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.301961, 0.219608, 0, 1 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("WorldEnvironment:environment:ambient_light_energy")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.14 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("WorldEnvironment:environment:ambient_light_sky_contribution")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.55 ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Inside:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Outside:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("WorldEnvironment:environment:background_sky")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = false
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 28 ) ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("WorldEnvironment:environment:background_sky_rotation_degrees")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = false
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -6.82, 0, 0 ) ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("WorldEnvironment:environment:background_sky:sun_latitude")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = false
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("Mount/DirectionalLight:rotation_degrees")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -20, -180, 0 ) ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("Mount/DirectionalLight:light_energy")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.75 ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("Mount/CloudDown:cloud_color")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("Mount/CloudDown:shade_color")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 0.886275, 0.772549, 1 ) ]
+}
+tracks/20/type = "value"
+tracks/20/path = NodePath("Mount/CloudUp:cloud_color")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/21/type = "value"
+tracks/21/path = NodePath("Mount/CloudUp:shade_color")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.792157, 0.556863, 0.478431, 1 ) ]
+}
+tracks/22/type = "value"
+tracks/22/path = NodePath("Mount:visible")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/23/type = "value"
+tracks/23/path = NodePath("Mount/CloudUp:cloud_seed")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 100.0 ]
+}
+tracks/24/type = "value"
+tracks/24/path = NodePath("Mount/CloudDown:cloud_seed")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1000.0 ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("WorldEnvironment:environment:ssao_enabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=243]
+resource_name = "4 (copy)"
 length = 12.0
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Camera:translation:x")
@@ -2234,8 +2743,8 @@ directional_shadow_mode = 1
 directional_shadow_max_distance = 512.0
 
 [node name="CloudUp" type="MeshInstance" parent="Mount"]
-transform = Transform( 450.025, 0, 0, 0, 450.025, 0, 0, 0, 450.025, 0, 15, 128 )
-material_override = SubResource( 193 )
+transform = Transform( 450.025, 0, 0, 0, 450.025, 0, 0, 0, 450.025, -500, 30, 138.859 )
+material_override = SubResource( 259 )
 mesh = ExtResource( 26 )
 script = ExtResource( 25 )
 cloud_color = Color( 0.396078, 0.403922, 0.435294, 1 )
@@ -2251,7 +2760,7 @@ cloud_shadow_enabled = false
 
 [node name="CloudDown" type="MeshInstance" parent="Mount"]
 transform = Transform( 450.025, 6.8662e-07, 3.93364e-05, 0, -449.956, 7.85402, -3.93424e-05, 7.85402, 449.956, -500, 16, 140 )
-material_override = SubResource( 209 )
+material_override = SubResource( 275 )
 mesh = ExtResource( 26 )
 script = ExtResource( 25 )
 shade_color = Color( 1, 0.886275, 0.772549, 1 )
@@ -2295,8 +2804,9 @@ environment = SubResource( 96 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/1 = SubResource( 100 )
 anims/2 = SubResource( 107 )
-anims/3 = SubResource( 121 )
+anims/3 = SubResource( 210 )
 anims/4 = SubResource( 124 )
+"anims/4 (copy)" = SubResource( 243 )
 anims/5 = SubResource( 177 )
 anims/RESET = SubResource( 97 )
 

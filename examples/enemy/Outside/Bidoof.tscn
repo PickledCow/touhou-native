@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://examples/enemy/Outside/Bidoof.gd" type="Script" id=1]
+[ext_resource path="res://examples/enemy/bidoof.png" type="Texture" id=2]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=3]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 64.0
+
+[node name="Bidoof" type="Area2D"]
+collision_layer = 4
+collision_mask = 8
+monitorable = false
+script = ExtResource( 1 )
+bullet_kit = ExtResource( 3 )
+bullet_kit_add = ExtResource( 4 )
+max_health = 300
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]

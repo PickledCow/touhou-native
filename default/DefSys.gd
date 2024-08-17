@@ -22,6 +22,8 @@ var last_chatot_color_2 := -1.0
 enum PLAYER_ID { REIMU, MARISA }
 var player_id := 1
 
+var player : Player
+
 var spell_bonus := true
 var score := 0
 var piv := 1000

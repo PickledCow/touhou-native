@@ -24,15 +24,12 @@ func attack_init():
 
 func attack(t):
 	var CYCLE_TIME = 60*(5*2+7*2+1)
-	if t >= 0:
-		if false:
-			type2(t)
+	if t > 0:
+		if t % CYCLE_TIME < 60*5*2:
+			type1(t % CYCLE_TIME)
 		else:
-			if t % CYCLE_TIME < 60*5*2:
-				type1(t % CYCLE_TIME)
-			else:
-				type2(t % CYCLE_TIME - 60*(5*2 + 1))
-		
+			type2(t % CYCLE_TIME - 60*(5*2 + 1))
+	
 					
 
 func type1(u):
@@ -54,6 +51,7 @@ func type1(u):
 				var s = 3.0 + 3.0 * (u % CYCLE_TIME) / ACTIVE_TIME
 				Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING, position + d*r, 0.0, s, a + TAU / DENSITY, DENSITY * 0.5, 0.0, white_ball, true)
 				Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING, position + d*r, 0.0, s, a, DENSITY * 0.5, 0.0, grey_ball, true)
+				DefSys.sfx.play("shoot1")
 				a += lr * 0.4 #0.06
 		if u % CYCLE_TIME == 60 * 3:
 			pass
@@ -85,10 +83,12 @@ func type2(u):
 					Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING,  position + d1*r, 0.0, s, a + TAU / DENSITY, DENSITY * 0.5, 0.0, white_ball if alt_col2 else white_ball if alt_col else grey_ball, true)
 					Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING,  position + d1*r, 0.0, s, a, DENSITY * 0.5, 0.0, grey_ball if alt_col2 else white_ball if !alt_col else grey_ball, true)
 					a +=  0.05 * lr + PI
+					DefSys.sfx.play("shoot1")
 				elif u % 6 == 3:
 					Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING,  position + d2*r, 0.0, s, a2 + TAU / DENSITY, DENSITY * 0.5, 0.0, white_ball if !alt_col2 else white_ball if alt_col else grey_ball, true)
 					Bullets.create_pattern_a1(bullet_kit, Constants.PATTERN.RING,  position + d2*r, 0.0, s, a2, DENSITY * 0.5, 0.0, grey_ball if !alt_col2 else white_ball if !alt_col else grey_ball, true)
 					a2 += 0.05 * lr + PI
+					DefSys.sfx.play("shoot1")
 					alt_col = !alt_col
 		if u % CYCLE_TIME == 60 * 3:
 			pass

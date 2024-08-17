@@ -11,16 +11,21 @@ onready var health = max_health
 var velocity := Vector2()
 
 var t_raw := 0.0
-var t_int := 0
+var t_int := -1
 
 var bullets_to_remove = []
 
 var difficulty = 0
-var root: Node2D
+var root: Root
 var parent: Node2D
 
 var tank_time = 0
 var tank_factor = 1
+
+var death_delay := 0.0
+var marked_for_death := false
+
+var died := false
 
 func custom_ready():
 	pass
@@ -34,11 +39,19 @@ func _ready():
 func custom_action(_t):
 	pass
 
+func custom_physics_process(_delta: float):
+	pass
+
+func custom_death():
+	pass
+
 func remove_bullets(bullet_ids):
 	for bullet_id in bullet_ids:
 		Bullets.delete(bullet_id)
 
 func _physics_process(delta):
+	custom_physics_process(delta)
+	
 	remove_bullets(bullets_to_remove)
 	bullets_to_remove.clear()
 	
@@ -52,9 +65,16 @@ func _physics_process(delta):
 		tank_time -= 1
 	
 	
-	if health < 0:
+	if health <= 0 and not died:
+		died = true
 		DefSys.sfx.play("explode1")
-		queue_free()
+		marked_for_death = true
+		custom_death()
+	
+	if marked_for_death:
+		if death_delay <= 0.0:
+			queue_free()
+		death_delay -= delta * 60.0
 	
 
 func _on_area_shape_entered(area_id, _area, area_shape, _local_shape):

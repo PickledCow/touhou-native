@@ -9,6 +9,10 @@ var speed_max = [7, 8, 10, 12, 12.5]
 var grey_ball : PoolRealArray
 var white_ball : PoolRealArray
 
+var rand_amount := 0.175
+
+var speed_factor := 1.0
+
 var cs
 
 func custom_ready():
@@ -23,8 +27,8 @@ func custom_action(t):
 	
 	if t % firerate[difficulty] == 0 and position.y > 50 and position.x > 50.0 and position.x < 950.0:
 		var p : Vector2 = root.get_player_position()
-		var ad = rand_range(-0.175, 0.175)
-		var s = rand_range(speed_min[difficulty], speed_max[difficulty])
+		var ad = rand_range(-rand_amount, rand_amount)
+		var s = rand_range(speed_min[difficulty], speed_max[difficulty]) * speed_factor
 		var a = ad + p.angle_to_point(position)
 		DefSys.sfx.play("shoot1")
 		

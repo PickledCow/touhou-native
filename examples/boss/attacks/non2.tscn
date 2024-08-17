@@ -6,8 +6,6 @@
 
 [node name="non2" type="Node2D"]
 script = ExtResource( 1 )
-health = 15000
-start_delay = 300
-scb = 3
+health = 16000
 bullet_kit = ExtResource( 2 )
 bullet_kit_add = ExtResource( 3 )

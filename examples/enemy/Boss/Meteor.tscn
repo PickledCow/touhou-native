@@ -1,0 +1,75 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://examples/enemy/Boss/Meteor.gd" type="Script" id=1]
+[ext_resource path="res://examples/boss/meteor.png" type="Texture" id=2]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=3]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=4]
+[ext_resource path="res://examples/boss/fire.png" type="Texture" id=5]
+
+[sub_resource type="CanvasItemMaterial" id=3]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = false
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.01671, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+lifetime_randomness = 0.5
+flag_disable_z = true
+spread = 5.0
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 360.0
+angle_random = 1.0
+scale = 1.25
+scale_curve = SubResource( 5 )
+color = Color( 1, 0, 0.360784, 1 )
+hue_variation = 0.37
+hue_variation_random = 1.0
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 52.0
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 32.0
+
+[node name="Meteor" type="Area2D"]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+script = ExtResource( 1 )
+bullet_kit = ExtResource( 3 )
+bullet_kit_add = ExtResource( 4 )
+max_health = 500
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+material = SubResource( 3 )
+amount = 48
+local_coords = false
+process_material = SubResource( 6 )
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 1 )
+
+[node name="Hurtbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource( 2 )
+
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_shape_entered"]

@@ -1,6 +1,6 @@
-[gd_scene load_steps=183 format=2]
+[gd_scene load_steps=198 format=2]
 
-[ext_resource path="res://default/se/se_lgods3.wav" type="AudioStream" id=1]
+[ext_resource path="res://default/se/hpump.wav" type="AudioStream" id=1]
 [ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
 [ext_resource path="res://addons/native_bullets/bullets_environment.gd" type="Script" id=3]
 [ext_resource path="res://examples/boss/passby.png" type="Texture" id=4]
@@ -48,7 +48,7 @@
 [ext_resource path="res://examples/warp.gd" type="Script" id=46]
 [ext_resource path="res://default/se/se_lgods1.wav" type="AudioStream" id=47]
 [ext_resource path="res://examples/ui/spells.png" type="Texture" id=48]
-[ext_resource path="res://examples/boss/Midboss.gd" type="Script" id=49]
+[ext_resource path="res://examples/stage/Lake.gd" type="Script" id=49]
 [ext_resource path="res://default/se/charge2.wav" type="AudioStream" id=50]
 [ext_resource path="res://default/se/charge1.wav" type="AudioStream" id=51]
 [ext_resource path="res://default/se/explode.wav" type="AudioStream" id=52]
@@ -87,7 +87,7 @@
 [ext_resource path="res://fonts/Inter-ExtraBold.ttf" type="DynamicFontData" id=85]
 [ext_resource path="res://fonts/Inter-Bold.ttf" type="DynamicFontData" id=86]
 [ext_resource path="res://examples/bgm/PreBoss.ogg" type="AudioStream" id=87]
-[ext_resource path="res://examples/bgm/MidbossCoronet.ogg" type="AudioStream" id=88]
+[ext_resource path="res://examples/bgm/lakespirit.ogg" type="AudioStream" id=88]
 [ext_resource path="res://examples/Music.gd" type="Script" id=89]
 [ext_resource path="res://examples/boss/books.png" type="Texture" id=90]
 [ext_resource path="res://examples/boss/MagicRing.gd" type="Script" id=91]
@@ -96,6 +96,12 @@
 [ext_resource path="res://default/se/se_lgods2.wav" type="AudioStream" id=94]
 [ext_resource path="res://examples/ui/sign.png" type="Texture" id=95]
 [ext_resource path="res://examples/ui/LevelSigns.gd" type="Script" id=96]
+[ext_resource path="res://examples/stage/Cave.gd" type="Script" id=97]
+[ext_resource path="res://examples/enemy/Book.gd" type="Script" id=98]
+[ext_resource path="res://face/corner.png" type="Texture" id=99]
+[ext_resource path="res://face/ramo.png" type="Texture" id=100]
+[ext_resource path="res://fonts/THBiolinum.otf" type="DynamicFontData" id=101]
+[ext_resource path="res://examples/boss/Dialogue.gd" type="Script" id=102]
 
 [sub_resource type="Animation" id=92]
 resource_name = "fade"
@@ -157,6 +163,7 @@ length = 3.0
 [sub_resource type="Animation" id=118]
 resource_name = "Intro"
 length = 150.0
+step = 0.25
 tracks/0/type = "value"
 tracks/0/path = NodePath("PassBy/UxiePass:position")
 tracks/0/interp = 1
@@ -164,10 +171,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 2.5, 4.9, 5, 5.1, 5.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 2.5, 4.6, 4.9, 5, 5.1, 5.8, 32, 34 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 400, -200 ), Vector2( 400, -200 ), Vector2( 400, 1300 ), Vector2( 800, 1200 ), Vector2( 800, 1200 ), Vector2( 800, -200 ) ]
+"values": [ Vector2( 400, -200 ), Vector2( 400, -200 ), Vector2( 350, 1112.5 ), Vector2( 400, 1300 ), Vector2( 800, 1200 ), Vector2( 800, 1200 ), Vector2( 800, -200 ), Vector2( 800, -200 ), Vector2( 800, -200 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("PassBy/AzelfPass:position")
@@ -176,85 +183,85 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 2.5, 4.9, 5, 6.4, 7.1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 2.5, 4.6, 4.9, 5, 6.4, 7.1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 600, -200 ), Vector2( 600, -200 ), Vector2( 600, 1300 ), Vector2( 200, 1200 ), Vector2( 200, 1200 ), Vector2( 200, -200 ) ]
+"values": [ Vector2( 600, -200 ), Vector2( 600, -200 ), Vector2( 650, 1112.5 ), Vector2( 600, 1300 ), Vector2( 200, 1200 ), Vector2( 200, 1200 ), Vector2( 200, -200 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("../Music/midboss_music:playing")
+tracks/2/path = NodePath("PassBy/MespritPassRot:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = false
+tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.01 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("PassBy/MespritPassRot:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
 "times": PoolRealArray( 0, 5, 7.7, 8.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 400, 1200 ), Vector2( 400, 1200 ), Vector2( 500, 1200 ), Vector2( 500, -200 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("PassBy/MespritPassRot/MespritPass:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 2.5, 4.9, 5, 8.7, 8.8, 34 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 100, -1300 ), Vector2( 100, -1300 ), Vector2( 100, 200 ), Vector2( -50, 0 ), Vector2( -50, 0 ), Vector2( -400, 0 ), Vector2( -400, 0 ) ]
+}
 tracks/4/type = "value"
-tracks/4/path = NodePath("PassBy/MespritPassRot/Mesprit:position")
+tracks/4/path = NodePath("PassBy/MespritPassRot/MespritPass:rotation_degrees")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 2.5, 4.9, 5, 8.7, 8.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 100, -1300 ), Vector2( 100, -1300 ), Vector2( 100, 200 ), Vector2( -50, 0 ), Vector2( -50, 0 ), Vector2( -400, 0 ) ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("PassBy/MespritPassRot/Mesprit:rotation_degrees")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
 "times": PoolRealArray( 0, 2.5, 4.9, 5, 8.4, 8.5 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ 180.0, 180.0, 180.0, 0.000286102, 0.000286102, 180.0 ]
 }
-tracks/6/type = "value"
-tracks/6/path = NodePath("PassBy/UxiePass:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
+tracks/5/type = "value"
+tracks/5/path = NodePath("PassBy/UxiePass:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
 "times": PoolRealArray( 0, 5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ Color( 0.5, 0.5, 0.5, 1 ), Color( 1, 1, 1, 1 ) ]
 }
-tracks/7/type = "value"
-tracks/7/path = NodePath("PassBy/MespritPassRot:rotation_degrees")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
+tracks/6/type = "value"
+tracks/6/path = NodePath("PassBy/MespritPassRot:rotation_degrees")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
 "times": PoolRealArray( 0, 5, 8.9, 9.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ 0.0, 0.0, 0.0, -180.0 ]
 }
+tracks/7/type = "value"
+tracks/7/path = NodePath("PassBy/UxiePass:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 2.5, 4.6, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.5, 0.5 ), Vector2( 0.8, 0.8 ), Vector2( 1, 1 ) ]
+}
 tracks/8/type = "value"
-tracks/8/path = NodePath("PassBy/UxiePass:scale")
+tracks/8/path = NodePath("PassBy/MespritPassRot/MespritPass:modulate")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -263,10 +270,10 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ Vector2( 0.5, 0.5 ), Vector2( 1, 1 ) ]
+"values": [ Color( 0.5, 0.5, 0.5, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("PassBy/MespritPassRot/Mesprit:modulate")
+tracks/9/path = NodePath("PassBy/AzelfPass:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
@@ -278,31 +285,31 @@ tracks/9/keys = {
 "values": [ Color( 0.5, 0.5, 0.5, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/10/type = "value"
-tracks/10/path = NodePath("PassBy/AzelfPass:modulate")
+tracks/10/path = NodePath("PassBy/MespritPassRot/MespritPass:scale")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0, 5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ Color( 0.5, 0.5, 0.5, 1 ), Color( 1, 1, 1, 1 ) ]
+"times": PoolRealArray( 0, 2.5, 4.6, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.5, 0.5 ), Vector2( 0.8, 0.8 ), Vector2( 1, 1 ) ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("PassBy/MespritPassRot/Mesprit:scale")
+tracks/11/path = NodePath("PassBy/AzelfPass:scale")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0, 2.5, 5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.5, 0.5 ), Vector2( 1, 1 ) ]
+"times": PoolRealArray( 0, 2.5, 4.6, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.5, 0.5 ), Vector2( 0.8, 0.8 ), Vector2( 1, 1 ) ]
 }
 tracks/12/type = "value"
-tracks/12/path = NodePath("PassBy/AzelfPass:scale")
+tracks/12/path = NodePath("PassBy/UxiePass:rotation_degrees")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/imported = false
@@ -311,10 +318,10 @@ tracks/12/keys = {
 "times": PoolRealArray( 0, 5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ Vector2( 0.5, 0.5 ), Vector2( 1, 1 ) ]
+"values": [ 180.0, 0.0 ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("PassBy/UxiePass:rotation_degrees")
+tracks/13/path = NodePath("PassBy/AzelfPass:rotation_degrees")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
@@ -325,37 +332,105 @@ tracks/13/keys = {
 "update": 1,
 "values": [ 180.0, 0.0 ]
 }
-tracks/14/type = "value"
-tracks/14/path = NodePath("PassBy/AzelfPass:rotation_degrees")
+tracks/14/type = "bezier"
+tracks/14/path = NodePath("Uxie:position:x")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/imported = false
 tracks/14/enabled = true
 tracks/14/keys = {
-"times": PoolRealArray( 0, 5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 180.0, 0.0 ]
+"points": PoolRealArray( 500, -0.25, 0, 0.25, 0, 500, -0.25, 0, 0.25, 0, 500, -0.25, 0, 0.5, 0, 400, -0.5, 0, 0.5, 0, 600, 0, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 11.6, 32, 33, 34 )
 }
 tracks/15/type = "bezier"
-tracks/15/path = NodePath("Uxie:position:x")
+tracks/15/path = NodePath("Uxie:position:y")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/imported = false
 tracks/15/enabled = true
 tracks/15/keys = {
-"points": PoolRealArray( 500, -0.25, 0, 0.25, 0, 500, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 11.6 )
+"points": PoolRealArray( -250, -0.25, 0, 0.25, 0, -250, -0.25, 0, 0, 0, 250, -0.6, 0, 0.25, 0, 250, -0.25, 0, 1, 0, -250, 0, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 11.6, 12.9, 32, 34 )
 }
 tracks/16/type = "bezier"
-tracks/16/path = NodePath("Uxie:position:y")
+tracks/16/path = NodePath("Uxie:rotation_degrees")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/imported = false
 tracks/16/enabled = true
 tracks/16/keys = {
-"points": PoolRealArray( -250, -0.25, 0, 0.25, 0, -250, -0.25, 0, 0, 0, 250, -0.6, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 11.6, 12.9 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.33, 0, -5, -0.33, 0, 0.33, 0, 15, 0, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 32, 32.75, 34 )
+}
+tracks/17/type = "bezier"
+tracks/17/path = NodePath("Mesprit:position:x")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"points": PoolRealArray( 200, -0.25, 0, 1, 0, 800, -1, 0, 1, 0, 200, -1, 0, 1, 0, 800, -1, 0, 1, 0, 200, -1, 0, 1, 0, 800, -1, 0, 1, 0, 200, -1, 0, 1, 0, 800, -1, 0, 1, 0, 200, -1, 0, 1, 0, 800, -1, 0, 1, 0 ),
+"times": PoolRealArray( 33, 35.5, 38, 40.5, 43, 45.5, 48, 50.5, 53, 55.5 )
+}
+tracks/18/type = "bezier"
+tracks/18/path = NodePath("Mesprit:position:y")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"points": PoolRealArray( -200, -0.25, 0, 0, 0, 250, -1.50471, 66.067, 0, 0, 250, -0.25, 0, 2, 0, -200, 0, 0, 0.25, 0 ),
+"times": PoolRealArray( 34, 38.5, 53, 55.5 )
+}
+tracks/19/type = "bezier"
+tracks/19/path = NodePath("Mesprit:rotation_degrees")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"points": PoolRealArray( 120, -0.25, 0, 0.25, 0, 210, -0.25, 0, 0.25, 0, 375, -0.5, 0, 0.5, 0, 380, -0.5, 0, 0.5, 0, 340, -0.5, 0, 0.5, 0, 340, -0.5, 0, 0.5, 0, 380, -0.5, 0, 0.5, 0, 380, -0.5, 0, 0.5, 0, 340, -0.5, 0, 0.5, 0, 340, -0.5, 0, 0.5, 0, 380, -0.5, 0, 0.5, 0, 380, -0.5, 0, 0.5, 0, 340, -0.5, 0, 0.5, 0, 340, -0.5, 0, 0.5, 0, 380, -0.5, 0, 0.5, 0, 380, -0.5, 0, 0.5, 0, 340, -0.5, 0, 0.5, 0 ),
+"times": PoolRealArray( 34, 35.5, 37.75, 39, 40.25, 41.5, 42.75, 43.8029, 45.0529, 46.3029, 47.5529, 48.75, 50, 51.25, 52.5, 53.75, 55 )
+}
+tracks/20/type = "bezier"
+tracks/20/path = NodePath("Mesprit/Body/Head:rotation_degrees")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.5, 0, 0.5, 0, 5, -0.5, 0, 0.5, 0, -5, -0.5, 0, 0.5, 0, 5, -0.5, 0, 0.5, 0, -5, -0.5, 0, 0.5, 0, 5, -0.5, 0, 0.5, 0, -5, -0.5, 0, 0.5, 0, 5, -0.5, 0, 0.5, 0 ),
+"times": PoolRealArray( 36.5, 37.75, 40.25, 42.75, 45.25, 47.5, 50, 52.5, 55 )
+}
+tracks/21/type = "bezier"
+tracks/21/path = NodePath("Azelf:position:x")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"points": PoolRealArray( 700, -0.25, 0, 0, 0, 400, -0.25, 0, 0.25, 0, 500, -0.41571, 44.2274, 0.25, 0 ),
+"times": PoolRealArray( 54.5, 55.25, 56 )
+}
+tracks/22/type = "bezier"
+tracks/22/path = NodePath("Azelf:position:y")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"points": PoolRealArray( -221, -0.25, 0, 0, 0, 250, -0.66571, 17.7746, 0.25, 0 ),
+"times": PoolRealArray( 54.5, 56 )
+}
+tracks/23/type = "bezier"
+tracks/23/path = NodePath("Azelf:rotation_degrees")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"points": PoolRealArray( 180, -0.25, 0, 0, 0, 0, -0.66571, -33.1054, 0.25, 0 ),
+"times": PoolRealArray( 54.75, 56 )
 }
 
 [sub_resource type="Animation" id=119]
@@ -373,7 +448,7 @@ tracks/0/keys = {
 "values": [ Vector2( 790, 1344 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("PassBy/MespritPassRot/Mesprit:position")
+tracks/1/path = NodePath("PassBy/MespritPassRot/MespritPass:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -409,7 +484,7 @@ tracks/3/keys = {
 "values": [ false ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("PassBy/MespritPassRot/Mesprit:rotation_degrees")
+tracks/4/path = NodePath("PassBy/MespritPassRot/MespritPass:rotation_degrees")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -469,7 +544,7 @@ tracks/8/keys = {
 "values": [ Vector2( 1, 1 ) ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("PassBy/MespritPassRot/Mesprit:modulate")
+tracks/9/path = NodePath("PassBy/MespritPassRot/MespritPass:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
@@ -493,7 +568,7 @@ tracks/10/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("PassBy/MespritPassRot/Mesprit:scale")
+tracks/11/path = NodePath("PassBy/MespritPassRot/MespritPass:scale")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false
@@ -558,6 +633,86 @@ tracks/16/imported = false
 tracks/16/enabled = true
 tracks/16/keys = {
 "points": PoolRealArray( -250, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/17/type = "bezier"
+tracks/17/path = NodePath("Uxie:rotation_degrees")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/18/type = "bezier"
+tracks/18/path = NodePath("Mesprit:position:x")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"points": PoolRealArray( 470, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/19/type = "bezier"
+tracks/19/path = NodePath("Mesprit:position:y")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"points": PoolRealArray( -147, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/20/type = "bezier"
+tracks/20/path = NodePath("Mesprit:rotation_degrees")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/21/type = "bezier"
+tracks/21/path = NodePath("Mesprit/Body/Head:rotation_degrees")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/22/type = "bezier"
+tracks/22/path = NodePath("Azelf:position:x")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"points": PoolRealArray( 804, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/23/type = "bezier"
+tracks/23/path = NodePath("Azelf:position:y")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"points": PoolRealArray( -221, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/24/type = "bezier"
+tracks/24/path = NodePath("Azelf:rotation_degrees")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0 )
 }
 
@@ -1038,12 +1193,145 @@ tracks/6/keys = {
 "times": PoolRealArray( 0, 0.3, 1.5, 2.5 )
 }
 
-[sub_resource type="CircleShape2D" id=51]
+[sub_resource type="CanvasItemMaterial" id=136]
+blend_mode = 1
+
+[sub_resource type="CircleShape2D" id=137]
 radius = 72.0
+
+[sub_resource type="CircleShape2D" id=143]
+radius = 72.0
+
+[sub_resource type="CircleShape2D" id=51]
+radius = 0.01
 
 [sub_resource type="Animation" id=67]
 resource_name = "darken"
 length = 0.5
+
+[sub_resource type="StyleBoxFlat" id=138]
+bg_color = Color( 1, 0.956863, 0.721569, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="DynamicFont" id=139]
+size = 30
+use_filter = true
+font_data = ExtResource( 101 )
+
+[sub_resource type="Animation" id=140]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Marisa:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 200, 620 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Marisa:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Marisa:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=142]
+resource_name = "ally"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Marisa:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 200, 620 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Marisa:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.25, 0.25, 0.25, 1 ) ]
+}
+
+[sub_resource type="Animation" id=141]
+resource_name = "player"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Marisa:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 100, 620 ), Vector2( 200, 620 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Marisa:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Marisa:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [sub_resource type="Shader" id=7]
 code = "shader_type canvas_item;
@@ -2072,6 +2360,9 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 20 )
 
+[sub_resource type="RectangleShape2D" id=144]
+extents = Vector2( 500, 150 )
+
 [sub_resource type="Shader" id=72]
 code = "shader_type canvas_item;
 
@@ -2228,7 +2519,6 @@ __meta__ = {
 }
 
 [node name="BG" type="ViewportContainer" parent="gameport/root/background"]
-visible = false
 margin_left = -32.0
 margin_top = -32.0
 margin_right = 1032.0
@@ -2245,7 +2535,7 @@ own_world = true
 handle_input_locally = false
 debanding = true
 usage = 3
-render_target_update_mode = 0
+render_target_update_mode = 3
 
 [node name="2dbg" parent="gameport/root/background/BG/Viewport" instance=ExtResource( 82 )]
 position = Vector2( 0, 0 )
@@ -2306,9 +2596,13 @@ bullet_type_7/z_index = 10
 [node name="Outside" type="Node2D" parent="gameport/root/playfield"]
 script = ExtResource( 77 )
 
+[node name="Cave" type="Node2D" parent="gameport/root/playfield"]
+script = ExtResource( 97 )
+
 [node name="Midboss" type="Node2D" parent="gameport/root/playfield"]
-visible = false
 script = ExtResource( 49 )
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 12 )
 
 [node name="choreographer" type="AnimationPlayer" parent="gameport/root/playfield/Midboss"]
 anims/Intro = SubResource( 118 )
@@ -2326,7 +2620,7 @@ region_rect = Rect2( 0, 1, 256, 168 )
 [node name="MespritPassRot" type="Node2D" parent="gameport/root/playfield/Midboss/PassBy"]
 position = Vector2( 400, 1200 )
 
-[node name="Mesprit" type="Sprite" parent="gameport/root/playfield/Midboss/PassBy/MespritPassRot"]
+[node name="MespritPass" type="Sprite" parent="gameport/root/playfield/Midboss/PassBy/MespritPassRot"]
 position = Vector2( 492, 1100 )
 texture = ExtResource( 4 )
 region_enabled = true
@@ -2419,7 +2713,7 @@ anims/RESET = SubResource( 123 )
 anims/idle = SubResource( 124 )
 
 [node name="Body" type="Sprite" parent="gameport/root/playfield/Midboss/Mesprit"]
-position = Vector2( 0, -6.02609 )
+position = Vector2( 0, 2.07346 )
 texture = ExtResource( 9 )
 region_enabled = true
 region_rect = Rect2( 286, 150, 68, 85 )
@@ -2434,7 +2728,7 @@ region_rect = Rect2( 132, 0, 244, 129 )
 [node name="LeftTrail" type="Sprite" parent="gameport/root/playfield/Midboss/Mesprit/Body"]
 show_behind_parent = true
 position = Vector2( -20, 23 )
-rotation = 2.96911
+rotation = 3.10794
 scale = Vector2( 1, -1 )
 texture = ExtResource( 9 )
 offset = Vector2( 52, -82 )
@@ -2444,7 +2738,7 @@ region_rect = Rect2( 384, 0, 128, 256 )
 [node name="RightTail" type="Sprite" parent="gameport/root/playfield/Midboss/Mesprit/Body"]
 show_behind_parent = true
 position = Vector2( 20, 23 )
-rotation = 0.172484
+rotation = 0.036093
 texture = ExtResource( 9 )
 offset = Vector2( 52, -82 )
 region_enabled = true
@@ -2453,7 +2747,7 @@ region_rect = Rect2( 384, 0, 128, 256 )
 [node name="LeftFeet" type="Sprite" parent="gameport/root/playfield/Midboss/Mesprit/Body"]
 show_behind_parent = true
 position = Vector2( -16, 25 )
-rotation = 0.25792
+rotation = 0.0540784
 texture = ExtResource( 9 )
 offset = Vector2( 1, 10 )
 region_enabled = true
@@ -2462,7 +2756,7 @@ region_rect = Rect2( 232, 129, 25, 44 )
 [node name="RightFeet" type="Sprite" parent="gameport/root/playfield/Midboss/Mesprit/Body"]
 show_behind_parent = true
 position = Vector2( 16, 25 )
-rotation = -0.257998
+rotation = -0.0497689
 texture = ExtResource( 9 )
 offset = Vector2( 1, 10 )
 region_enabled = true
@@ -2471,7 +2765,7 @@ region_rect = Rect2( 232, 129, 25, 44 )
 [node name="LeftArm" type="Sprite" parent="gameport/root/playfield/Midboss/Mesprit/Body"]
 show_behind_parent = true
 position = Vector2( -16, -22 )
-rotation = -2.36007
+rotation = -2.56392
 scale = Vector2( 1, -1 )
 texture = ExtResource( 9 )
 offset = Vector2( 0, 32 )
@@ -2481,7 +2775,7 @@ region_rect = Rect2( 233, 173, 21, 81 )
 [node name="RightArm" type="Sprite" parent="gameport/root/playfield/Midboss/Mesprit/Body"]
 show_behind_parent = true
 position = Vector2( 16, -22 )
-rotation = -0.781597
+rotation = -0.573369
 texture = ExtResource( 9 )
 offset = Vector2( 0, 32 )
 region_enabled = true
@@ -2497,7 +2791,7 @@ anims/RESET = SubResource( 125 )
 anims/idle = SubResource( 126 )
 
 [node name="Body" type="Sprite" parent="gameport/root/playfield/Midboss/Azelf"]
-position = Vector2( 0, 6.27837 )
+position = Vector2( 0, 9.21104 )
 texture = ExtResource( 9 )
 region_enabled = true
 region_rect = Rect2( 286, 150, 68, 85 )
@@ -2513,7 +2807,7 @@ region_rect = Rect2( 0, 129, 164, 125 )
 [node name="LeftTrail" type="Sprite" parent="gameport/root/playfield/Midboss/Azelf/Body"]
 show_behind_parent = true
 position = Vector2( -20, 23 )
-rotation = 3.13521
+rotation = 3.09135
 scale = Vector2( 1, -1 )
 texture = ExtResource( 9 )
 offset = Vector2( 52, -82 )
@@ -2523,7 +2817,7 @@ region_rect = Rect2( 384, 0, 128, 256 )
 [node name="RightTail" type="Sprite" parent="gameport/root/playfield/Midboss/Azelf/Body"]
 show_behind_parent = true
 position = Vector2( 20, 23 )
-rotation = 0.00689024
+rotation = 0.0502455
 texture = ExtResource( 9 )
 offset = Vector2( 52, -82 )
 region_enabled = true
@@ -2532,7 +2826,7 @@ region_rect = Rect2( 384, 0, 128, 256 )
 [node name="LeftFeet" type="Sprite" parent="gameport/root/playfield/Midboss/Azelf/Body"]
 show_behind_parent = true
 position = Vector2( -16, 25 )
-rotation = 0.0103298
+rotation = 0.0878057
 texture = ExtResource( 9 )
 offset = Vector2( 1, 10 )
 region_enabled = true
@@ -2541,7 +2835,7 @@ region_rect = Rect2( 232, 129, 25, 44 )
 [node name="RightFeet" type="Sprite" parent="gameport/root/playfield/Midboss/Azelf/Body"]
 show_behind_parent = true
 position = Vector2( 16, 25 )
-rotation = -0.00942878
+rotation = -0.0901752
 texture = ExtResource( 9 )
 offset = Vector2( 1, 10 )
 region_enabled = true
@@ -2550,7 +2844,7 @@ region_rect = Rect2( 232, 129, 25, 44 )
 [node name="LeftArm" type="Sprite" parent="gameport/root/playfield/Midboss/Azelf/Body"]
 show_behind_parent = true
 position = Vector2( -16, -22 )
-rotation = -2.60766
+rotation = -2.53019
 scale = Vector2( 1, -1 )
 texture = ExtResource( 9 )
 offset = Vector2( 0, 32 )
@@ -2560,95 +2854,172 @@ region_rect = Rect2( 233, 173, 21, 81 )
 [node name="RightArm" type="Sprite" parent="gameport/root/playfield/Midboss/Azelf/Body"]
 show_behind_parent = true
 position = Vector2( 16, -22 )
-rotation = -0.533028
+rotation = -0.613772
 texture = ExtResource( 9 )
 offset = Vector2( 0, 32 )
 region_enabled = true
 region_rect = Rect2( 233, 173, 21, 81 )
 
-[node name="Books" type="Node2D" parent="gameport/root/playfield/Midboss"]
+[node name="Sands" type="Node2D" parent="gameport/root/playfield/Midboss"]
 
-[node name="P" type="Area2D" parent="gameport/root/playfield/Midboss/Books"]
-position = Vector2( 125, 325 )
+[node name="P" type="Area2D" parent="gameport/root/playfield/Midboss"]
+visible = false
+position = Vector2( 125, 300 )
+collision_layer = 0
+collision_mask = 8
+monitoring = false
+monitorable = false
+script = ExtResource( 98 )
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 12 )
+max_health = 2000
 
-[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/Books/P"]
+[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/P"]
+material = SubResource( 136 )
 scale = Vector2( 0.35, 0.35 )
 texture = ExtResource( 92 )
 script = ExtResource( 91 )
 
-[node name="P" type="Sprite" parent="gameport/root/playfield/Midboss/Books/P"]
+[node name="P" type="Sprite" parent="gameport/root/playfield/Midboss/P"]
 texture = ExtResource( 90 )
 region_enabled = true
 region_rect = Rect2( 128, 0, 128, 128 )
 
-[node name="D" type="Area2D" parent="gameport/root/playfield/Midboss/Books"]
-position = Vector2( 262.5, 200 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Midboss/P"]
+shape = SubResource( 137 )
 
-[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/Books/D"]
+[node name="D" type="Area2D" parent="gameport/root/playfield/Midboss"]
+visible = false
+position = Vector2( 275, 150 )
+collision_layer = 0
+collision_mask = 8
+monitoring = false
+monitorable = false
+script = ExtResource( 98 )
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 12 )
+max_health = 2000
+
+[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/D"]
+material = SubResource( 136 )
 scale = Vector2( 0.35, 0.35 )
 texture = ExtResource( 92 )
 script = ExtResource( 91 )
 
-[node name="Sprite" type="Sprite" parent="gameport/root/playfield/Midboss/Books/D"]
+[node name="Sprite" type="Sprite" parent="gameport/root/playfield/Midboss/D"]
 texture = ExtResource( 90 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 128, 128 )
 
-[node name="Pt" type="Area2D" parent="gameport/root/playfield/Midboss/Books"]
-position = Vector2( 400, 375 )
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="gameport/root/playfield/Midboss/D"]
+shape = SubResource( 137 )
 
-[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/Books/Pt"]
+[node name="Pt" type="Area2D" parent="gameport/root/playfield/Midboss"]
+visible = false
+position = Vector2( 400, 375 )
+collision_layer = 0
+collision_mask = 8
+monitoring = false
+monitorable = false
+script = ExtResource( 98 )
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 12 )
+max_health = 2000
+
+[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/Pt"]
+material = SubResource( 136 )
 scale = Vector2( 0.35, 0.35 )
 texture = ExtResource( 92 )
 script = ExtResource( 91 )
 
-[node name="P" type="Sprite" parent="gameport/root/playfield/Midboss/Books/Pt"]
+[node name="P" type="Sprite" parent="gameport/root/playfield/Midboss/Pt"]
 texture = ExtResource( 90 )
 region_enabled = true
 region_rect = Rect2( 256, 0, 128, 128 )
 
-[node name="LA" type="Area2D" parent="gameport/root/playfield/Midboss/Books"]
-position = Vector2( 600, 375 )
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="gameport/root/playfield/Midboss/Pt"]
+shape = SubResource( 137 )
 
-[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/Books/LA"]
+[node name="LA" type="Area2D" parent="gameport/root/playfield/Midboss"]
+visible = false
+position = Vector2( 600, 375 )
+collision_layer = 0
+collision_mask = 8
+monitoring = false
+monitorable = false
+script = ExtResource( 98 )
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 12 )
+max_health = 2000
+
+[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/LA"]
+material = SubResource( 136 )
 scale = Vector2( 0.35, 0.35 )
 texture = ExtResource( 92 )
 script = ExtResource( 91 )
 
-[node name="P" type="Sprite" parent="gameport/root/playfield/Midboss/Books/LA"]
+[node name="P" type="Sprite" parent="gameport/root/playfield/Midboss/LA"]
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 90 )
 region_enabled = true
 region_rect = Rect2( 384, 0, 128, 256 )
 
-[node name="HG" type="Area2D" parent="gameport/root/playfield/Midboss/Books"]
-position = Vector2( 737.5, 200 )
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="gameport/root/playfield/Midboss/LA"]
+shape = SubResource( 137 )
 
-[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/Books/HG"]
+[node name="HG" type="Area2D" parent="gameport/root/playfield/Midboss"]
+visible = false
+position = Vector2( 725, 150 )
+collision_layer = 0
+collision_mask = 8
+monitoring = false
+monitorable = false
+script = ExtResource( 98 )
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 12 )
+max_health = 2000
+
+[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/HG"]
+material = SubResource( 136 )
 scale = Vector2( 0.35, 0.35 )
 texture = ExtResource( 92 )
 script = ExtResource( 91 )
 
-[node name="Sprite" type="Sprite" parent="gameport/root/playfield/Midboss/Books/HG"]
+[node name="Sprite" type="Sprite" parent="gameport/root/playfield/Midboss/HG"]
 texture = ExtResource( 90 )
 region_enabled = true
 region_rect = Rect2( 0, 128, 128, 128 )
 
-[node name="SS" type="Area2D" parent="gameport/root/playfield/Midboss/Books"]
-position = Vector2( 875, 325 )
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="gameport/root/playfield/Midboss/HG"]
+shape = SubResource( 137 )
 
-[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/Books/SS"]
+[node name="SS" type="Area2D" parent="gameport/root/playfield/Midboss"]
+visible = false
+position = Vector2( 875, 300 )
+collision_layer = 0
+collision_mask = 8
+monitoring = false
+monitorable = false
+script = ExtResource( 98 )
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 12 )
+max_health = 2000
+
+[node name="Ring" type="Sprite" parent="gameport/root/playfield/Midboss/SS"]
+material = SubResource( 136 )
 scale = Vector2( 0.35, 0.35 )
 texture = ExtResource( 92 )
 script = ExtResource( 91 )
 
-[node name="P" type="Sprite" parent="gameport/root/playfield/Midboss/Books/SS"]
+[node name="P" type="Sprite" parent="gameport/root/playfield/Midboss/SS"]
 texture = ExtResource( 90 )
 region_enabled = true
 region_rect = Rect2( 128, 128, 128, 128 )
 
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="gameport/root/playfield/Midboss/SS"]
+shape = SubResource( 137 )
+
 [node name="Boss" type="Node2D" parent="gameport/root/playfield"]
-visible = false
 script = ExtResource( 5 )
 bullet_kit = ExtResource( 2 )
 bullet_kit_add = ExtResource( 12 )
@@ -2658,12 +3029,12 @@ player_path = NodePath("../Player")
 
 [node name="Hitbox" type="Area2D" parent="gameport/root/playfield/Boss"]
 position = Vector2( 500, 226 )
-collision_layer = 4
+collision_layer = 0
 collision_mask = 8
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Boss/Hitbox"]
-shape = SubResource( 51 )
+shape = SubResource( 143 )
 
 [node name="Sprite" type="Sprite" parent="gameport/root/playfield/Boss/Hitbox"]
 scale = Vector2( 0.15, 0.15 )
@@ -2671,16 +3042,58 @@ texture = ExtResource( 79 )
 
 [node name="BulletClear" type="Area2D" parent="gameport/root/playfield/Boss"]
 position = Vector2( 500, 500 )
-collision_layer = 0
+collision_layer = 32
 collision_mask = 2
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="gameport/root/playfield/Boss/BulletClear"]
-visible = false
 shape = SubResource( 51 )
 
 [node name="darkener" type="AnimationPlayer" parent="gameport/root/playfield/Boss"]
 anims/darken = SubResource( 67 )
+
+[node name="Dialogue" type="Node2D" parent="gameport/root/playfield/Boss"]
+script = ExtResource( 102 )
+dialogue_path = "res://examples/dialogue.txt"
+
+[node name="Marisa" type="Sprite" parent="gameport/root/playfield/Boss/Dialogue"]
+visible = false
+position = Vector2( 200, 620 )
+texture = ExtResource( 100 )
+region_enabled = true
+region_rect = Rect2( 400, 0, 400, 579 )
+
+[node name="Panel" type="Panel" parent="gameport/root/playfield/Boss/Dialogue"]
+visible = false
+margin_left = 250.0
+margin_top = 550.0
+margin_right = 850.0
+margin_bottom = 670.0
+custom_styles/panel = SubResource( 138 )
+
+[node name="MarisaCorner" type="Sprite" parent="gameport/root/playfield/Boss/Dialogue"]
+visible = false
+position = Vector2( 274, 547 )
+texture = ExtResource( 99 )
+
+[node name="HakkeroCorner" type="Sprite" parent="gameport/root/playfield/Boss/Dialogue"]
+visible = false
+position = Vector2( 247, 646 )
+rotation = -1.5708
+texture = ExtResource( 99 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="gameport/root/playfield/Boss/Dialogue"]
+margin_left = 266.0
+margin_top = 562.0
+margin_right = 836.0
+margin_bottom = 658.0
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 139 )
+scroll_active = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="gameport/root/playfield/Boss/Dialogue"]
+anims/RESET = SubResource( 140 )
+anims/ally = SubResource( 142 )
+anims/player = SubResource( 141 )
 
 [node name="Player" parent="gameport/root/playfield" instance=ExtResource( 16 )]
 position = Vector2( 500, 850 )
@@ -2694,11 +3107,11 @@ bus = "Music"
 
 [node name="cave_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
 stream = ExtResource( 36 )
-volume_db = -5.0
 bus = "Music"
 
 [node name="midboss_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
 stream = ExtResource( 88 )
+volume_db = 5.0
 bus = "Music"
 
 [node name="preboss_music" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
@@ -2712,6 +3125,7 @@ bus = "Music"
 
 [node name="boss_music_2" type="AudioStreamPlayer" parent="gameport/root/playfield/Music"]
 stream = ExtResource( 75 )
+volume_db = 5.0
 bus = "Music"
 
 [node name="UI" type="TextureRect" parent="."]
@@ -3043,7 +3457,7 @@ margin_top = -484.0
 margin_right = 210.0
 margin_bottom = -420.0
 custom_fonts/font = SubResource( 22 )
-text = "LUNATIC"
+text = "lunatic"
 align = 1
 valign = 1
 
@@ -3452,6 +3866,14 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
+[node name="Area2D" type="Area2D" parent="UI/high/topbar"]
+position = Vector2( 500, 159 )
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UI/high/topbar/Area2D"]
+shape = SubResource( 144 )
 
 [node name="pause" type="Control" parent="UI/high"]
 pause_mode = 2
@@ -3912,13 +4334,18 @@ stream = ExtResource( 94 )
 volume_db = -15.0
 bus = "SFX"
 
-[node name="note3" type="AudioStreamPlayer" parent="sfx"]
+[node name="pump" type="AudioStreamPlayer" parent="sfx"]
 stream = ExtResource( 1 )
-volume_db = -15.0
 bus = "SFX"
 
 [connection signal="animation_finished" from="gameport/root/background/AnimationPlayer" to="gameport/root/background" method="_on_AnimationPlayer_animation_finished"]
-[connection signal="area_shape_entered" from="gameport/root/playfield/Boss/Hitbox" to="gameport/root/playfield/Boss" method="_on_BulletClear_area_shape_entered"]
+[connection signal="area_shape_entered" from="gameport/root/playfield/Midboss/P" to="gameport/root/playfield/Midboss/P" method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="gameport/root/playfield/Midboss/D" to="gameport/root/playfield/Midboss/D" method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="gameport/root/playfield/Midboss/Pt" to="gameport/root/playfield/Midboss/Pt" method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="gameport/root/playfield/Midboss/LA" to="gameport/root/playfield/Midboss/LA" method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="gameport/root/playfield/Midboss/HG" to="gameport/root/playfield/Midboss/HG" method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="gameport/root/playfield/Midboss/SS" to="gameport/root/playfield/Midboss/SS" method="_on_area_shape_entered"]
+[connection signal="area_shape_entered" from="gameport/root/playfield/Boss/Hitbox" to="gameport/root/playfield/Boss" method="_on_area_shape_entered"]
 [connection signal="area_shape_entered" from="gameport/root/playfield/Boss/BulletClear" to="gameport/root/playfield/Boss" method="_on_BulletClear_area_shape_entered"]
 [connection signal="value_changed" from="UI/high/leftbar/healthbar/HP/healthbar" to="UI/high/leftbar/healthbar" method="_on_healthbar_value_changed"]
 [connection signal="value_changed" from="UI/high/topbar/bossbar" to="UI/high/topbar" method="_on_bossbar_value_changed"]

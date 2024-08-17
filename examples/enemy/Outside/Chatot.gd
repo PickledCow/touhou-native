@@ -39,7 +39,8 @@ func custom_action(t):
 	
 	var f = 60
 	
-	if t % f == 0 and position.y > 50 and position.x > 50.0 and position.x < 950.0 and start_direction == sign(velocity.x):
+	#if t % f == 0 and position.y > 50 and position.x > 50.0 and position.x < 950.0 and start_direction == sign(velocity.x):
+	if t == 60:
 		DefSys.sfx.play("note"+str(randi()%3+1))
 		var ar := randf()*TAU
 		var sr := 4.0
