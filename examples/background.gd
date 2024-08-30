@@ -5,13 +5,9 @@ var bg_phase = 0
 
 func _ready():
 	DefSys.background_controller = self
-	change_scale(DefSys.bg_scale)
-	if DefSys.is_3d:
-		bg = get_node("BG/Viewport/3dbg")
-		get_node("BG/Viewport/2dbg").queue_free()
-	else:
-		bg = get_node("BG/Viewport/2dbg")
-		get_node("BG/Viewport/3dbg").queue_free()
+	#change_scale(DefSys.bg_scale)
+	bg = get_node("2dbg")
+		#get_node("BG/Viewport/3dbg").queue_free()
 	#bg = DefSys.background_node.instance()
 	#$BG/Viewport.add_child(bg)
 	#$BG/Viewport.move_child(bg, 0)
@@ -20,7 +16,7 @@ func change_scale(sc: int):
 	var s = sc if DefSys.is_3d else 100
 	$BG.rect_size = Vector2(1064.0, 1064.0) * (s * 0.01)
 	$BG.rect_scale = Vector2(1.0, 1.0) / (s * 0.01)
-	$BG/Viewport.size = Vector2(1064.0, 1064.0) * (s * 0.01)
+	#$BG/Viewport.size = Vector2(1064.0, 1064.0) * (s * 0.01)
 	#$BG/Viewport/over.rect_scale = Vector2(1.0, 1.0) * (s * 0.01)
 	#$BG/Viewport/spriteover.scale = Vector2(1.0, 1.0) * (s * 0.01)
 

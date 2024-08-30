@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://examples/player/player.gd" type="Script" id=1]
 [ext_resource path="res://examples/player/p1/pl.png" type="Texture" id=2]
@@ -34,6 +34,166 @@ tracks/1/keys = {
 "points": PoolRealArray( 1.25, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0 )
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("L_copy/focus:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("L_copy/focus:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1.25, 1.25 ) ]
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("L_copy/focus:scale:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("L_copy/focus:scale:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("L_copy/focus2:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("L_copy/focus:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("L_copy/focus2:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("R_copy/focus:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("R_copy/focus2:editor_description")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ "" ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("R_copy/focus2:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("R_copy/focus2:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("R_copy/focus:modulate")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/14/type = "bezier"
+tracks/14/path = NodePath("R_copy/focus:scale:x")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"points": PoolRealArray( 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/15/type = "bezier"
+tracks/15/path = NodePath("R_copy/focus:scale:y")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"points": PoolRealArray( 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
 
 [sub_resource type="Animation" id=8]
 resource_name = "focus"
@@ -60,7 +220,7 @@ tracks/1/enabled = true
 tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
+"update": 0,
 "values": [ true ]
 }
 tracks/2/type = "value"
@@ -85,27 +245,163 @@ tracks/3/keys = {
 "points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.025, -1, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.13, 0.25 )
 }
-tracks/4/type = "bezier"
-tracks/4/path = NodePath("focus:scale:y")
+tracks/4/type = "value"
+tracks/4/path = NodePath("focus2:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.025, -1, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.13, 0.25 )
+"times": PoolRealArray( 0, 0.03 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
-tracks/5/type = "value"
-tracks/5/path = NodePath("focus2:modulate")
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("focus:scale:y")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.025, -1, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.25 )
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("L_copy/focus:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.02 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/7/type = "bezier"
+tracks/7/path = NodePath("L_copy/focus:scale:x")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.25 )
+}
+tracks/8/type = "bezier"
+tracks/8/path = NodePath("L_copy/focus:scale:y")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.25 )
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("L_copy/focus2:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
 "times": PoolRealArray( 0, 0.03 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("L_copy/focus:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("L_copy/focus2:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("R_copy/focus:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("R_copy/focus2:modulate")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0, 0.03 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("R_copy/focus2:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("R_copy/focus:modulate")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0, 0.02 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/16/type = "bezier"
+tracks/16/path = NodePath("R_copy/focus:scale:x")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.25 )
+}
+tracks/17/type = "bezier"
+tracks/17/path = NodePath("R_copy/focus:scale:y")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.05, 0, 2, -0.075, 0, 0.05, 0, 1.25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.25 )
 }
 
 [sub_resource type="CircleShape2D" id=3]
@@ -119,6 +415,169 @@ radius = 32.0
 
 [sub_resource type="CircleShape2D" id=5]
 radius = 10000.0
+
+[sub_resource type="Animation" id=9]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("options:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "d2l"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -180, -0.25, 0, 0.5, 0, -90, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("options:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -180, -0.25, 0, 0.5, 0, -90, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "d2r"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 180, -0.25, 0, 0.5, 0, 90, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("options:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 180, -0.25, 0, 0.5, 0, 90, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "l2r"
+length = 1.5
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -90, -0.25, 0, 0.75, 0, 90, -0.75, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.5 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("options:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -90, -0.25, 0, 0.75, 0, 90, -0.75, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.5 )
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "u2d"
+length = 1.5
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.75, 0, 180, -0.75, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.5 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("options:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.75, 0, 180, -0.75, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.5 )
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "u2l"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.5, 0, -90, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("options:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.5, 0, -90, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "u2r"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.5, 0, 90, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("options:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.5, 0, 90, -0.5, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
 
 [node name="Player" type="Area2D"]
 collision_mask = 2
@@ -137,6 +596,509 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="L_copy" type="Node2D" parent="."]
+visible = false
+position = Vector2( -1000, 0 )
+
+[node name="Sprite" type="Sprite" parent="L_copy"]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus2" type="Sprite" parent="L_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+
+[node name="focus" type="Sprite" parent="L_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="options" type="Node2D" parent="L_copy"]
+z_index = -1
+
+[node name="0" type="Sprite" parent="L_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="L_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="L_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="L_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="R_copy" type="Node2D" parent="."]
+visible = false
+position = Vector2( 1000, 0 )
+
+[node name="Sprite" type="Sprite" parent="R_copy"]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus2" type="Sprite" parent="R_copy"]
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="focus" type="Sprite" parent="R_copy"]
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="options" type="Node2D" parent="R_copy"]
+z_index = -1
+
+[node name="0" type="Sprite" parent="R_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="R_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="R_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="R_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="U_copy" type="Node2D" parent="."]
+visible = false
+position = Vector2( 0, -1000 )
+
+[node name="Sprite" type="Sprite" parent="U_copy"]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus2" type="Sprite" parent="U_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="focus" type="Sprite" parent="U_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="options" type="Node2D" parent="U_copy"]
+z_index = -1
+
+[node name="0" type="Sprite" parent="U_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="U_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="U_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="U_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="D_copy" type="Node2D" parent="."]
+visible = false
+position = Vector2( 0, 1000 )
+
+[node name="Sprite" type="Sprite" parent="D_copy"]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus2" type="Sprite" parent="D_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="focus" type="Sprite" parent="D_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="options" type="Node2D" parent="D_copy"]
+z_index = -1
+
+[node name="0" type="Sprite" parent="D_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="D_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="D_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="D_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="LU_copy" type="Node2D" parent="."]
+visible = false
+position = Vector2( -1000, -1000 )
+
+[node name="Sprite" type="Sprite" parent="LU_copy"]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus2" type="Sprite" parent="LU_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="focus" type="Sprite" parent="LU_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="options" type="Node2D" parent="LU_copy"]
+z_index = -1
+
+[node name="0" type="Sprite" parent="LU_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="LU_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="LU_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="LU_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="RU_copy" type="Node2D" parent="."]
+visible = false
+position = Vector2( 1000, -1000 )
+
+[node name="Sprite" type="Sprite" parent="RU_copy"]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus2" type="Sprite" parent="RU_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="focus" type="Sprite" parent="RU_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="options" type="Node2D" parent="RU_copy"]
+z_index = -1
+
+[node name="0" type="Sprite" parent="RU_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="RU_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="RU_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="RU_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="LD_copy" type="Node2D" parent="."]
+visible = false
+position = Vector2( -1000, 1000 )
+
+[node name="Sprite" type="Sprite" parent="LD_copy"]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus2" type="Sprite" parent="LD_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="focus" type="Sprite" parent="LD_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="options" type="Node2D" parent="LD_copy"]
+z_index = -1
+
+[node name="0" type="Sprite" parent="LD_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="LD_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="LD_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="LD_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="RD_copy" type="Node2D" parent="."]
+visible = false
+position = Vector2( 1000, 1000 )
+
+[node name="Sprite" type="Sprite" parent="RD_copy"]
+scale = Vector2( 0.75, 0.75 )
+z_index = -10
+texture = ExtResource( 2 )
+hframes = 4
+vframes = 2
+region_enabled = true
+region_rect = Rect2( 0, 0, 512, 384 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="focus2" type="Sprite" parent="RD_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="focus" type="Sprite" parent="RD_copy"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
+scale = Vector2( 1.25, 1.25 )
+z_index = 30
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="options" type="Node2D" parent="RD_copy"]
+z_index = -1
+
+[node name="0" type="Sprite" parent="RD_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="1" type="Sprite" parent="RD_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="2" type="Sprite" parent="RD_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="3" type="Sprite" parent="RD_copy/options"]
+scale = Vector2( 0.5, 0.5 )
+region_enabled = true
+region_rect = Rect2( 0, 384, 64, 64 )
+
+[node name="focusanimation" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 7 )
+anims/focus = SubResource( 8 )
+
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.75, 0.75 )
 z_index = -10
@@ -149,12 +1111,9 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="focusanimation" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 7 )
-anims/focus = SubResource( 8 )
-
 [node name="focus2" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
 scale = Vector2( 1.25, 1.25 )
 z_index = 30
 texture = ExtResource( 3 )
@@ -166,14 +1125,12 @@ __meta__ = {
 
 [node name="focus" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.501961 )
 scale = Vector2( 1.25, 1.25 )
 z_index = 30
 texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 128, 128 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="grazebox" type="Area2D" parent="."]
 collision_layer = 0
@@ -252,10 +1209,18 @@ scale = Vector2( 0.5, 0.5 )
 region_enabled = true
 region_rect = Rect2( 0, 384, 64, 64 )
 
+[node name="rotate" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 9 )
+anims/d2l = SubResource( 10 )
+anims/d2r = SubResource( 11 )
+anims/l2r = SubResource( 12 )
+anims/u2d = SubResource( 13 )
+anims/u2l = SubResource( 14 )
+anims/u2r = SubResource( 15 )
+
 [connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
 [connection signal="area_shape_entered" from="grazebox" to="." method="_on_grazebox_area_shape_entered"]
 [connection signal="area_shape_entered" from="bulletclearbox" to="." method="_on_bulletclearbox_area_shape_entered"]
 [connection signal="area_shape_entered" from="itembox" to="." method="_on_itembox_area_shape_entered"]
-[connection signal="area_shape_entered" from="enemybox" to="." method="_on_enemybox_area_shape_entered"]
 [connection signal="area_shape_entered" from="itemcollection" to="." method="_on_itemcollection_area_shape_entered"]
 [connection signal="area_shape_entered" from="itempoc" to="." method="_on_itempoc_area_shape_entered"]

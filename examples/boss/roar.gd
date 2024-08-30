@@ -54,4 +54,4 @@ func create_bullet_clear(bullet_id):
 func _on_playerbulletclear_area_shape_entered(area_rid, _area, area_shape_index, _local_shape_index):
 	var bullet_id = Bullets.get_bullet_from_shape(area_rid, area_shape_index)
 	create_bullet_clear(bullet_id)
-	call_deferred("delete_bullet", bullet_id)
+#	call_deferred("delete_bullet", bullet_id)

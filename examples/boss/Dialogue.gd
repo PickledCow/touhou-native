@@ -66,6 +66,11 @@ func _process(delta):
 				skippable = d[1] == 1
 				dialogue_timer = d[2]
 				
+				if current_speaker == 4:
+					get_node("../AnimationPlayer").play("Entry")
+				elif current_speaker == 5:
+					get_node("../AnimationPlayer").play("Exit")
+				
 				$RichTextLabel.text = d[3]
 			else:
 				$AnimationPlayer.play_backwards("player")

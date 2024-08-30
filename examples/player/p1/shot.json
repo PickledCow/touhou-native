@@ -74,7 +74,7 @@
             {
                 "fire_rate": 6,
                 "start_delay": 0,
-                "damage": 50,
+                "damage": 35,
                 "option": 1,
                 "offset_x": -2.2322071595,
                 "offset_y": -31.9220496083,
@@ -90,7 +90,7 @@
             {
                 "fire_rate": 6,
                 "start_delay": 0,
-                "damage": 50,
+                "damage": 35,
                 "option": 2,
                 "offset_x": 2.2322071595,
                 "offset_y": -31.9220496083,
@@ -223,7 +223,7 @@
             {
                 "fire_rate": 6,
                 "start_delay": 4,
-                "damage": 16,
+                "damage": 16000,
                 "option": 4,
                 "offset_x": 0,
                 "offset_y": -32,

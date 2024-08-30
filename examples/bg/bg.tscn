@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=2]
+[gd_scene load_steps=183 format=2]
 
 [ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=1]
 [ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=2]
@@ -210,7 +210,7 @@ albedo_color = Color( 1, 0.972549, 0.952941, 1 )
 roughness = 0.75
 
 [sub_resource type="ShaderMaterial" id=244]
-render_priority = -113
+render_priority = -65
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -224,68 +224,308 @@ shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
 [sub_resource type="ShaderMaterial" id=245]
-render_priority = -114
+render_priority = -66
 next_pass = SubResource( 244 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.584317
-shader_param/max_density = 7.00061
-shader_param/altitude = 1512.8
-shader_param/color = Color( 0.818946, 0.613978, 0.545655, 1 )
+shader_param/min_density = 0.604619
+shader_param/max_density = 6.2393
+shader_param/altitude = 1503.05
+shader_param/color = Color( 0.798703, 0.570819, 0.494857, 1 )
 shader_param/detail_noise = true
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
 [sub_resource type="ShaderMaterial" id=246]
-render_priority = -115
+render_priority = -67
 next_pass = SubResource( 245 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.558381
-shader_param/max_density = 7.9732
-shader_param/altitude = 1525.6
-shader_param/color = Color( 0.843887, 0.667155, 0.608244, 1 )
+shader_param/min_density = 0.598248
+shader_param/max_density = 6.47821
+shader_param/altitude = 1506.1
+shader_param/color = Color( 0.805144, 0.584552, 0.511021, 1 )
 shader_param/detail_noise = true
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
 [sub_resource type="ShaderMaterial" id=247]
-render_priority = -116
+render_priority = -68
 next_pass = SubResource( 246 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.533919
-shader_param/max_density = 8.89052
-shader_param/altitude = 1538.4
-shader_param/color = Color( 0.86698, 0.716392, 0.666196, 1 )
-shader_param/detail_noise = false
+shader_param/min_density = 0.591897
+shader_param/max_density = 6.71637
+shader_param/altitude = 1509.14
+shader_param/color = Color( 0.81148, 0.598062, 0.526922, 1 )
+shader_param/detail_noise = true
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
 [sub_resource type="ShaderMaterial" id=248]
-render_priority = -117
+render_priority = -69
 next_pass = SubResource( 247 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.511616
-shader_param/max_density = 9.72689
-shader_param/altitude = 1551.2
-shader_param/color = Color( 0.888227, 0.761691, 0.719512, 1 )
-shader_param/detail_noise = false
+shader_param/min_density = 0.585577
+shader_param/max_density = 6.95338
+shader_param/altitude = 1512.19
+shader_param/color = Color( 0.817712, 0.611348, 0.542559, 1 )
+shader_param/detail_noise = true
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
 [sub_resource type="ShaderMaterial" id=249]
-render_priority = -118
+render_priority = -70
 next_pass = SubResource( 248 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.579297
+shader_param/max_density = 7.18888
+shader_param/altitude = 1515.24
+shader_param/color = Color( 0.823839, 0.624411, 0.557934, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=250]
+render_priority = -71
+next_pass = SubResource( 249 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.573067
+shader_param/max_density = 7.42248
+shader_param/altitude = 1518.29
+shader_param/color = Color( 0.829861, 0.637251, 0.573047, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=251]
+render_priority = -72
+next_pass = SubResource( 250 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.566898
+shader_param/max_density = 7.65382
+shader_param/altitude = 1521.33
+shader_param/color = Color( 0.835778, 0.649867, 0.587896, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=252]
+render_priority = -73
+next_pass = SubResource( 251 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.560799
+shader_param/max_density = 7.88253
+shader_param/altitude = 1524.38
+shader_param/color = Color( 0.841591, 0.66226, 0.602483, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=253]
+render_priority = -74
+next_pass = SubResource( 252 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.55478
+shader_param/max_density = 8.10825
+shader_param/altitude = 1527.43
+shader_param/color = Color( 0.847299, 0.67443, 0.616806, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=254]
+render_priority = -75
+next_pass = SubResource( 253 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.54885
+shader_param/max_density = 8.33061
+shader_param/altitude = 1530.48
+shader_param/color = Color( 0.852902, 0.686376, 0.630867, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=255]
+render_priority = -76
+next_pass = SubResource( 254 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.54302
+shader_param/max_density = 8.54926
+shader_param/altitude = 1533.52
+shader_param/color = Color( 0.858401, 0.6981, 0.644665, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=256]
+render_priority = -77
+next_pass = SubResource( 255 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.537297
+shader_param/max_density = 8.76385
+shader_param/altitude = 1536.57
+shader_param/color = Color( 0.863795, 0.7096, 0.658201, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=257]
+render_priority = -78
+next_pass = SubResource( 256 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.531692
+shader_param/max_density = 8.97405
+shader_param/altitude = 1539.62
+shader_param/color = Color( 0.869084, 0.720876, 0.671473, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=258]
+render_priority = -79
+next_pass = SubResource( 257 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.526213
+shader_param/max_density = 9.17952
+shader_param/altitude = 1542.67
+shader_param/color = Color( 0.874268, 0.731929, 0.684483, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=259]
+render_priority = -80
+next_pass = SubResource( 258 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.520869
+shader_param/max_density = 9.37992
+shader_param/altitude = 1545.71
+shader_param/color = Color( 0.879347, 0.742759, 0.69723, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=260]
+render_priority = -81
+next_pass = SubResource( 259 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.515668
+shader_param/max_density = 9.57495
+shader_param/altitude = 1548.76
+shader_param/color = Color( 0.884322, 0.753366, 0.709714, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=261]
+render_priority = -82
+next_pass = SubResource( 260 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.510619
+shader_param/max_density = 9.76428
+shader_param/altitude = 1551.81
+shader_param/color = Color( 0.889192, 0.76375, 0.721935, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=262]
+render_priority = -83
+next_pass = SubResource( 261 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.50573
+shader_param/max_density = 9.94763
+shader_param/altitude = 1554.86
+shader_param/color = Color( 0.893958, 0.77391, 0.733893, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=263]
+render_priority = -84
+next_pass = SubResource( 262 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.501008
+shader_param/max_density = 10.1247
+shader_param/altitude = 1557.9
+shader_param/color = Color( 0.898618, 0.783846, 0.745589, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=264]
+render_priority = -85
+next_pass = SubResource( 263 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.496461
+shader_param/max_density = 10.2952
+shader_param/altitude = 1560.95
+shader_param/color = Color( 0.903174, 0.79356, 0.757022, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=265]
+render_priority = -86
+next_pass = SubResource( 264 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -298,69 +538,309 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=250]
-render_priority = -119
-next_pass = SubResource( 249 )
+[sub_resource type="ShaderMaterial" id=266]
+render_priority = -87
+next_pass = SubResource( 265 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.475908
-shader_param/max_density = 11.066
-shader_param/altitude = 1576.8
-shader_param/color = Color( 0.925177, 0.840471, 0.812235, 1 )
+shader_param/min_density = 0.487922
+shader_param/max_density = 10.6154
+shader_param/altitude = 1567.05
+shader_param/color = Color( 0.911972, 0.812317, 0.779099, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=251]
-render_priority = -120
-next_pass = SubResource( 250 )
+[sub_resource type="ShaderMaterial" id=267]
+render_priority = -88
+next_pass = SubResource( 266 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.463502
-shader_param/max_density = 11.5312
-shader_param/altitude = 1589.6
-shader_param/color = Color( 0.94088, 0.873952, 0.851643, 1 )
+shader_param/min_density = 0.483942
+shader_param/max_density = 10.7647
+shader_param/altitude = 1570.1
+shader_param/color = Color( 0.916213, 0.821361, 0.789743, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=252]
-render_priority = -121
-next_pass = SubResource( 251 )
+[sub_resource type="ShaderMaterial" id=268]
+render_priority = -89
+next_pass = SubResource( 267 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.455227
-shader_param/max_density = 11.8415
-shader_param/altitude = 1602.4
-shader_param/color = Color( 0.954736, 0.903495, 0.886414, 1 )
+shader_param/min_density = 0.480165
+shader_param/max_density = 10.9063
+shader_param/altitude = 1573.14
+shader_param/color = Color( 0.92035, 0.830181, 0.800124, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=253]
-render_priority = -122
-next_pass = SubResource( 252 )
+[sub_resource type="ShaderMaterial" id=269]
+render_priority = -90
+next_pass = SubResource( 268 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.451316
-shader_param/max_density = 11.9882
-shader_param/altitude = 1615.2
-shader_param/color = Color( 0.966745, 0.929098, 0.916549, 1 )
+shader_param/min_density = 0.476596
+shader_param/max_density = 11.0402
+shader_param/altitude = 1576.19
+shader_param/color = Color( 0.924383, 0.838778, 0.810243, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=254]
-render_priority = -123
-next_pass = SubResource( 253 )
+[sub_resource type="ShaderMaterial" id=270]
+render_priority = -91
+next_pass = SubResource( 269 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.473241
+shader_param/max_density = 11.166
+shader_param/altitude = 1579.24
+shader_param/color = Color( 0.92831, 0.847152, 0.820099, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=271]
+render_priority = -92
+next_pass = SubResource( 270 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.470105
+shader_param/max_density = 11.2836
+shader_param/altitude = 1582.29
+shader_param/color = Color( 0.932133, 0.855302, 0.829692, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=272]
+render_priority = -93
+next_pass = SubResource( 271 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.467193
+shader_param/max_density = 11.3928
+shader_param/altitude = 1585.33
+shader_param/color = Color( 0.935851, 0.863229, 0.839022, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=273]
+render_priority = -94
+next_pass = SubResource( 272 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.46451
+shader_param/max_density = 11.4934
+shader_param/altitude = 1588.38
+shader_param/color = Color( 0.939464, 0.870933, 0.848089, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=274]
+render_priority = -95
+next_pass = SubResource( 273 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.46206
+shader_param/max_density = 11.5852
+shader_param/altitude = 1591.43
+shader_param/color = Color( 0.942973, 0.878414, 0.856894, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=275]
+render_priority = -96
+next_pass = SubResource( 274 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.459847
+shader_param/max_density = 11.6682
+shader_param/altitude = 1594.48
+shader_param/color = Color( 0.946377, 0.885671, 0.865435, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=276]
+render_priority = -97
+next_pass = SubResource( 275 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.457875
+shader_param/max_density = 11.7422
+shader_param/altitude = 1597.52
+shader_param/color = Color( 0.949676, 0.892705, 0.873714, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=277]
+render_priority = -98
+next_pass = SubResource( 276 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.456146
+shader_param/max_density = 11.807
+shader_param/altitude = 1600.57
+shader_param/color = Color( 0.95287, 0.899515, 0.88173, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=278]
+render_priority = -99
+next_pass = SubResource( 277 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.454664
+shader_param/max_density = 11.8626
+shader_param/altitude = 1603.62
+shader_param/color = Color( 0.95596, 0.906103, 0.889484, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=279]
+render_priority = -100
+next_pass = SubResource( 278 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.453431
+shader_param/max_density = 11.9088
+shader_param/altitude = 1606.67
+shader_param/color = Color( 0.958945, 0.912467, 0.896974, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=280]
+render_priority = -101
+next_pass = SubResource( 279 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.452448
+shader_param/max_density = 11.9457
+shader_param/altitude = 1609.71
+shader_param/color = Color( 0.961825, 0.918608, 0.904202, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=281]
+render_priority = -102
+next_pass = SubResource( 280 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.451718
+shader_param/max_density = 11.9731
+shader_param/altitude = 1612.76
+shader_param/color = Color( 0.9646, 0.924525, 0.911166, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=282]
+render_priority = -103
+next_pass = SubResource( 281 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.451241
+shader_param/max_density = 11.991
+shader_param/altitude = 1615.81
+shader_param/color = Color( 0.967271, 0.930219, 0.917868, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=283]
+render_priority = -104
+next_pass = SubResource( 282 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.451018
+shader_param/max_density = 11.9993
+shader_param/altitude = 1618.86
+shader_param/color = Color( 0.969837, 0.93569, 0.924307, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=284]
+render_priority = -105
+next_pass = SubResource( 283 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.45105
+shader_param/max_density = 11.9981
+shader_param/altitude = 1621.9
+shader_param/color = Color( 0.972298, 0.940937, 0.930484, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=285]
+render_priority = -106
+next_pass = SubResource( 284 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.451336
+shader_param/max_density = 11.9874
+shader_param/altitude = 1624.95
+shader_param/color = Color( 0.974655, 0.945962, 0.936397, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=286]
+render_priority = -107
+next_pass = SubResource( 285 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -373,69 +853,309 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=255]
+[sub_resource type="ShaderMaterial" id=287]
+render_priority = -108
+next_pass = SubResource( 286 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.45267
+shader_param/max_density = 11.9374
+shader_param/altitude = 1631.05
+shader_param/color = Color( 0.979053, 0.95534, 0.947436, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=288]
+render_priority = -109
+next_pass = SubResource( 287 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.453716
+shader_param/max_density = 11.8982
+shader_param/altitude = 1634.1
+shader_param/color = Color( 0.981096, 0.959695, 0.952561, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=289]
+render_priority = -110
+next_pass = SubResource( 288 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.455012
+shader_param/max_density = 11.8496
+shader_param/altitude = 1637.14
+shader_param/color = Color( 0.983033, 0.963826, 0.957423, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=290]
+render_priority = -111
+next_pass = SubResource( 289 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.456556
+shader_param/max_density = 11.7917
+shader_param/altitude = 1640.19
+shader_param/color = Color( 0.984866, 0.967733, 0.962022, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=291]
+render_priority = -112
+next_pass = SubResource( 290 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.458345
+shader_param/max_density = 11.7245
+shader_param/altitude = 1643.24
+shader_param/color = Color( 0.986594, 0.971418, 0.966359, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=292]
+render_priority = -113
+next_pass = SubResource( 291 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.460378
+shader_param/max_density = 11.6483
+shader_param/altitude = 1646.29
+shader_param/color = Color( 0.988218, 0.974879, 0.970433, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=293]
+render_priority = -114
+next_pass = SubResource( 292 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.462651
+shader_param/max_density = 11.5631
+shader_param/altitude = 1649.33
+shader_param/color = Color( 0.989736, 0.978117, 0.974244, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=294]
+render_priority = -115
+next_pass = SubResource( 293 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.465159
+shader_param/max_density = 11.469
+shader_param/altitude = 1652.38
+shader_param/color = Color( 0.99115, 0.981131, 0.977792, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=295]
+render_priority = -116
+next_pass = SubResource( 294 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.4679
+shader_param/max_density = 11.3663
+shader_param/altitude = 1655.43
+shader_param/color = Color( 0.992459, 0.983922, 0.981077, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=296]
+render_priority = -117
+next_pass = SubResource( 295 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.470868
+shader_param/max_density = 11.255
+shader_param/altitude = 1658.48
+shader_param/color = Color( 0.993664, 0.98649, 0.984099, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=297]
+render_priority = -118
+next_pass = SubResource( 296 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.474059
+shader_param/max_density = 11.1353
+shader_param/altitude = 1661.52
+shader_param/color = Color( 0.994763, 0.988835, 0.986859, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=298]
+render_priority = -119
+next_pass = SubResource( 297 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.477468
+shader_param/max_density = 11.0074
+shader_param/altitude = 1664.57
+shader_param/color = Color( 0.995758, 0.990956, 0.989356, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=299]
+render_priority = -120
+next_pass = SubResource( 298 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.48109
+shader_param/max_density = 10.8716
+shader_param/altitude = 1667.62
+shader_param/color = Color( 0.996649, 0.992854, 0.99159, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=300]
+render_priority = -121
+next_pass = SubResource( 299 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.484918
+shader_param/max_density = 10.7281
+shader_param/altitude = 1670.67
+shader_param/color = Color( 0.997434, 0.994529, 0.993561, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=301]
+render_priority = -122
+next_pass = SubResource( 300 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.488947
+shader_param/max_density = 10.577
+shader_param/altitude = 1673.71
+shader_param/color = Color( 0.998115, 0.995981, 0.995269, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=302]
+render_priority = -123
+next_pass = SubResource( 301 )
+shader = ExtResource( 27 )
+shader_param/seed = 100.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.49317
+shader_param/max_density = 10.4186
+shader_param/altitude = 1676.76
+shader_param/color = Color( 0.998691, 0.997209, 0.996715, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = false
+
+[sub_resource type="ShaderMaterial" id=303]
 render_priority = -124
-next_pass = SubResource( 254 )
+next_pass = SubResource( 302 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.456894
-shader_param/max_density = 11.779
-shader_param/altitude = 1640.8
-shader_param/color = Color( 0.98522, 0.968488, 0.962911, 1 )
+shader_param/min_density = 0.497581
+shader_param/max_density = 10.2532
+shader_param/altitude = 1679.81
+shader_param/color = Color( 0.999162, 0.998214, 0.997897, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=256]
+[sub_resource type="ShaderMaterial" id=304]
 render_priority = -125
-next_pass = SubResource( 255 )
+next_pass = SubResource( 303 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.466228
-shader_param/max_density = 11.429
-shader_param/altitude = 1653.6
-shader_param/color = Color( 0.991686, 0.982274, 0.979137, 1 )
+shader_param/min_density = 0.502172
+shader_param/max_density = 10.081
+shader_param/altitude = 1682.86
+shader_param/color = Color( 0.999529, 0.998995, 0.998817, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=257]
+[sub_resource type="ShaderMaterial" id=305]
 render_priority = -126
-next_pass = SubResource( 256 )
+next_pass = SubResource( 304 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.479616
-shader_param/max_density = 10.9269
-shader_param/altitude = 1666.4
-shader_param/color = Color( 0.996305, 0.992122, 0.990728, 1 )
+shader_param/min_density = 0.506937
+shader_param/max_density = 9.90237
+shader_param/altitude = 1685.9
+shader_param/color = Color( 0.999791, 0.999553, 0.999474, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=258]
+[sub_resource type="ShaderMaterial" id=306]
 render_priority = -127
-next_pass = SubResource( 257 )
+next_pass = SubResource( 305 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.496684
-shader_param/max_density = 10.2868
-shader_param/altitude = 1679.2
-shader_param/color = Color( 0.999076, 0.998031, 0.997682, 1 )
+shader_param/min_density = 0.511867
+shader_param/max_density = 9.7175
+shader_param/altitude = 1688.95
+shader_param/color = Color( 0.999948, 0.999888, 0.999869, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=259]
+[sub_resource type="ShaderMaterial" id=307]
 render_priority = -128
-next_pass = SubResource( 258 )
+next_pass = SubResource( 306 )
 shader = ExtResource( 27 )
 shader_param/seed = 100.0
 shader_param/speed = Vector2( 0, 0 )
@@ -448,8 +1168,8 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = true
 shader_param/lower_enabled = false
 
-[sub_resource type="ShaderMaterial" id=260]
-render_priority = -113
+[sub_resource type="ShaderMaterial" id=308]
+render_priority = -65
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -462,69 +1182,309 @@ shader_param/detail_noise = true
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=261]
-render_priority = -114
-next_pass = SubResource( 260 )
+[sub_resource type="ShaderMaterial" id=309]
+render_priority = -66
+next_pass = SubResource( 308 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.498834
-shader_param/max_density = 7.00061
-shader_param/altitude = 1504.27
-shader_param/color = Color( 1, 0.900933, 0.801865, 1 )
+shader_param/min_density = 0.497439
+shader_param/max_density = 6.2393
+shader_param/altitude = 1501.02
+shader_param/color = Color( 1, 0.889857, 0.779712, 1 )
 shader_param/detail_noise = true
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=262]
-render_priority = -115
-next_pass = SubResource( 261 )
+[sub_resource type="ShaderMaterial" id=310]
+render_priority = -67
+next_pass = SubResource( 309 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.500618
-shader_param/max_density = 7.9732
-shader_param/altitude = 1508.53
-shader_param/color = Color( 1, 0.91458, 0.829159, 1 )
+shader_param/min_density = 0.497877
+shader_param/max_density = 6.47821
+shader_param/altitude = 1502.03
+shader_param/color = Color( 1, 0.893381, 0.786761, 1 )
 shader_param/detail_noise = true
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=263]
-render_priority = -116
-next_pass = SubResource( 262 )
+[sub_resource type="ShaderMaterial" id=311]
+render_priority = -68
+next_pass = SubResource( 310 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.502299
-shader_param/max_density = 8.89052
-shader_param/altitude = 1512.8
-shader_param/color = Color( 1, 0.927216, 0.854431, 1 )
-shader_param/detail_noise = false
+shader_param/min_density = 0.498313
+shader_param/max_density = 6.71637
+shader_param/altitude = 1503.05
+shader_param/color = Color( 1, 0.896848, 0.793695, 1 )
+shader_param/detail_noise = true
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=264]
-render_priority = -117
-next_pass = SubResource( 263 )
+[sub_resource type="ShaderMaterial" id=312]
+render_priority = -69
+next_pass = SubResource( 311 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.503833
-shader_param/max_density = 9.72689
-shader_param/altitude = 1517.07
-shader_param/color = Color( 1, 0.938841, 0.877682, 1 )
+shader_param/min_density = 0.498748
+shader_param/max_density = 6.95338
+shader_param/altitude = 1504.06
+shader_param/color = Color( 1, 0.900258, 0.800515, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=313]
+render_priority = -70
+next_pass = SubResource( 312 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.49918
+shader_param/max_density = 7.18888
+shader_param/altitude = 1505.08
+shader_param/color = Color( 1, 0.90361, 0.80722, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=314]
+render_priority = -71
+next_pass = SubResource( 313 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.499608
+shader_param/max_density = 7.42248
+shader_param/altitude = 1506.1
+shader_param/color = Color( 1, 0.906905, 0.81381, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=315]
+render_priority = -72
+next_pass = SubResource( 314 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.500032
+shader_param/max_density = 7.65382
+shader_param/altitude = 1507.11
+shader_param/color = Color( 1, 0.910143, 0.820286, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=316]
+render_priority = -73
+next_pass = SubResource( 315 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.500451
+shader_param/max_density = 7.88253
+shader_param/altitude = 1508.13
+shader_param/color = Color( 1, 0.913324, 0.826647, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=317]
+render_priority = -74
+next_pass = SubResource( 316 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.500865
+shader_param/max_density = 8.10825
+shader_param/altitude = 1509.14
+shader_param/color = Color( 1, 0.916447, 0.832893, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=318]
+render_priority = -75
+next_pass = SubResource( 317 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.501273
+shader_param/max_density = 8.33061
+shader_param/altitude = 1510.16
+shader_param/color = Color( 1, 0.919513, 0.839025, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=319]
+render_priority = -76
+next_pass = SubResource( 318 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.501674
+shader_param/max_density = 8.54926
+shader_param/altitude = 1511.17
+shader_param/color = Color( 1, 0.922521, 0.845042, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=320]
+render_priority = -77
+next_pass = SubResource( 319 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.502067
+shader_param/max_density = 8.76385
+shader_param/altitude = 1512.19
+shader_param/color = Color( 1, 0.925473, 0.850945, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=321]
+render_priority = -78
+next_pass = SubResource( 320 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.502452
+shader_param/max_density = 8.97405
+shader_param/altitude = 1513.21
+shader_param/color = Color( 1, 0.928367, 0.856733, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=322]
+render_priority = -79
+next_pass = SubResource( 321 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.502829
+shader_param/max_density = 9.17952
+shader_param/altitude = 1514.22
+shader_param/color = Color( 1, 0.931203, 0.862406, 1 )
+shader_param/detail_noise = true
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=323]
+render_priority = -80
+next_pass = SubResource( 322 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.503197
+shader_param/max_density = 9.37992
+shader_param/altitude = 1515.24
+shader_param/color = Color( 1, 0.933983, 0.867965, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=265]
-render_priority = -118
-next_pass = SubResource( 264 )
+[sub_resource type="ShaderMaterial" id=324]
+render_priority = -81
+next_pass = SubResource( 323 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.503554
+shader_param/max_density = 9.57495
+shader_param/altitude = 1516.25
+shader_param/color = Color( 1, 0.936705, 0.873409, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=325]
+render_priority = -82
+next_pass = SubResource( 324 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.503901
+shader_param/max_density = 9.76428
+shader_param/altitude = 1517.27
+shader_param/color = Color( 1, 0.93937, 0.878739, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=326]
+render_priority = -83
+next_pass = SubResource( 325 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.504237
+shader_param/max_density = 9.94763
+shader_param/altitude = 1518.29
+shader_param/color = Color( 1, 0.941977, 0.883954, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=327]
+render_priority = -84
+next_pass = SubResource( 326 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.504562
+shader_param/max_density = 10.1247
+shader_param/altitude = 1519.3
+shader_param/color = Color( 1, 0.944527, 0.889054, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=328]
+render_priority = -85
+next_pass = SubResource( 327 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.504875
+shader_param/max_density = 10.2952
+shader_param/altitude = 1520.32
+shader_param/color = Color( 1, 0.94702, 0.89404, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=329]
+render_priority = -86
+next_pass = SubResource( 328 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -537,69 +1497,309 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=266]
-render_priority = -119
-next_pass = SubResource( 265 )
+[sub_resource type="ShaderMaterial" id=330]
+render_priority = -87
+next_pass = SubResource( 329 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.506288
-shader_param/max_density = 11.066
-shader_param/altitude = 1525.6
-shader_param/color = Color( 1, 0.959059, 0.918118, 1 )
+shader_param/min_density = 0.505462
+shader_param/max_density = 10.6154
+shader_param/altitude = 1522.35
+shader_param/color = Color( 1, 0.951834, 0.903667, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=267]
-render_priority = -120
-next_pass = SubResource( 266 )
+[sub_resource type="ShaderMaterial" id=331]
+render_priority = -88
+next_pass = SubResource( 330 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.507141
-shader_param/max_density = 11.5312
-shader_param/altitude = 1529.87
-shader_param/color = Color( 1, 0.967652, 0.935303, 1 )
+shader_param/min_density = 0.505735
+shader_param/max_density = 10.7647
+shader_param/altitude = 1523.37
+shader_param/color = Color( 1, 0.954155, 0.908309, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=268]
-render_priority = -121
-next_pass = SubResource( 267 )
+[sub_resource type="ShaderMaterial" id=332]
+render_priority = -89
+next_pass = SubResource( 331 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.507709
-shader_param/max_density = 11.8415
-shader_param/altitude = 1534.13
-shader_param/color = Color( 1, 0.975233, 0.950466, 1 )
+shader_param/min_density = 0.505995
+shader_param/max_density = 10.9063
+shader_param/altitude = 1524.38
+shader_param/color = Color( 1, 0.956418, 0.912836, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=269]
-render_priority = -122
-next_pass = SubResource( 268 )
+[sub_resource type="ShaderMaterial" id=333]
+render_priority = -90
+next_pass = SubResource( 332 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.507978
-shader_param/max_density = 11.9882
-shader_param/altitude = 1538.4
-shader_param/color = Color( 1, 0.981804, 0.963608, 1 )
+shader_param/min_density = 0.50624
+shader_param/max_density = 11.0402
+shader_param/altitude = 1525.4
+shader_param/color = Color( 1, 0.958625, 0.917249, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=270]
-render_priority = -123
-next_pass = SubResource( 269 )
+[sub_resource type="ShaderMaterial" id=334]
+render_priority = -91
+next_pass = SubResource( 333 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.506471
+shader_param/max_density = 11.166
+shader_param/altitude = 1526.41
+shader_param/color = Color( 1, 0.960774, 0.921547, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=335]
+render_priority = -92
+next_pass = SubResource( 334 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.506687
+shader_param/max_density = 11.2836
+shader_param/altitude = 1527.43
+shader_param/color = Color( 1, 0.962865, 0.92573, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=336]
+render_priority = -93
+next_pass = SubResource( 335 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.506887
+shader_param/max_density = 11.3928
+shader_param/altitude = 1528.44
+shader_param/color = Color( 1, 0.9649, 0.929799, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=337]
+render_priority = -94
+next_pass = SubResource( 336 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507071
+shader_param/max_density = 11.4934
+shader_param/altitude = 1529.46
+shader_param/color = Color( 1, 0.966877, 0.933753, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=338]
+render_priority = -95
+next_pass = SubResource( 337 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.50724
+shader_param/max_density = 11.5852
+shader_param/altitude = 1530.48
+shader_param/color = Color( 1, 0.968797, 0.937593, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=339]
+render_priority = -96
+next_pass = SubResource( 338 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507392
+shader_param/max_density = 11.6682
+shader_param/altitude = 1531.49
+shader_param/color = Color( 1, 0.970659, 0.941318, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=340]
+render_priority = -97
+next_pass = SubResource( 339 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507527
+shader_param/max_density = 11.7422
+shader_param/altitude = 1532.51
+shader_param/color = Color( 1, 0.972464, 0.944928, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=341]
+render_priority = -98
+next_pass = SubResource( 340 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507646
+shader_param/max_density = 11.807
+shader_param/altitude = 1533.52
+shader_param/color = Color( 1, 0.974212, 0.948424, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=342]
+render_priority = -99
+next_pass = SubResource( 341 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507748
+shader_param/max_density = 11.8626
+shader_param/altitude = 1534.54
+shader_param/color = Color( 1, 0.975903, 0.951805, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=343]
+render_priority = -100
+next_pass = SubResource( 342 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507833
+shader_param/max_density = 11.9088
+shader_param/altitude = 1535.56
+shader_param/color = Color( 1, 0.977536, 0.955071, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=344]
+render_priority = -101
+next_pass = SubResource( 343 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.5079
+shader_param/max_density = 11.9457
+shader_param/altitude = 1536.57
+shader_param/color = Color( 1, 0.979112, 0.958223, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=345]
+render_priority = -102
+next_pass = SubResource( 344 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507951
+shader_param/max_density = 11.9731
+shader_param/altitude = 1537.59
+shader_param/color = Color( 1, 0.98063, 0.961261, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=346]
+render_priority = -103
+next_pass = SubResource( 345 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507983
+shader_param/max_density = 11.991
+shader_param/altitude = 1538.6
+shader_param/color = Color( 1, 0.982092, 0.964183, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=347]
+render_priority = -104
+next_pass = SubResource( 346 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507999
+shader_param/max_density = 11.9993
+shader_param/altitude = 1539.62
+shader_param/color = Color( 1, 0.983496, 0.966991, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=348]
+render_priority = -105
+next_pass = SubResource( 347 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507997
+shader_param/max_density = 11.9981
+shader_param/altitude = 1540.63
+shader_param/color = Color( 1, 0.984842, 0.969685, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=349]
+render_priority = -106
+next_pass = SubResource( 348 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507977
+shader_param/max_density = 11.9874
+shader_param/altitude = 1541.65
+shader_param/color = Color( 1, 0.986132, 0.972263, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=350]
+render_priority = -107
+next_pass = SubResource( 349 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -612,69 +1812,309 @@ shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=271]
+[sub_resource type="ShaderMaterial" id=351]
+render_priority = -108
+next_pass = SubResource( 350 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507885
+shader_param/max_density = 11.9374
+shader_param/altitude = 1543.68
+shader_param/color = Color( 1, 0.988539, 0.977077, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=352]
+render_priority = -109
+next_pass = SubResource( 351 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507813
+shader_param/max_density = 11.8982
+shader_param/altitude = 1544.7
+shader_param/color = Color( 1, 0.989656, 0.979312, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=353]
+render_priority = -110
+next_pass = SubResource( 352 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507724
+shader_param/max_density = 11.8496
+shader_param/altitude = 1545.71
+shader_param/color = Color( 1, 0.990716, 0.981433, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=354]
+render_priority = -111
+next_pass = SubResource( 353 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507618
+shader_param/max_density = 11.7917
+shader_param/altitude = 1546.73
+shader_param/color = Color( 1, 0.991719, 0.983438, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=355]
+render_priority = -112
+next_pass = SubResource( 354 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507495
+shader_param/max_density = 11.7245
+shader_param/altitude = 1547.75
+shader_param/color = Color( 1, 0.992665, 0.985329, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=356]
+render_priority = -113
+next_pass = SubResource( 355 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507355
+shader_param/max_density = 11.6483
+shader_param/altitude = 1548.76
+shader_param/color = Color( 1, 0.993553, 0.987106, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=357]
+render_priority = -114
+next_pass = SubResource( 356 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507199
+shader_param/max_density = 11.5631
+shader_param/altitude = 1549.78
+shader_param/color = Color( 1, 0.994384, 0.988768, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=358]
+render_priority = -115
+next_pass = SubResource( 357 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.507027
+shader_param/max_density = 11.469
+shader_param/altitude = 1550.79
+shader_param/color = Color( 1, 0.995158, 0.990315, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=359]
+render_priority = -116
+next_pass = SubResource( 358 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.506838
+shader_param/max_density = 11.3663
+shader_param/altitude = 1551.81
+shader_param/color = Color( 1, 0.995874, 0.991748, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=360]
+render_priority = -117
+next_pass = SubResource( 359 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.506634
+shader_param/max_density = 11.255
+shader_param/altitude = 1552.83
+shader_param/color = Color( 1, 0.996533, 0.993066, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=361]
+render_priority = -118
+next_pass = SubResource( 360 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.506415
+shader_param/max_density = 11.1353
+shader_param/altitude = 1553.84
+shader_param/color = Color( 1, 0.997135, 0.994269, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=362]
+render_priority = -119
+next_pass = SubResource( 361 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.50618
+shader_param/max_density = 11.0074
+shader_param/altitude = 1554.86
+shader_param/color = Color( 1, 0.997679, 0.995358, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=363]
+render_priority = -120
+next_pass = SubResource( 362 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.505931
+shader_param/max_density = 10.8716
+shader_param/altitude = 1555.87
+shader_param/color = Color( 1, 0.998166, 0.996332, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=364]
+render_priority = -121
+next_pass = SubResource( 363 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.505668
+shader_param/max_density = 10.7281
+shader_param/altitude = 1556.89
+shader_param/color = Color( 1, 0.998596, 0.997192, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=365]
+render_priority = -122
+next_pass = SubResource( 364 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.505391
+shader_param/max_density = 10.577
+shader_param/altitude = 1557.9
+shader_param/color = Color( 1, 0.998968, 0.997937, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=366]
+render_priority = -123
+next_pass = SubResource( 365 )
+shader = ExtResource( 27 )
+shader_param/seed = 1000.0
+shader_param/speed = Vector2( 0, 0 )
+shader_param/transform_speed = Vector2( 0, 1e-05 )
+shader_param/min_density = 0.505101
+shader_param/max_density = 10.4186
+shader_param/altitude = 1558.92
+shader_param/color = Color( 1, 0.999284, 0.998567, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = false
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=367]
 render_priority = -124
-next_pass = SubResource( 270 )
+next_pass = SubResource( 366 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.507595
-shader_param/max_density = 11.779
-shader_param/altitude = 1546.93
-shader_param/color = Color( 1, 0.991913, 0.983826, 1 )
+shader_param/min_density = 0.504798
+shader_param/max_density = 10.2532
+shader_param/altitude = 1559.94
+shader_param/color = Color( 1, 0.999542, 0.999083, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=272]
+[sub_resource type="ShaderMaterial" id=368]
 render_priority = -125
-next_pass = SubResource( 271 )
+next_pass = SubResource( 367 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.506953
-shader_param/max_density = 11.429
-shader_param/altitude = 1551.2
-shader_param/color = Color( 1, 0.995451, 0.990902, 1 )
+shader_param/min_density = 0.504482
+shader_param/max_density = 10.081
+shader_param/altitude = 1560.95
+shader_param/color = Color( 1, 0.999742, 0.999484, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=273]
+[sub_resource type="ShaderMaterial" id=369]
 render_priority = -126
-next_pass = SubResource( 272 )
+next_pass = SubResource( 368 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.506033
-shader_param/max_density = 10.9269
-shader_param/altitude = 1555.47
-shader_param/color = Color( 1, 0.997978, 0.995956, 1 )
+shader_param/min_density = 0.504154
+shader_param/max_density = 9.90237
+shader_param/altitude = 1561.97
+shader_param/color = Color( 1, 0.999885, 0.999771, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=274]
+[sub_resource type="ShaderMaterial" id=370]
 render_priority = -127
-next_pass = SubResource( 273 )
+next_pass = SubResource( 369 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
 shader_param/transform_speed = Vector2( 0, 1e-05 )
-shader_param/min_density = 0.504859
-shader_param/max_density = 10.2868
-shader_param/altitude = 1559.73
-shader_param/color = Color( 1, 0.999495, 0.998989, 1 )
+shader_param/min_density = 0.503815
+shader_param/max_density = 9.7175
+shader_param/altitude = 1562.98
+shader_param/color = Color( 1, 0.999971, 0.999943, 1 )
 shader_param/detail_noise = false
 shader_param/upper_enabled = false
 shader_param/lower_enabled = true
 
-[sub_resource type="ShaderMaterial" id=275]
+[sub_resource type="ShaderMaterial" id=371]
 render_priority = -128
-next_pass = SubResource( 274 )
+next_pass = SubResource( 370 )
 shader = ExtResource( 27 )
 shader_param/seed = 1000.0
 shader_param/speed = Vector2( 0, 0 )
@@ -689,21 +2129,33 @@ shader_param/lower_enabled = true
 
 [sub_resource type="Environment" id=96]
 background_mode = 2
-background_sky = ExtResource( 16 )
-background_sky_orientation = Basis( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107 )
-ambient_light_color = Color( 0, 0.623529, 1, 1 )
-ambient_light_sky_contribution = 0.96
+background_sky = ExtResource( 28 )
+background_sky_orientation = Basis( 1, 0, 0, 0, 0.992924, 0.118751, 0, -0.118751, 0.992924 )
+ambient_light_color = Color( 0, 0.0352941, 0.32549, 1 )
+ambient_light_energy = 0.14
+ambient_light_sky_contribution = 0.5
 fog_sun_color = Color( 1, 1, 1, 1 )
 fog_depth_begin = 0.0
 fog_depth_end = 400.0
 fog_depth_curve = 1e-05
 fog_height_curve = 4.6256e-05
-ssao_intensity = 25.65
+ss_reflections_enabled = true
+ss_reflections_max_steps = 512
+ss_reflections_fade_in = 0.15
+ss_reflections_depth_tolerance = 128.0
+ssao_enabled = true
+ssao_intensity = 6.26
+ssao_radius2 = 1.0
+ssao_intensity2 = 24.38
+ssao_bias = 0.12
+ssao_quality = 2
 dof_blur_far_distance = 0.01
 dof_blur_far_transition = 256.0
 dof_blur_far_amount = 0.13
 dof_blur_far_quality = 0
-glow_bloom = 0.25
+glow_enabled = true
+glow_intensity = 0.97
+glow_bloom = 1.0
 adjustment_brightness = 2.2
 
 [sub_resource type="Animation" id=100]
@@ -2389,16 +3841,177 @@ script = ExtResource( 4 )
 [node name="Outside" type="Spatial" parent="."]
 
 [node name="Trees" type="Spatial" parent="Outside"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.575, 0, 25.6492 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 128 )
 
 [node name="LeftTrees" type="MultiMeshInstance" parent="Outside/Trees"]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 15, 0, 92 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 12 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="LeftTrees2" type="MultiMeshInstance" parent="Outside/Trees"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 22 )
 multimesh = SubResource( 110 )
 script = ExtResource( 18 )
 lr = -1
 
 [node name="RightTrees" type="MultiMeshInstance" parent="Outside/Trees"]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 15, 0, 115 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -12 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="RightTrees2" type="MultiMeshInstance" parent="Outside/Trees"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -22 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="Trees7" type="Spatial" parent="Outside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 128 )
+
+[node name="LeftTrees" type="MultiMeshInstance" parent="Outside/Trees7"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 12 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="LeftTrees2" type="MultiMeshInstance" parent="Outside/Trees7"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 22 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="RightTrees" type="MultiMeshInstance" parent="Outside/Trees7"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -12 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="RightTrees2" type="MultiMeshInstance" parent="Outside/Trees7"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -22 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="Trees2" type="Spatial" parent="Outside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 128 )
+
+[node name="LeftTrees" type="MultiMeshInstance" parent="Outside/Trees2"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 12 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="LeftTrees2" type="MultiMeshInstance" parent="Outside/Trees2"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 22 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="RightTrees" type="MultiMeshInstance" parent="Outside/Trees2"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -12 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="RightTrees2" type="MultiMeshInstance" parent="Outside/Trees2"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -22 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="Trees3" type="Spatial" parent="Outside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 128 )
+
+[node name="LeftTrees" type="MultiMeshInstance" parent="Outside/Trees3"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 12 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="LeftTrees2" type="MultiMeshInstance" parent="Outside/Trees3"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 22 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="RightTrees" type="MultiMeshInstance" parent="Outside/Trees3"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -12 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="RightTrees2" type="MultiMeshInstance" parent="Outside/Trees3"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -22 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="Trees4" type="Spatial" parent="Outside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 128 )
+
+[node name="LeftTrees" type="MultiMeshInstance" parent="Outside/Trees4"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 12 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="LeftTrees2" type="MultiMeshInstance" parent="Outside/Trees4"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 22 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="RightTrees" type="MultiMeshInstance" parent="Outside/Trees4"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -12 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="RightTrees2" type="MultiMeshInstance" parent="Outside/Trees4"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -22 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="Trees5" type="Spatial" parent="Outside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 128 )
+
+[node name="LeftTrees" type="MultiMeshInstance" parent="Outside/Trees5"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 12 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="LeftTrees2" type="MultiMeshInstance" parent="Outside/Trees5"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 22 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="RightTrees" type="MultiMeshInstance" parent="Outside/Trees5"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -12 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="RightTrees2" type="MultiMeshInstance" parent="Outside/Trees5"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -22 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="Trees6" type="Spatial" parent="Outside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 128 )
+
+[node name="LeftTrees" type="MultiMeshInstance" parent="Outside/Trees6"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 12 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="LeftTrees2" type="MultiMeshInstance" parent="Outside/Trees6"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 22 )
+multimesh = SubResource( 110 )
+script = ExtResource( 18 )
+lr = -1
+
+[node name="RightTrees" type="MultiMeshInstance" parent="Outside/Trees6"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -12 )
+multimesh = SubResource( 111 )
+script = ExtResource( 18 )
+
+[node name="RightTrees2" type="MultiMeshInstance" parent="Outside/Trees6"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -22 )
 multimesh = SubResource( 111 )
 script = ExtResource( 18 )
 
@@ -2516,7 +4129,15 @@ playback_speed = 0.05
 anims/uv_water = SubResource( 120 )
 
 [node name="Mount" type="Spatial" parent="."]
-visible = false
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Mount"]
+transform = Transform( -1, 2.99004e-08, -8.21505e-08, 0, 0.939693, 0.34202, 8.74228e-08, 0.34202, -0.939693, -509.139, 16, 110 )
+light_color = Color( 1, 0.878431, 0.647059, 1 )
+light_energy = 0.75
+shadow_enabled = true
+shadow_bias = 3.0
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 8192.0
 
 [node name="Floor" type="MeshInstance" parent="Mount"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -500, 0, 0 )
@@ -2734,22 +4355,14 @@ transform = Transform( 4, 0, 0, 0, 15, 0, 0, 0, 4, -440, 16, 110 )
 mesh = ExtResource( 24 )
 material = SubResource( 127 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="Mount"]
-transform = Transform( -1, -2.99004e-08, 8.21506e-08, 0, 0.939693, 0.34202, -8.74228e-08, 0.34202, -0.939693, -498.39, 25.4045, 110.262 )
-light_color = Color( 1, 0.878431, 0.647059, 1 )
-light_energy = 0.75
-shadow_enabled = true
-directional_shadow_mode = 1
-directional_shadow_max_distance = 512.0
-
 [node name="CloudUp" type="MeshInstance" parent="Mount"]
-transform = Transform( 450.025, 0, 0, 0, 450.025, 0, 0, 0, 450.025, -500, 30, 138.859 )
-material_override = SubResource( 259 )
+transform = Transform( 256.005, 0, 0, 0, 256.005, 0, 0, 0, 256.005, -500, 30, 128 )
+material_override = SubResource( 307 )
 mesh = ExtResource( 26 )
 script = ExtResource( 25 )
 cloud_color = Color( 0.396078, 0.403922, 0.435294, 1 )
 shade_color = Color( 0.027451, 0.00392157, 0.105882, 1 )
-draw_count = 16
+draw_count = 64
 cloud_seed = 100.0
 cloud_speed = Vector2( 0, 0 )
 cloud_thickness = 192.0
@@ -2760,11 +4373,11 @@ cloud_shadow_enabled = false
 
 [node name="CloudDown" type="MeshInstance" parent="Mount"]
 transform = Transform( 450.025, 6.8662e-07, 3.93364e-05, 0, -449.956, 7.85402, -3.93424e-05, 7.85402, 449.956, -500, 16, 140 )
-material_override = SubResource( 275 )
+material_override = SubResource( 371 )
 mesh = ExtResource( 26 )
 script = ExtResource( 25 )
 shade_color = Color( 1, 0.886275, 0.772549, 1 )
-draw_count = 16
+draw_count = 64
 cloud_seed = 1000.0
 cloud_speed = Vector2( 0, 0 )
 cloud_thickness = 64.0
@@ -2777,9 +4390,11 @@ auto_follow_camera = false
 cloud_shadow_enabled = false
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( -4.37114e-08, 0.707107, -0.707107, 0, 0.707107, 0.707107, 1, 3.09086e-08, -3.09086e-08, 0, 4, 128 )
+transform = Transform( 1, 0, 0, 0, 0.913545, 0.406737, 0, -0.406737, 0.913545, -500, 30, 128 )
 current = true
-far = 900.0
+size = 28.284
+near = 0.01
+far = 512.0
 
 [node name="OmniLight" type="OmniLight" parent="Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00189209, -0.0364113, 0.0630569 )
@@ -2802,6 +4417,7 @@ omni_attenuation = 43.4218
 environment = SubResource( 96 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+reset_on_save = false
 anims/1 = SubResource( 100 )
 anims/2 = SubResource( 107 )
 anims/3 = SubResource( 210 )

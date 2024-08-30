@@ -28,5 +28,5 @@ func custom_action(t):
 			Bullets.create_shot_a1(bullet_kit, position, speed * 0.925, a, ball, true)
 			Bullets.create_shot_a1(bullet_kit, position, speed * 0.925, a + 0.1, snowball, true)
 		
-	if t >= 906:
-		queue_free()
+		if t >= 906:
+			queue_free()

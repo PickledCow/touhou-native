@@ -1,8 +1,9 @@
 extends Node2D
 class_name Attack
 
-
 var boss_position : Vector2
+
+export(DefSys.CHARACTER) var character = DefSys.CHARACTER.DIALGA
 
 export(DefSys.ATTACK_TYPE) var attack_type = DefSys.ATTACK_TYPE.NON
 export var attack_name = ""
@@ -45,7 +46,7 @@ func custom_physics_process(delta: float):
 
 func _physics_process(delta):
 	position = parent.boss_position
-	
+	health = parent.health
 #	if t == 0:
 #		parent.invincible = false	
 	while int(t_raw) > t_int:
@@ -55,3 +56,7 @@ func _physics_process(delta):
 	t_raw += 1 * delta * 60.0
 	
 	custom_physics_process(delta)
+
+
+func set_boss_dest(dest: Vector2, frame: float):
+	parent.set_boss_dest(dest, frame)

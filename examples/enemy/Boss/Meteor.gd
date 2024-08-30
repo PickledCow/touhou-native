@@ -38,7 +38,8 @@ func _process(delta):
 	$Sprite.rotation += PI * delta * lr
 
 func custom_action(t):
-	if position.y > 1000.0 or (((position.x - 500.0) * sign(velocity.x) > 500.0) and difficulty > 0):
+	if position.y > 1000.0 or (((position.x - 500.0) * sign(velocity.x) > 500.0)):
+	#	print((position.x - 500.0) * sign(velocity.x))
 		health = 0.0
 		air_detonated = false
 		if position.y > 1000.0:

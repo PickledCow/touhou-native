@@ -228,3 +228,5 @@ func stage_process(t, _delta):
 				bidoof_y += 36.0
 			
 				lr *= -1
+	elif t == 4860:
+		root.start_section(3)

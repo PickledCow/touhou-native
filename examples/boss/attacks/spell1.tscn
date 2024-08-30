@@ -6,9 +6,12 @@
 
 [node name="spell1" type="Node2D"]
 script = ExtResource( 1 )
-attack_type = 2
+character = 2
+attack_type = 4
 attack_name = "Abyssal Cataclysm \"Draco Meteor\""
 attack_time = 3600
-health = 20000
+health = 25000
+scb = 0
+bg_flag = 8
 bullet_kit = ExtResource( 2 )
 bullet_kit_add = ExtResource( 3 )

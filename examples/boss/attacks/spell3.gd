@@ -28,7 +28,7 @@ var TRANSFORM_TIME := 120.0
 
 var START_ANGLE := -PI*0.1
 
-var DENSITY := 8
+var DENSITY := [2, 3, 5, 8, 10]
 
 var red_fireball : PoolRealArray
 var orange_fireball : PoolRealArray
@@ -48,6 +48,8 @@ var purple_ball : PoolRealArray
 
 var fireballs : Array
 var balls : Array
+
+var direction_flipped := false
 
 func attack_init():
 	red_fireball = DefSys.get_bullet_data(DefSys.BULLET_TYPE.FIREBALL, DefSys.COLORS_LARGE.RED)
@@ -71,6 +73,8 @@ func attack_init():
 	
 
 func attack(t):
+	if t == 0:
+		parent.face(true)
 	if t >= 0:
 		if t % CYCLE == 0:
 			a1 = START_ANGLE
@@ -88,7 +92,10 @@ func attack(t):
 		
 		if t % CYCLE >= 90 and t % CYCLE < 280:
 			DefSys.sfx.play("warning1")
-			for i in DENSITY:
+			if !direction_flipped and a1 > PI*0.5:
+				direction_flipped = true
+				parent.face(false)
+			for i in DENSITY[difficulty]:
 				var a := rand_range(-0.1, 0.1) + a1
 				var speed := rand_range(1.75, 2.5)
 				var f_c = fireballs[int(min(6.0, (t % CYCLE - 90.0) / 210.0 * 8))]
@@ -119,15 +126,21 @@ func attack(t):
 			roar2.t = 0.0
 		if t % CYCLE == CYCLE / 2 + 90:
 			root.slowdown(0.5)
+			direction_flipped = false
 		elif t % CYCLE == CYCLE / 2 + 300:
 			root.slowdown(1.0)
+			direction_flipped = false
 			
 		if t % CYCLE >= 36 + CYCLE / 2:
 			a2 += SPIN
 		
 		if t % CYCLE >= 90 + CYCLE / 2 and t % CYCLE < 280 + CYCLE / 2:
+			if !direction_flipped and a2 - PI > PI*0.5:
+				direction_flipped = true
+				parent.face(true)
+			
 			DefSys.sfx.play("warning1")
-			for i in DENSITY:
+			for i in DENSITY[difficulty]:
 				var a := rand_range(-0.1, 0.1) + a2 - PI
 				var speed := rand_range(1.75, 2.5)
 				var f_c = fireballs[int(min(6.0, (t % CYCLE - 90.0 - CYCLE / 2) / 210.0 * 8))]
@@ -149,3 +162,4 @@ func attack(t):
 					var ball = Bullets.create_shot_a1(bullet_kit, Vector2(0.0 if a < PI*0.5 else 1000.0, y), speed, angle, b_c, false)
 					Bullets.set_bullet_property(ball, "scale", 0.01)
 					Bullets.add_pattern(ball, Constants.TRIGGER.TIME, TRANSFORM_TIME, {"scale": 32.0})
+					

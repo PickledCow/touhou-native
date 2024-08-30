@@ -23,6 +23,9 @@ var vertical_priority = 0
 # States
 var is_focused := false
 var auto_poc := false
+var warpable := 0
+enum ORIENTATION { UP, DOWN, LEFT, RIGHT}
+var orientation : int = ORIENTATION.UP
 
 # Vitals
 var lives := 10
@@ -45,14 +48,14 @@ var anim_timer := 0.0
 var anim_time := 0.1
 var anim_frame := 0
 var facing := 1
-onready var sprite = $Sprite
+onready var sprites = [$Sprite, $L_copy/Sprite, $R_copy/Sprite, $U_copy/Sprite, $D_copy/Sprite, $LU_copy/Sprite, $RU_copy/Sprite, $LD_copy/Sprite, $RD_copy/Sprite]
 
 onready var bullet_clear_box = $bulletclearbox
 onready var bullet_clear_box_shape = $bulletclearbox/CollisionShape2D
 var bullets_to_remove = []
 
-onready var hitbox1 = $focus
-onready var hitbox2 = $focus2
+onready var hitboxes1 = [$focus, $L_copy/focus, $R_copy/focus, $U_copy/focus, $D_copy/focus, $LU_copy/focus, $RU_copy/focus, $LD_copy/focus, $RD_copy/focus]
+onready var hitboxes2 = [$focus2, $L_copy/focus2, $R_copy/focus2, $U_copy/focus2, $D_copy/focus2, $LU_copy/focus2, $RU_copy/focus2, $LD_copy/focus2, $RD_copy/focus2]
 onready var hitbox_anim = $focusanimation
 
 # Shooting
@@ -75,7 +78,16 @@ var option_positions_focus = [Vector2()]
 var option_interp = 0.0 # 0 unfocus 1 focus
 var option_travel_speed = 0.15
 
-onready var option_sprites = [get_node("options/0"), get_node("options/1"), get_node("options/2"), get_node("options/3")]
+onready var option_sprites = [	get_node("options/0"), get_node("options/1"), get_node("options/2"), get_node("options/3"),
+								get_node("L_copy/options/0"), get_node("L_copy/options/1"), get_node("L_copy/options/2"), get_node("L_copy/options/3"), 
+								get_node("R_copy/options/0"), get_node("R_copy/options/1"), get_node("R_copy/options/2"), get_node("R_copy/options/3"),
+								get_node("U_copy/options/0"), get_node("U_copy/options/1"), get_node("U_copy/options/2"), get_node("U_copy/options/3"),
+								get_node("D_copy/options/0"), get_node("D_copy/options/1"), get_node("D_copy/options/2"), get_node("D_copy/options/3"),
+								get_node("LU_copy/options/0"), get_node("LU_copy/options/1"), get_node("LU_copy/options/2"), get_node("LU_copy/options/3"),
+								get_node("RU_copy/options/0"), get_node("RU_copy/options/1"), get_node("RU_copy/options/2"), get_node("RU_copy/options/3"),
+								get_node("LD_copy/options/0"), get_node("LD_copy/options/1"), get_node("LD_copy/options/2"), get_node("LD_copy/options/3"),
+								get_node("RD_copy/options/0"), get_node("RD_copy/options/1"), get_node("RD_copy/options/2"), get_node("RD_copy/options/3"),
+							]
 
 class Shooter:
 	var fire_rate = 3
@@ -147,23 +159,76 @@ func create_shooter(shooter_data):
 func after_ready():
 	DefSys.health_bar.set_name(names[pid])
 	#DefSys.health_bar.set_player_face(pid)
+	#set_warp(true)
 
 
 func set_hidden_invincibility():
 	hidden_invincible_timer = hidden_invincible_time
 
+func set_warp(enable: int):
+	warpable = enable
+	$L_copy.visible = enable > 0
+	$R_copy.visible = enable > 0
+	
+	$U_copy.visible = enable == 2
+	$D_copy.visible = enable == 2
+	$LU_copy.visible = enable == 2
+	$LD_copy.visible = enable == 2
+	$RU_copy.visible = enable == 2
+	$RD_copy.visible = enable == 2
+
+func set_orientation(new_orientation: int):
+	#print(orientation)
+	match orientation:
+		ORIENTATION.UP:
+			match new_orientation:
+				ORIENTATION.LEFT:
+					$rotate.play("u2l")
+				ORIENTATION.RIGHT:
+					$rotate.play("u2r")
+				ORIENTATION.DOWN:
+					$rotate.play("u2d")
+		ORIENTATION.LEFT:
+			match new_orientation:
+				ORIENTATION.UP:
+					$rotate.play_backwards("u2l")
+				ORIENTATION.RIGHT:
+					$rotate.play("l2r")
+				ORIENTATION.DOWN:
+					$rotate.play_backwards("d2l")
+		ORIENTATION.RIGHT:
+			match new_orientation:
+				ORIENTATION.UP:
+					$rotate.play_backwards("u2r")
+				ORIENTATION.LEFT:
+					$rotate.play_backwards("l2r")
+				ORIENTATION.DOWN:
+					$rotate.play_backwards("d2r")
+		ORIENTATION.DOWN:
+			match new_orientation:
+				ORIENTATION.LEFT:
+					$rotate.play("d2l")
+				ORIENTATION.RIGHT:
+					$rotate.play("d2r")
+				ORIENTATION.UP:
+					$rotate.play_backwards("u2d")
+	orientation = new_orientation
 
 func _process(delta):
 	#var last_position = position
-	hitbox1.rotation += 2.0 * delta
-	hitbox2.rotation -= 2.0 * delta
+	for hitbox1 in hitboxes1:
+		hitbox1.rotation += 2.0 * delta
+	for hitbox2 in hitboxes2:
+		hitbox2.rotation -= 2.0 * delta
 	
 	if Input.is_action_just_pressed("focus"):
 		hitbox_anim.stop()
 		hitbox_anim.play("focus")
 	elif !Input.is_action_pressed("focus"):
-		hitbox1.visible = false
-		hitbox2.visible = false
+		for hitbox1 in hitboxes1:
+			hitbox1.visible = false
+		for hitbox2 in hitboxes2:
+			hitbox2.visible = false
 	
 	anim_timer += delta
 	if anim_timer >= anim_time:
@@ -172,20 +237,21 @@ func _process(delta):
 	if anim_frame >= 120:
 		anim_frame -= 120
 	
-	if velocity.x == 0.0:
-		sprite.frame = int(anim_frame) % 4
-	elif velocity.x < 0.0:
-		facing = -1
-		sprite.frame = 4 + int(anim_frame) % 4
-	else:
-		facing = 1
-		sprite.frame = 4 + int(anim_frame) % 4
-	
-	sprite.scale.x = facing * abs(sprite.scale.x)
-	
-	if invincible_timer:
-# warning-ignore:integer_division
-		sprite.modulate = Color(0, 0, 1) if (int(invincible_timer) / 6) % 2 == 1 else Color(1,1,1)
+	for sprite in sprites:
+		if velocity.x == 0.0:
+			sprite.frame = int(anim_frame) % 4
+		elif velocity.x < 0.0:
+			facing = -1
+			sprite.frame = 4 + int(anim_frame) % 4
+		else:
+			facing = 1
+			sprite.frame = 4 + int(anim_frame) % 4
+		
+		sprite.scale.x = facing * abs(sprite.scale.x)
+		
+		if invincible_timer:
+	# warning-ignore:integer_division
+			sprite.modulate = Color(0, 0, 1) if (int(invincible_timer) / 6) % 2 == 1 else Color(1,1,1)
 		
 	for option in option_sprites:
 		option.rotation -= 2.0 * delta
@@ -218,8 +284,24 @@ func move(delta):
 		velocity = velocity.normalized() * (focus_speed if is_focused else speed)
 	
 	position += (velocity + external_velocity) * delta * 60.0
-	position.x = clamp(position.x, 24, 1000 - 24)
-	position.y = clamp(position.y, 60, 1000 - 24)
+	
+	if warpable > 0:
+		if position.x > 1000.0:
+			position.x -= 1000.0
+		elif position.x < 0.0:
+			position.x += 1000.0
+			
+		if warpable == 2:
+			if position.y > 1000.0:
+				position.y -= 1000.0
+			elif position.y < 0.0:
+				position.y += 1000.0
+		else:
+			position.y = clamp(position.y, 24, 1000 - 24)
+	else:
+		position.x = clamp(position.x, 24, 1000 - 24)
+		position.y = clamp(position.y, 24, 1000 - 24)
+		
 	
 	get_node("itempoc/CollisionShape2D").disabled = position.y > 400 && !auto_poc
 	
@@ -246,11 +328,32 @@ func shoot(delta):
 				s.fire_timer += s.fire_rate
 				DefSys.sfx.play(shoot_sfx[s.sfx])
 				var option_pos = option_positions_unfocus[s.option] * (1 - option_interp) + option_positions_focus[s.option] * option_interp
-				var p = position + s.offset + option_pos
+				var p = position + (s.offset + option_pos).rotated($Sprite.rotation)
+				
+				if warpable:
+					if p.x > 1000.0:
+						p.x -= 1000.0
+					elif p.x < 0.0:
+						p.x += 1000.0
+				
+				
 				var bullet_data = player_bullets[s.sprite]
-				if s.homing_strength == 0.0:
-					var bullet = Bullets.create_shot_a2(s.kit, p, s.speed, s.angle, s.accel, s.max_speed, bullet_data, false)
+				if s.homing_strength == 0.0 or true:
+					var bullet = Bullets.create_shot_a2(s.kit, p, s.speed, s.angle + $Sprite.rotation, s.accel, s.max_speed, bullet_data, false)
 					Bullets.set_bullet_properties(bullet, {"damage": s.damage})
+					if warpable > 0:
+						bullet = Bullets.create_shot_a2(s.kit, p + Vector2(1000.0, 0.0), s.speed, s.angle, s.accel, s.max_speed, bullet_data, false)
+						Bullets.set_bullet_properties(bullet, {"damage": s.damage})
+						bullet = Bullets.create_shot_a2(s.kit, p - Vector2(1000.0, 0.0), s.speed, s.angle, s.accel, s.max_speed, bullet_data, false)
+						Bullets.set_bullet_properties(bullet, {"damage": s.damage})
+						
+						if warpable == 2:
+							bullet = Bullets.create_shot_a2(s.kit, p + Vector2(0.0, 1000.0), s.speed, s.angle, s.accel, s.max_speed, bullet_data, false)
+							Bullets.set_bullet_properties(bullet, {"damage": s.damage})
+							bullet = Bullets.create_shot_a2(s.kit, p + Vector2(1000.0, 1000.0), s.speed, s.angle, s.accel, s.max_speed, bullet_data, false)
+							Bullets.set_bullet_properties(bullet, {"damage": s.damage})
+							bullet = Bullets.create_shot_a2(s.kit, p + Vector2(-1000.0, 1000.0), s.speed, s.angle, s.accel, s.max_speed, bullet_data, false)
+							Bullets.set_bullet_properties(bullet, {"damage": s.damage})
 				else:
 					var bullet = Bullets.create_shot_a1(s.kit, p, 0.0, s.angle, bullet_data, false)
 					Bullets.set_bullet_properties(bullet, {"damage": s.damage})
@@ -279,9 +382,23 @@ func _physics_process(delta):
 				option_interp = 0.0
 		for i in 4:
 			option_sprites[i].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+			
+			option_sprites[i+4].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+			option_sprites[i+8].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+			
+			
+			option_sprites[i+12].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+			option_sprites[i+16].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+			option_sprites[i+20].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+			option_sprites[i+24].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+			option_sprites[i+28].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
+			option_sprites[i+32].position = option_positions_unfocus[i+1] * (1 - option_interp) + option_positions_focus[i+1] * option_interp
 		
 		shoot(delta)
-		
+	
+	if $enemybox.get_overlapping_areas():
+		hit = true
+	
 	if hit && invincible_timer <= 0.0 and hidden_invincible_timer <= 0.0:
 		DefSys.spell_bonus = false
 		DefSys.sfx.play("death")
@@ -374,10 +491,12 @@ func remove_item(bullet_id):
 
 
 func _on_grazebox_area_shape_entered(area_id, _area, area_shape, _local_shape):
+	DefSys.sfx.play("graze")
+	return
+	# Hmm
 	var bullet_id = Bullets.get_bullet_from_shape(area_id, area_shape)
 	Bullets.set_property(bullet_id, "grazed", true)
 	DefSys.graze += 1
-	DefSys.sfx.play("graze")
 	Bullets.create_particle(graze_partlcle_kit, position, rand_range(12,18), Color(1.0, 1.0, 1.0, 1.0), Vector2(rand_range(0.3, 0.6), 0.0).rotated(randf()*TAU), false)
 
 func _on_itembox_area_shape_entered(area_id, _area, area_shape, _local_shape):
@@ -390,7 +509,3 @@ func _on_bulletclearbox_area_shape_entered(area_id, _area, area_shape, _local_sh
 	create_bullet_clear(bullet_id)
 	bullets_to_remove.append(bullet_id)
 	#call_deferred("remove_bullet", bullet_id)
-
-
-func _on_enemybox_area_shape_entered(_area_rid, _area, _area_shape_index, _local_shape_index):
-	hit = true

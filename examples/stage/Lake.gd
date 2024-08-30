@@ -80,7 +80,7 @@ func start():
 		book.tank_factor = 99999
 		
 	raindrop = DefSys.get_bullet_data(DefSys.BULLET_TYPE.DROPLET, DefSys.COLORS.CYAN)
-	pink_star = DefSys.get_bullet_data(DefSys.BULLET_TYPE.STAR, DefSys.COLORS.RED)
+	pink_star = DefSys.get_bullet_data(DefSys.BULLET_TYPE.STAR_LARGE, DefSys.COLORS_LARGE.RED)
 
 	laser_seed = DefSys.get_bullet_data(DefSys.BULLET_TYPE.DIVINE_SPIRIT, DefSys.COLORS_DIVINE_SPIRIT.BLUE)
 
@@ -101,7 +101,8 @@ const MESPRIT_SETUP := 1890
 const MESPRIT_START := 2196
 const AZELF_SETUP := 3102
 const AZELF_START := 3400
-const END := 5400
+const AZELF_LEAVE := 4560
+const END := 5220
 
 var BOOK_SPEED = [3.5, 4.0, 5.0, 5.25, 6.0]
 var BOOK_DENSITY = [6, 8, 10, 11, 14]
@@ -109,8 +110,8 @@ var BOOK_RATE = [60, 45, 36, 30, 24]
 
 var book_speed = []
 
-var RAIN_RATE = [3, 3, 2, 1, 1]
-var RAIN_SKIP_RATE = [0, 0, 0, 6, 0]
+var RAIN_RATE = [3, 3, 1, 1, 1]
+var RAIN_SKIP_RATE = [0, 0, 2, 6, 0]
 var RAIN_SPEED = [8.0, 10.0, 11.0, 13.0, 15.0]
 var RAIN_STAR_RATE = [6, 5, 4, 3, 2]
 var RAIN_STAR_SPEED = [9.0, 10.0, 11.0, 12.0, 14.0]
@@ -192,9 +193,9 @@ func stage_process(t: int, _delta):
 			if t % RAIN_STAR_RATE[difficulty] == 0:
 				var pos = $Mesprit.position + Vector2(rand_range(0.0, 150.0), 0.0).rotated(randf()*TAU)
 				var ang = root.get_player_position().angle_to_point(pos)
-				var speed = rand_range(0.6, 1.0) * RAIN_STAR_SPEED[difficulty]
+				var speed = rand_range(0.4, 1.0) * RAIN_STAR_SPEED[difficulty]
 				var b = Bullets.create_shot_a1(bullet_kit, pos, speed, ang, pink_star, true)
-				Bullets.set_bullet_property(b, "spin", rand_range(0.1, 0.3) * lr)
+				Bullets.set_bullet_property(b, "spin", rand_range(0.05, 0.15) * lr)
 				lr *= -1.0
 	
 	if t == AZELF_START - 25:

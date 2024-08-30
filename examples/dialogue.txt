@@ -4,7 +4,7 @@
 1|1|10|According to my research, this incredible energy is coming from Legendary beasts known as "Pokémon".
 2|1|10|Be careful Marisa. These Pokémon... they're not like anything we've faced back at home but their power is immense. You'll need to be on guard.
 0|1|10|Poké-what now? Sounds like just a fancy name for a bunch of youkai, but you say they're more than that huh?
-4|0|5|
+4|1|5|
 0|1|10|Whoa! Would ya look at those guys. These are the weirdest youkai I've ever seen. I see like a... giant dinosaur thing, a... [REDACTED], and a demonic snake thing?
 0|1|10|Hey, Patchy, you got any notes on these three?
 1|1|10|That 'dinosaur' is Dialga, Master of Time. It can control the very flow of time itself. 
@@ -18,3 +18,4 @@
 0|1|10|For me? Just another Tuesday.
 3|1|10|BISHAAN!
 0|1|10|Yeah, yeah, "Bishaan" to you too bud. Now lets greet these big bad "Pokémon" Gensokyo Style!
+5|0|0.001|

@@ -40,7 +40,8 @@ const SUNSET_MAX := 3
 func _ready():
 	pass
 	#update_sunset()
-	#anim_player.play("4")
+#	anim_player.play("2")
+	#anim_player.play("5")
 
 func update_sunset():
 	var l1 = clamp(float(sunset_stage) / float(SUNSET_MAX), 0.0, 1.0)

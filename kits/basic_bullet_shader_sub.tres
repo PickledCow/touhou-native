@@ -1,0 +1,39 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_sub;
+// advert your eyes pls
+
+uniform float animation_speed = 8.0;
+const float FACTOR = 2.61799387799;
+
+float fade(float x) {
+	return 2.0 * sin(FACTOR * sqrt(min(x, 1.0)));
+}
+
+void vertex() {
+	VERTEX.y += floor(MODULATE.b) / floor(MODULATE.g);
+	VERTEX *= fade(1.0 - fract(MODULATE.b));
+}
+
+void fragment() {
+	vec2 texSize = vec2(textureSize(TEXTURE, 0));
+	vec2 texPixel = vec2(1.0, 1.0 / texSize.y);
+	
+	vec2 position = vec2(fract(MODULATE.r), floor(MODULATE.r));
+	vec2 size = vec2(fract(MODULATE.g),floor(MODULATE.g));
+	vec2 uv = texPixel * position + texPixel * size * UV;
+	
+	float frame_count = floor(MODULATE.a);
+	float frame = mod(floor(animation_speed * TIME + fract(MODULATE.a) * frame_count), frame_count);
+	uv.x += size.x * frame;
+	
+	vec4 tex = texture(TEXTURE, uv);
+	
+	float alpha = 1.0 - fract(MODULATE.b);
+	tex.a *= alpha;
+	
+	COLOR = tex;
+}
+"

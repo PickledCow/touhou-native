@@ -9,7 +9,7 @@ var playfield_root
 var playfield
 var pause_menu
 
-var is_3d := true
+var is_3d := false
 
 var difficulty := 0
 
@@ -46,6 +46,8 @@ var borderlessed := false
 var fullscreen := false
 var size_before_fullscreen := Vector2(1280, 720)
 var position_before_fullscreen : Vector2
+
+enum CHARACTER { DIALGA, PALKIA, GIRATINA, DIALGA_O, PALKIA_O, GIRATINA_O, ARCEUS }
 
 enum ITEM_TYPE { BIG_POWER, LIFE_FRAGMENT, LIFE, BOMB_FRAGMENT, BOMB, FULL_POWER, POWER, POINT, PIV }
 

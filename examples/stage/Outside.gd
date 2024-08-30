@@ -40,6 +40,7 @@ const WINGULL := 2500
 const WINGULL_END := 2500 + 20 * (9+2)
 const BIDOOF := 2900
 const END := 3500
+const END_REAL := 4080
 
 var bidoof_index := 0
 var bidoof_y := 0.0
@@ -228,3 +229,5 @@ func stage_process(t, _delta):
 				bidoof_y += 36.0
 			
 				lr *= -1
+	elif t == 4200:
+		root.start_section(2)

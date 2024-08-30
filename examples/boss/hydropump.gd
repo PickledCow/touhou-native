@@ -5,7 +5,7 @@ export var push_direction := Vector2(0, -1)
 func interp(x: float) -> float:
 	return (2.0 * x * x * x - 3.0 * x * x + 1.0) * 0.5 + 0.5
 
-const MAX_STRENGTH := 5.0
+const MAX_STRENGTH := 3.5
 
 const EXTENTS := 50.0
 
@@ -15,8 +15,9 @@ func _ready():
 	$Right.emitting = true
 
 func _physics_process(delta):
-	if monitoring and false:
-		for player in get_overlapping_areas():
+	if monitoring:
+		for player in $Area2D.get_overlapping_areas():
+			
 			var dist := abs(player.position.y - position.y - get_parent().position.y) if push_direction.y == 0.0 else abs(player.position.x - position.x - get_parent().position.x)
 			
 			var push_strength := MAX_STRENGTH# * interp(clamp(dist / EXTENTS, 0.0, 1.0))

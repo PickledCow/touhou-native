@@ -6,7 +6,7 @@ export var lr := 1
 #10, 5 each 30 tomes
 
 func _ready():
-	for i in range(40):
+	for i in range(0):
 		var z = rand_range(-6, 6)# + self.translation.z
 		if i % 2 == 0:
 			z += lr * 15.0

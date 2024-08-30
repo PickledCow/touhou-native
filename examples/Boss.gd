@@ -35,9 +35,9 @@ var start_delay := 999999999
 var attack_type := 0
 var spell_bonus := 0
 
-var explosion_timer := 5*60
-var next_explosion_time := 20
-var next_explosion_timer := 20
+var explosion_timer := 0
+var next_explosion_time := 20.0
+var next_explosion_timer := 20.0
 
 var start_position := Vector2(500, 300)
 var target_position := Vector2()
@@ -53,15 +53,35 @@ var item_data2: PoolRealArray
 #onready var galacta_hitbox := $galacta/hitbox
 #onready var remilia_hitbox := $remilia/hitbox
 
+var stage := 0
+
 onready var bullet_clear := $BulletClear
 var bullet_clear_radius := 0.0
 
+var last_character : int = DefSys.CHARACTER.DIALGA
+var character_swapped := false
+
+var character_pos = [ 0, 1, 2, 4, 5, 6, 3]
+
 var attack_prefabs := [
 						#preload("res://examples/boss/attacks/non1.tscn"),
-						preload("res://examples/boss/attacks/spell3.tscn"),
-						preload("res://examples/boss/attacks/non2.tscn"),
-						preload("res://examples/boss/attacks/spell2.tscn"),
+						#preload("res://examples/boss/attacks/spell4.tscn"),
+					#	preload("res://examples/boss/attacks/non2.tscn"),
+					#	preload("res://examples/boss/attacks/spell2.tscn"),
+					#	preload("res://examples/boss/attacks/non3.tscn"),
 						preload("res://examples/boss/attacks/spell1.tscn"),
+]
+
+var attack_prefabs2 := [
+						#preload("res://examples/boss/attacks/spell3.tscn"),
+						#preload("res://examples/boss/attacks/spell5.tscn"),
+						preload("res://examples/boss/attacks/spell6.tscn")
+		
+]
+
+var attack_prefabs3 := [
+						preload("res://examples/boss/attacks/spell7.tscn")
+		
 ]
 
 var attacks := []
@@ -78,29 +98,42 @@ var is_first_attack := true
 func _ready():
 	$Dialogue.root = root
 
-func after_ready():
-	for attack in attack_prefabs:
-		attacks.append(attack.instance())
-		
-	var attack_types = []
-	for i in range(len(attacks) - 1, -1 if skip_opening else 0, -1):
-		attack_types.append(attacks[i].attack_type)
-	DefSys.boss_bar.set_phase_icons(attack_types)
+func after_ready(p_stage: int):
+	attacks.clear()
+	is_first_attack = true
+	phase = 0
+	stage = p_stage
 	
-	if skip_opening:
+	for attack in (attack_prefabs3 if p_stage == 2 else (attack_prefabs2 if p_stage == 1 else attack_prefabs)):
+		attacks.append(attack.instance())
+	
+	if p_stage == 1:
+		t_raw = -1080-60
+		t_int = -1081-60
+		explosion_timer = 463
+		set_boss_dest(Vector2(500, 350), 30)
+		$AnimationPlayer.play("transform")
+	elif p_stage == 2:
+		t_raw = -240
+		t_int = -241
+		explosion_timer = -1
+		#set_boss_dest(Vector2(500, 350), 30)
+	#	$AnimationPlayer.play("transform")
+		
+	
+	elif p_stage == 0:
+		var attack_types = []
+		for i in range(len(attacks) - 1, -1 if skip_opening else 0, -1):
+			attack_types.append(attacks[i].attack_type)
+		DefSys.boss_bar.set_phase_icons(attack_types)
 		DefSys.boss_bar.entry_anim()
 		#t = -120
 		t_raw = -120.0
 		t_int = -121
-		DefSys.boss_bar.remove_phase_icon(len(attacks) - phase - 1)
-		#phase = 1
-	else:
-		#t = 0
-		t_raw = 0.0
-		t_int = -1
+	#	DefSys.boss_bar.remove_phase_icon(len(attacks) - 1)
 
-func enable():
-	after_ready()
+func enable(second_phase = false):
+	after_ready(second_phase)
 	disabled = false
 
 func smooth_interp(x: float):
@@ -127,18 +160,66 @@ func _physics_process(delta):
 		DefSys.sfx.play("explode1")
 		queue_free()
 	
-#	DefSys.markers.set_galacta_marker_position(galacta.position.x)
-	#DefSys.markers.set_remilia_marker_position(remilia.position.x)
-	
-	# janky opener
-	#if t_global == 350 && !skip_opening:
-#		DefSys.background_controller.flash()
-	#if t_global == 375 && !skip_opening:
-		#galacta.position = Vector2(500, 350)
-		#remilia.position.y = 150
-		#add_child(attacks[0])
-#		pass
 func custom_process(t: int):
+	if stage == 1:
+	# Explosion
+		if explosion_timer > 0:
+			explosion_timer -= 1
+			next_explosion_timer -= 1
+			if next_explosion_timer <= 0:
+				next_explosion_timer = next_explosion_time
+				next_explosion_time -= 0.5
+				var explosion = Explosion.instance()
+				explosion.position = boss_position
+				add_child(explosion)
+				DefSys.sfx.play("explode1")
+		
+		# Giratina fucks off
+		if t == -180:
+			set_boss_dest(Vector2(500, -250), 90)
+			$Hitbox.monitoring = true
+			$Hitbox/hurtbox.monitorable = true
+	elif stage == 2:
+		# Giratina dies
+		if t == -240:
+			$Gira.play()
+		if t == -210:
+			$Hitbox/Fainter.play("faint")
+			$Hitbox.monitoring = false
+			$Hitbox/hurtbox.monitorable = false
+		if t == -150:
+			set_boss_dest(Vector2(500, -250), 1)
+		
+		if t == -149:
+			character_swapped = false
+			$Hitbox/Control/Sprite.position.y = 150
+			$Hitbox.monitoring = true
+			$Hitbox/hurtbox.monitorable = true
+		
+	
+	
+	if t == -152:
+		var attack_types = []
+		for i in range(len(attacks) - 1, -1 if skip_opening else 0, -1):
+			attack_types.append(attacks[i].attack_type)
+		DefSys.boss_bar.set_phase_icons(attack_types)
+		DefSys.boss_bar.entry_anim()
+		#DefSys.boss_bar.remove_phase_icon(len(attacks) - 1)
+	
+	if t == -90 and character_swapped:
+		$Hitbox/Fainter.play("faint")
+		$Hitbox.monitoring = false
+		$Hitbox/hurtbox.monitorable = false
+	# Move new character:
+	if t == -30 and character_swapped:
+		set_boss_dest(Vector2(500, -250), 1)
+		
+	if t == -29 and character_swapped:
+		character_swapped = false
+		$Hitbox/Control/Sprite.position.y = 150
+		$Hitbox.monitoring = true
+		$Hitbox/hurtbox.monitorable = true
+	
 	# attack handling
 	if t == 0 && phase < len(attacks):
 		current_attack = attacks[phase]
@@ -149,16 +230,18 @@ func custom_process(t: int):
 		start_delay = current_attack.start_delay
 		set_boss_dest(current_attack.start_pos, 60)
 		
+		$Hitbox/Control/Sprite.frame = character_pos[current_attack.character]
+		
 		spell_bonus = current_attack.scb
 		
 		var last_attack_type = attack_type
 		attack_type = current_attack.attack_type
 		var is_spell: bool = (attack_type != DefSys.ATTACK_TYPE.NON)
 		#DefSys.background_controller.spell(is_spell)
-		DefSys.background_controller.play_bg(current_attack.bg_flag)
+	#	DefSys.background_controller.play_bg(current_attack.bg_flag)
 		DefSys.spell_bonus = true
 		if is_spell:
-			DefSys.boss_bar.declare_spell(current_attack.attack_name, current_attack.scb)
+			DefSys.boss_bar.declare_spell(current_attack.attack_name, current_attack.scb, attack_type == DefSys.ATTACK_TYPE.FINAL)
 			DefSys.warp_effect.warp((boss_position), false)
 			bullet_clear.position = (boss_position)
 			bullet_clear.monitoring = true
@@ -168,6 +251,8 @@ func custom_process(t: int):
 			DefSys.sfx.play("blast1")
 			DefSys.player.set_hidden_invincibility()
 			root.slowdown(1.0)
+			root.warp(0)
+			root.rotate_player(0)
 		else:
 			DefSys.boss_bar.end_spell()
 			bullet_clear.position = Vector2(500, 500)
@@ -175,19 +260,23 @@ func custom_process(t: int):
 			bullet_clear.monitorable = true
 			bullet_clear.get_child(0).shape.radius = 1000
 			root.slowdown(1.0)
+			root.warp(0)
+			root.rotate_player(0)
 			
 		if attack_type != DefSys.ATTACK_TYPE.TIMEOUT:
-			$Hitbox.monitorable = true
+			$Hitbox.monitoring = true
+			$Hitbox/hurtbox.monitorable = true
 			DefSys.boss_bar.max_health = health
+			$Hitbox/Control/Sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
 			if last_attack_type == DefSys.ATTACK_TYPE.TIMEOUT:
 				DefSys.boss_bar.healthbar_timeout(false)
-				$darkener.play_backwards("darken")
 		else:
-			$Hitbox.monitorable = false
+			$Hitbox.monitoring = false
+			$Hitbox/hurtbox.monitorable = false
+			$Hitbox/Control/Sprite.modulate = Color(0.5, 0.5, 0.5, 1.0)
 			DefSys.boss_bar.max_health = time_left
 			if last_attack_type != DefSys.ATTACK_TYPE.TIMEOUT:
 				DefSys.boss_bar.healthbar_timeout(true)
-				$darkener.play("darken")
 		
 		if not is_first_attack:
 			DefSys.boss_bar.fill_healthbar()
@@ -206,6 +295,9 @@ func custom_process(t: int):
 		bullet_clear.monitorable = false
 		bullet_clear.get_child(0).shape.radius = 0
 	
+	if t == 120 and phase < len(attacks):
+		root.start_section(current_attack.bg_flag)
+	
 	if t == start_delay && attack_type != DefSys.ATTACK_TYPE.TIMEOUT:
 		invincible = false
 	if t >= start_delay:
@@ -214,8 +306,8 @@ func custom_process(t: int):
 	if time_left % 60 == 0 && time_left <= 600 && time_left != 0 && phase < len(attacks):
 		DefSys.sfx.play("timer1" if time_left > 180 else "timer2")
 	
-	
 	if (health <= 0.0 || time_left <= 0) && phase < len(attacks):
+		root.slowdown(1.0)
 		invincible = true
 		DefSys.sfx.play("explode1")
 		t = -1
@@ -229,21 +321,23 @@ func custom_process(t: int):
 		bullet_clear.monitorable = true
 		bullet_clear.get_child(0).shape.radius = 0.0
 		if attack_type != DefSys.ATTACK_TYPE.NON && phase != len(attacks):
-			#Bullets.create_item(item_kit, DefSys.get_item_data(DefSys.ITEM_TYPE.LIFE), (galacta.position + remilia.position) * 0.5, 6, PI * -0.5, (randi()%2)*2-1)
 			if DefSys.spell_bonus: DefSys.sfx.play("capture1")
 			DefSys.boss_bar.spell_result(DefSys.spell_bonus)
-	# warning-ignore:integer_division
-			for _i in spell_bonus / 2 if DefSys.spell_bonus else 3:
-				#Bullets.create_item(item_kit, DefSys.get_item_data(DefSys.ITEM_TYPE.POINT), galacta.position, rand_range(2,8), randf()*TAU, (randi()%2)*2-1)
-				#Bullets.create_item(item_kit, DefSys.get_item_data(DefSys.ITEM_TYPE.POINT), remilia.position, rand_range(2,8), randf()*TAU, (randi()%2)*2-1)
-				pass
+			t_int = -151
+			t_raw = -150.0
+			character_swapped = true
 		if phase == len(attacks):
 			DefSys.boss_bar.hide_healthbar()
-			$Hitbox.monitorable = false
-		#	set_remilia_dest(Vector2(300, 300), 60)
+			$Hitbox.monitoring = false
+			$Hitbox/hurtbox.monitorable = false
 			player.auto_poc = true
 			
 	if phase == len(attacks):
+		#root.slowdown(1.0)
+		if stage == 0:
+			root.start_section(9)
+		elif stage == 1:
+			root.start_section(10)
 		if explosion_timer > 0:
 			explosion_timer -= 1
 			next_explosion_timer -= 1
@@ -264,7 +358,8 @@ func custom_process(t: int):
 			DefSys.sfx.play("blast1")
 			#remilia.hide()
 			#galacta.hide()
-			$Hitbox.monitorable = false
+			$Hitbox.monitoring = false
+			$Hitbox/hurtbox.monitorable = false
 			DefSys.background_controller.fade()
 			if attack_type != DefSys.ATTACK_TYPE.NON:
 				if DefSys.spell_bonus: DefSys.sfx.play("capture1")
@@ -281,13 +376,19 @@ func custom_process(t: int):
 	
 	t += 1
 	t_global += 1
-	
+
+
+func face(left := true):
+	$Hitbox/Control/Sprite.scale.x = 2.0/3.0 * (-1.0 if left else 1.0)
+
 	
 func set_boss_dest(dest: Vector2, frame: float):
-	start_position = position
+	start_position = boss_position
 	target_position = dest
 	travel_time = frame
 	travel_timer = 0.0
+	
+	face(start_position.x < target_position.x)
 
 func _on_area_shape_entered(area_id, _area, area_shape, _local_shape):
 	
@@ -317,7 +418,8 @@ func _on_BulletClear_area_shape_entered(area_id, _area, area_shape, _local_shape
 	var bullet_id = Bullets.get_bullet_from_shape(area_id, area_shape)
 	if true:
 		var p = Bullets.get_property(bullet_id, "position")
-		call_deferred("create_piv", p)
+		if p:
+			call_deferred("create_piv", p)
 		#create_piv(p)
 		#var item = Bullets.create_item(item_kit, DefSys.get_item_data(DefSys.ITEM_TYPE.PIV), p, 8, PI*-0.5, (randi()%2)*2-1)
 		#Bullets.set_property(item, "grazed", true)

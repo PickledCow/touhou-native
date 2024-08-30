@@ -14,7 +14,14 @@ func play_music(phase, start=0.0):
 			$preboss_music.stop()
 			$boss_music_1.play(start)
 		6:
-			$boss_music_2.play(17)
+			$boss_music_1.stop()
+			$boss_music_2.play(start)
+
+		8:
+			$preboss_music.stop()
+			$boss_music_1.stop()
+			$boss_music_2.stop()
+			$boss_music_3.play(0)
 
 func set_speed(scale):
 	for node in get_children():

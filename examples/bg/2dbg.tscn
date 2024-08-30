@@ -1,51 +1,296 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=31 format=2]
 
-[ext_resource path="res://examples/bg/2d/crystal sky.png" type="Texture" id=1]
-[ext_resource path="res://examples/bg/2d/crystal.png" type="Texture" id=2]
+[ext_resource path="res://examples/bg/2d/coronet.png" type="Texture" id=1]
+[ext_resource path="res://examples/bg/2d/outside.png" type="Texture" id=2]
 [ext_resource path="res://examples/bg/2dbg.gd" type="Script" id=3]
-[ext_resource path="res://examples/bg/2d/lava.png" type="Texture" id=4]
-
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-
-uniform float scroll = 0.0;
-
-void fragment() {
-	vec2 uv = UV;
-	uv.x += -0.3*TIME;
-	uv.y += scroll;
-	COLOR = texture(TEXTURE, uv);
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/scroll = 0.0
+[ext_resource path="res://examples/bg/2d/sky.png" type="Texture" id=4]
+[ext_resource path="res://examples/bg/2d/shore.png" type="Texture" id=5]
+[ext_resource path="res://dummy.png" type="Texture" id=6]
+[ext_resource path="res://examples/bg/2d/rocky.png" type="Texture" id=7]
+[ext_resource path="res://examples/bg/2d/coronet3.png" type="Texture" id=8]
+[ext_resource path="res://examples/bg/2d/coronet4.png" type="Texture" id=9]
+[ext_resource path="res://examples/bg/2d/coronet2.png" type="Texture" id=10]
+[ext_resource path="res://examples/bg/rocky.png" type="Texture" id=11]
 
 [sub_resource type="Animation" id=3]
-resource_name = "0"
-length = 6.0
-tracks/0/type = "bezier"
-tracks/0/path = NodePath("crystalsky:material:shader_param/scroll")
+resource_name = "1"
+length = 68.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("coronet:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0, 0.0052011, 10, -2.9, -0.00685501, 0.25, 0 ),
-"times": PoolRealArray( 0, 6 )
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
-tracks/1/type = "bezier"
-tracks/1/path = NodePath("crystal:offset:y")
+tracks/1/type = "value"
+tracks/1/path = NodePath("Outside:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 1000, -0.25, 0, 0, 23.8174, 0, -1.5, -10.4505, 0.25, 0 ),
-"times": PoolRealArray( 4, 6 )
+"times": PoolRealArray( 0, 36 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("crystalsky:modulate")
+tracks/2/path = NodePath("Shore:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 26, 36, 46 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 500, -1000 ), Vector2( 500, -1000 ), Vector2( 500, 500 ), Vector2( 500, 2500 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Water:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 36 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Fade:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 64 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Rocky:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 58 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Rocky:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 58, 68 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 500, -500 ), Vector2( 500, -500 ), Vector2( 500, 1000 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Fade:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 64, 68 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("cave:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "2"
+length = 78.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("cave:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("cave:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -3000, -0.25, 0, 0, 0, 857.143, -0.25, 0, 0.25, 0, 3750, 0, 0, 0, 0, 4000, -2, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 40, 73, 78 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Water2:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( -2000, -0.25, 0, 0, 0, 892.857, 0, 0, 0, 0, 1142.86, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 40, 73, 78 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Fade:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Fade:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "3"
+length = 80.0
+step = 5.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Fade2:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 78, 80 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Fade2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 78 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("cave:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 4000, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Water2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 500, 1142.86 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("cave:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Water2:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "4"
+length = 2.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("coronet:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Fade2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Fade2:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -53,81 +298,665 @@ tracks/2/enabled = true
 tracks/2/keys = {
 "times": PoolRealArray( 0, 2 ),
 "transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+"update": 1,
+"values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "1"
-length = 0.001
-
-[sub_resource type="Animation" id=5]
-resource_name = "2"
-length = 13.0
-tracks/0/type = "bezier"
-tracks/0/path = NodePath("crystal:offset:y")
+[sub_resource type="Animation" id=13]
+resource_name = "5"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("coronet:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.8, 51.9622, 711.754, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 2 )
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
-tracks/1/type = "bezier"
-tracks/1/path = NodePath("crystalsky:material:shader_param/scroll")
+tracks/1/type = "value"
+tracks/1/path = NodePath("coronet2:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 10, -0.25, 0, 4.7, -0.517384, -5, -0.886244, 1.47244, 0.25, 0 ),
-"times": PoolRealArray( 0, 10 )
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
-tracks/2/type = "bezier"
-tracks/2/path = NodePath("lava:position:y")
+tracks/2/type = "value"
+tracks/2/path = NodePath("coronet3:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( -1100, -0.25, 0, 0, 28.5837, 0, -1.13189, -39.1454, 0.25, 0 ),
-"times": PoolRealArray( 10, 13 )
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("crystalsky:modulate")
+tracks/3/path = NodePath("coronet4:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 8, 9 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0, 0, 0, 1 ) ]
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 
+[sub_resource type="Animation" id=14]
+resource_name = "6"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("coronet:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("coronet2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("coronet3:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("coronet4:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "7"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("coronet:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("coronet2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("coronet3:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("coronet4:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "8"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("coronet:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("coronet2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("coronet3:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("coronet4:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("coronet:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0.72, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("coronet:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0.72, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("coronet:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Outside:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Shore:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 500, -700 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Water:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Fade:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Rocky:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Rocky:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 500, -500 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Fade:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Fade2:modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("coronet2:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("coronet3:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("coronet4:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("Fade2:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("cave:position")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 500, -3000 ) ]
+}
+tracks/16/type = "bezier"
+tracks/16/path = NodePath("cave:position:x")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"points": PoolRealArray( 500, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/17/type = "bezier"
+tracks/17/path = NodePath("cave:position:y")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"points": PoolRealArray( -3000, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("cave:visible")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/19/type = "bezier"
+tracks/19/path = NodePath("Water2:position:x")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"points": PoolRealArray( 500, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/20/type = "bezier"
+tracks/20/path = NodePath("Water2:position:y")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"points": PoolRealArray( -4000, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/21/type = "value"
+tracks/21/path = NodePath("Water2:position")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 500, 1142.86 ) ]
+}
+tracks/22/type = "value"
+tracks/22/path = NodePath("Water2:visible")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[sub_resource type="Shader" id=8]
+code = "shader_type canvas_item;
+
+uniform float speed = 0.1;
+
+void fragment() {
+	COLOR = texture(TEXTURE, vec2(UV.x, (UV.y - TIME * speed) * 2.0));
+}"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
+shader_param/speed = 0.05
+
+[sub_resource type="Shader" id=10]
+code = "shader_type canvas_item;
+
+uniform float speed = 1.0;
+
+void fragment() {
+	vec2 uv = UV + vec2(0.025, -0.12) * TIME  * speed;
+	vec4 texture_color = texture(TEXTURE, uv);
+    
+	vec2 w_uv = UV + vec2(0.0, -0.1) * TIME  * speed;
+	
+    vec4 k = vec4(TIME)*0.8;
+	k.xy = w_uv * 12.0;
+    float val1 = length(0.5-fract(k.xyw*=mat3(vec3(-2.0,-1.0,0.0), vec3(3.0,-1.0,1.0), vec3(1.0,-1.0,-1.0))*0.5));
+    float val2 = length(0.5-fract(k.xyw*=mat3(vec3(-2.0,-1.0,0.0), vec3(3.0,-1.0,1.0), vec3(1.0,-1.0,-1.0))*0.2));
+    float val3 = length(0.5-fract(k.xyw*=mat3(vec3(-2.0,-1.0,0.0), vec3(3.0,-1.0,1.0), vec3(1.0,-1.0,-1.0))*0.5));
+    vec4 color = vec4 ( pow(min(min(val1,val2),val3), 7.0) * 3.0) * 1.5+texture_color;
+ 	COLOR = color;
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 10 )
+shader_param/speed = 0.5
+
+[sub_resource type="Shader" id=19]
+code = "shader_type canvas_item;
+
+uniform float scale = 8.0;
+
+void fragment() {
+	COLOR.rgb = (texture(TEXTURE, vec2(UV.x * 2.0, (UV.y) *scale * 4.0)) + texture(TEXTURE, vec2(UV.x * 1.0, (UV.y) *scale * 2.0)) + texture(TEXTURE, vec2(UV.x * 0.5, (UV.y) *scale * 1.0))).rgb / 3.0;
+}"
+
+[sub_resource type="ShaderMaterial" id=20]
+shader = SubResource( 19 )
+shader_param/scale = 8.0
+
+[sub_resource type="Shader" id=17]
+code = "shader_type canvas_item;
+
+uniform float scale = 8.0;
+
+void fragment() {
+	vec4 texture_color = texture(TEXTURE, UV);
+    
+	vec2 w_uv = vec2(UV.x, UV.y*scale);
+	
+	
+    vec4 k = vec4(TIME)*0.8;
+	k.xy = w_uv * 12.0;
+    float val1 = length(0.5-fract(k.xyw*=mat3(vec3(-2.0,-1.0,0.0), vec3(3.0,-1.0,1.0), vec3(1.0,-1.0,-1.0))*0.5));
+    float val2 = length(0.5-fract(k.xyw*=mat3(vec3(-2.0,-1.0,0.0), vec3(3.0,-1.0,1.0), vec3(1.0,-1.0,-1.0))*0.2));
+    float val3 = length(0.5-fract(k.xyw*=mat3(vec3(-2.0,-1.0,0.0), vec3(3.0,-1.0,1.0), vec3(1.0,-1.0,-1.0))*0.5));
+    vec4 color = vec4 ( pow(min(min(val1,val2),val3), 7.0) * 3.0) * 2.0+texture_color;
+ 	COLOR = color;
+	
+	COLOR.a = texture_color.a;
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=18]
+shader = SubResource( 17 )
+shader_param/scale = 4.0
+
+[sub_resource type="Gradient" id=21]
+offsets = PoolRealArray( 0, 0.0545455, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture2D" id=22]
+gradient = SubResource( 21 )
+width = 100
+height = 100
+fill_from = Vector2( 1, 1 )
+
 [node name="2dbg" type="Node2D"]
-position = Vector2( 32, 32 )
 script = ExtResource( 3 )
 
-[node name="crystalsky" type="Sprite" parent="."]
-modulate = Color( 0, 0, 0, 1 )
-material = SubResource( 2 )
-texture = ExtResource( 1 )
-centered = false
-
-[node name="crystal" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-centered = false
-offset = Vector2( 0, 1000 )
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/0 = SubResource( 3 )
-anims/1 = SubResource( 4 )
+anims/1 = SubResource( 3 )
 anims/2 = SubResource( 5 )
+anims/3 = SubResource( 12 )
+anims/4 = SubResource( 6 )
+anims/5 = SubResource( 13 )
+anims/6 = SubResource( 14 )
+anims/7 = SubResource( 15 )
+anims/8 = SubResource( 16 )
+anims/RESET = SubResource( 7 )
 
-[node name="lava" type="Sprite" parent="."]
-position = Vector2( 0, -1100 )
+[node name="Outside" type="Sprite" parent="."]
+material = SubResource( 9 )
+position = Vector2( 500, 500 )
+scale = Vector2( 0.45, 0.9 )
+texture = ExtResource( 2 )
+
+[node name="Water" type="Sprite" parent="."]
+visible = false
+material = SubResource( 11 )
+position = Vector2( 500, 500 )
 texture = ExtResource( 4 )
-centered = false
+
+[node name="Shore" type="Sprite" parent="."]
+position = Vector2( 500, -700 )
+texture = ExtResource( 5 )
+
+[node name="Rocky" type="Sprite" parent="."]
+visible = false
+position = Vector2( 500, -500 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+
+[node name="Darkness" type="Sprite" parent="Rocky"]
+modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
+position = Vector2( 0, -1862 )
+scale = Vector2( 2000, 2000 )
+texture = ExtResource( 6 )
+
+[node name="cave" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0.8, 0.8, 0.8, 1 )
+material = SubResource( 20 )
+position = Vector2( 500, -3000 )
+scale = Vector2( 0.35, 4.8 )
+texture = ExtResource( 11 )
+
+[node name="Fade" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 500, 500 )
+scale = Vector2( 1000, 1000 )
+texture = ExtResource( 6 )
+
+[node name="Water2" type="Sprite" parent="."]
+modulate = Color( 0.509804, 0.701961, 1, 0.305882 )
+material = SubResource( 18 )
+position = Vector2( 500, -4000 )
+scale = Vector2( 10, 40 )
+texture = SubResource( 22 )
+
+[node name="coronet" type="Sprite" parent="."]
+visible = false
+position = Vector2( 500, 500 )
+scale = Vector2( 0.72, 0.72 )
+texture = ExtResource( 1 )
+
+[node name="coronet2" type="Sprite" parent="."]
+visible = false
+position = Vector2( 500, 500 )
+scale = Vector2( 0.72, 0.72 )
+texture = ExtResource( 10 )
+
+[node name="coronet3" type="Sprite" parent="."]
+visible = false
+position = Vector2( 500, 500 )
+scale = Vector2( 0.72, 0.72 )
+texture = ExtResource( 8 )
+
+[node name="coronet4" type="Sprite" parent="."]
+visible = false
+position = Vector2( 500, 500 )
+scale = Vector2( 0.72, 0.72 )
+texture = ExtResource( 9 )
+
+[node name="Fade2" type="Sprite" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 500, 500 )
+scale = Vector2( 1000, 1000 )
+texture = ExtResource( 6 )

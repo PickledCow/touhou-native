@@ -51,3 +51,5 @@ func attack(t):
 				meteor2.position = Vector2(1100, rand_range(0, 1100))
 				meteor2.velocity = v
 				parent.add_child(meteor2)
+		if t % 150 == 0:
+			set_boss_dest(Vector2(rand_range(300, 700), rand_range(250, 350)), 60)

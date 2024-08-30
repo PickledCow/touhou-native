@@ -17,15 +17,19 @@ func show_sign(location):
 	level_signs.display_sign(location)
 
 
+onready var player : Player = $playfield/Player
+
 # -1: Disabled
 # 0: Intro, 1: Outside, 2: Mt Coronet, 3: Lake Spirits
-# 4: Peak, 5: Dialogue, 6: Boss, 7: Surprise, 8: Arceus
-var debug_section = 6
-
+# 4:  Dialogue, 5: Boss, 9: Surprise, 10: Arceus
+var debug_section = 1
 
 func _ready():
 	DefSys.playfield_root = self
 	DefSys.playfield = $playfield
+	
+	
+	
 	origin = position
 	
 	$playfield/BulletsEnvironment.set_speed_scale(1.0)
@@ -51,18 +55,26 @@ func start_section(section):
 		3:
 			$playfield/Midboss.start()
 		4:
-			get_node("playfield/Music").play_music(4)
+			play_music(4)
 			get_node("background").play_bg(4)
 			get_node("playfield/Boss/Dialogue").dialogue_started = true
 			#$playfield/Midboss.start()
 		5:
-			get_node("playfield/Music").play_music(5)
+			play_music(5)
 			get_node("background").play_bg(5)
-			$playfield/Boss.enable()
+			$playfield/Boss.enable(0)
 		6:
-			get_node("playfield/Music").play_music(6)
-			get_node("background").play_bg(5)
-			$playfield/Boss.enable()
+			get_node("background").play_bg(6)
+		7:
+			get_node("background").play_bg(7)
+		9:
+			play_music(6)
+			get_node("background").play_bg(8)
+			$playfield/Boss.enable(1)
+		10:
+			play_music(8)
+			get_node("background").play_bg(10)
+			$playfield/Boss.enable(2)
 
 func after_ready(frames: int):
 	if frames == 0:
@@ -72,9 +84,12 @@ func after_ready(frames: int):
 	else:
 		call_deferred("after_ready", frames - 1)
 
+func play_music(id: int):
+	get_node("playfield/Music").play_music(id)
+	
 
 func get_player_position() -> Vector2:
-	return $playfield/Player.position
+	return player.position
 
 func shake_screen(duration: float, strength: float):
 	screen_shake_timer = duration / Engine.iterations_per_second
@@ -125,6 +140,19 @@ func slowdown(s: float):
 	#$playfield/Music.set_speed(time_scale)
 
 
+func warp(enable := 0):
+	player.set_warp(enable)
+	match enable:
+		0:
+			$playfield/Boss/WallGlowAnimator.play("RESET")
+		1:
+			$playfield/Boss/WallGlowAnimator.play("Side")
+		2:
+			$playfield/Boss/WallGlowAnimator.play("Top")
+	#$playfield/BulletsEnvironment.set_extend_bounds(enable)
+
+func rotate_player(orientation: int):
+	player.set_orientation(orientation)
 
 
 func _process(delta):

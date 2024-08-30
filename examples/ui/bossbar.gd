@@ -52,26 +52,30 @@ func _process(delta):
 			icon.modulate.a = interp
 			icon.z_index = -1 if (interp) < 0.9 else 0
 			i += 1.0
-			
+	
+	if icon_being_removed < -1:
+		icon_being_removed = -1
+	
 	if icon_being_removed != -1:
 		var icon = icons.get_child(icon_being_removed)
-		icon_fade_out += delta * icon_fade_out_rate
-		if icon_fade_out >= 1.0:
-			icon_being_removed = -1
-			icon_fade_out = 1.0
-		icon.position.y = -64.0 * icon_fade_out
-		icon.modulate.a = 1.0 - icon_fade_out
-		icon.z_index = -1 if (icon_fade_out) > 0.9 else 0
+		if icon:
+			icon_fade_out += delta * icon_fade_out_rate
+			if icon_fade_out >= 1.0:
+				icon_being_removed = -1
+				icon_fade_out = 1.0
+			icon.position.y = -64.0 * icon_fade_out
+			icon.modulate.a = 1.0 - icon_fade_out
+			icon.z_index = -1 if (icon_fade_out) > 0.9 else 0
 	
 	var player_present = len($Area2D.get_overlapping_areas()) > 0
 	
 	if player_present and self_fade_timer < self_fade_time:
-		modulate.a = 1.0 - (self_fade_timer / self_fade_time) * 0.75
+		modulate.a = 1.0 - (self_fade_timer / self_fade_time) * 0.9
 		
 		self_fade_timer = clamp(self_fade_timer + delta, 0.0, self_fade_time)
 	
 	elif not player_present and self_fade_timer > 0.0:
-		modulate.a = 1.0 - (self_fade_timer / self_fade_time) * 0.75
+		modulate.a = 1.0 - (self_fade_timer / self_fade_time) * 0.9
 		
 		self_fade_timer = clamp(self_fade_timer - delta, 0.0, self_fade_time)
 	
@@ -122,12 +126,15 @@ func set_timer(t: int):
 # warning-ignore:integer_division
 	timer.bbcode_text = ("[center]%02d[b].%02d" % [t / 60, (t % 60) * 100 / 60]).replace('0', 'O')
 
-func declare_spell(name: String, bonus: int):
+func declare_spell(name: String, bonus: int, final: bool):
 	spell_box.visible = true
 	spell_name.bbcode_text = "[right]" + name
 	spell_bonus.text = str(bonus).replace('0', 'O') + "  "
 	spell_box_anim_player.play("spawn")
 	spell_bonus_icon.visible = true
+	if final:
+		$spellclip/spell/name.hide()
+		$spellclip/spell/nameunown.show()
 
 func fail_spell():
 	spell_bonus.text = "FAILED"
@@ -142,4 +149,4 @@ func healthbar_timeout(timeout: bool):
 		#healthbar_color.play("timeout")
 	else:
 		pass
-		healthbar_color.play_backwards("timeout")
+	#	healthbar_color.play_backwards("timeout")

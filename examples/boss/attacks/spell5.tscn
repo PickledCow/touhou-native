@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://examples/boss/attacks/spell5.gd" type="Script" id=1]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=3]
+
+[node name="spell5" type="Node2D"]
+script = ExtResource( 1 )
+character = 4
+attack_type = 4
+attack_name = "Spatial Rift \"Subspace Tear\""
+attack_time = 5400
+start_pos = Vector2( 975, 100 )
+health = 25000
+scb = 0
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 3 )

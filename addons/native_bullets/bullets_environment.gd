@@ -34,11 +34,23 @@ func _exit_tree():
 func reload():
 	_set_current(false)
 	_set_current(true)
-	
+
 
 func set_speed_scale(scale: float):
 	for kit in bullet_kits:
 		kit.time_scale = scale
+
+func set_extend_bounds(extend: bool):
+	var reg : Rect2
+	if extend:
+		reg = Rect2(-1000.0, -64.0, 3000.0, 1128.0)
+	else:
+		reg = Rect2(-64.0, -64.0, 1128.0, 1128.0)
+	
+	for kit in bullet_kits:
+		kit.active_rect = reg
+
+
 
 func _set_current(value):
 	if Engine.editor_hint:

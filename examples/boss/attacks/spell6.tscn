@@ -1,0 +1,56 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://examples/boss/attacks/spell6.gd" type="Script" id=1]
+[ext_resource path="res://kits/basic_bullet_kit.tres" type="Resource" id=2]
+[ext_resource path="res://kits/basic_bullet_kit_add.tres" type="Resource" id=3]
+[ext_resource path="res://kits/basic_bullet_kit_sub.tres" type="Resource" id=4]
+[ext_resource path="res://examples/boss/accelline.png" type="Texture" id=5]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.25, 0.75, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 2
+emission_box_extents = Vector3( 500, 750, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1500.0
+initial_velocity_random = 0.75
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_random = 0.25
+color = Color( 1, 1, 1, 0.25 )
+color_ramp = SubResource( 3 )
+
+[node name="spell6" type="Node2D"]
+script = ExtResource( 1 )
+character = 5
+attack_type = 4
+attack_name = "Chaos Rift \"Shadow Force\""
+attack_time = 3600
+start_pos = Vector2( 500, -250 )
+health = 35000
+scb = 0
+bullet_kit = ExtResource( 2 )
+bullet_kit_add = ExtResource( 3 )
+bullet_kit_sub = ExtResource( 4 )
+
+[node name="dash" type="Particles2D" parent="."]
+material = SubResource( 1 )
+position = Vector2( 0, -250 )
+emitting = false
+amount = 200
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.1
+process_material = SubResource( 4 )
+texture = ExtResource( 5 )

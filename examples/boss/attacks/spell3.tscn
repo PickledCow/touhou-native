@@ -7,10 +7,12 @@
 
 [node name="spell3" type="Node2D"]
 script = ExtResource( 1 )
+character = 3
 attack_type = 3
 attack_name = "Temporal Rift \"Roar of Time\""
-attack_time = 2160
+attack_time = 2100
 start_pos = Vector2( 500, 500 )
+scb = 0
 bullet_kit = ExtResource( 2 )
 bullet_kit_add = ExtResource( 3 )
 

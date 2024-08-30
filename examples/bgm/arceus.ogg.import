@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/arceus.ogg-8cd0067ce01b958929d6a70a61c5e2be.oggstr"
+
+[deps]
+
+source_file="res://examples/bgm/arceus.ogg"
+dest_files=[ "res://.import/arceus.ogg-8cd0067ce01b958929d6a70a61c5e2be.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=44.8
